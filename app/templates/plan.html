@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="d-flex flex-column h-100">
+  {% if delete_key %}
+  <div class="container">
+    <div class="row">
+      <div class="border border-warning m-1 px-2 rounded">
+      To delete this plan, use the following
+      <a href="{{ url_for('delete', id=plan.id, key=delete_key) }}">link</a>.
+      <small class="text-muted">This link will not be shown any more, so you might want to bookmark it, just in case.</small>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="flex-grow-1 overflow-auto" id="app">
+    <pev2 :plan-source="plan" :plan-query="query"></pev2>
+  </div>
+</div>
+
+<script>
+{% autoescape false %}
+const plan = `{{ plan.plan | safe |  replace('\"', '\\"') }}`;
+const query = "{{ plan.sql | safe |  replace('\"', '\\"') }}";
+{% endautoescape %}
+</script>
+
+<script src="{{ url_for('static', filename='js/plan.js') }}"></script>
+{% endblock %}

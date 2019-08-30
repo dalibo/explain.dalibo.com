@@ -23,7 +23,7 @@ def upgrade():
         sa.Column('title', sa.String(), nullable=True),
         sa.Column('created', sa.DateTime(timezone=True), nullable=True),
         sa.Column('plan', sa.String(), nullable=True),
-        sa.Column('query', sa.String(), nullable=True),
+        sa.Column('sql', sa.String(), nullable=True),
         sa.Column('is_public', sa.Boolean(), nullable=True),
         sa.Column('delete_key', sa.String(), nullable=True),
         sa.PrimaryKeyConstraint('id'),
@@ -73,7 +73,7 @@ def upgrade():
     );
 
     CREATE OR REPLACE FUNCTION public.register_plan(in_title text, in_plan
-    text, in_query text, in_is_public boolean)
+    text, in_sql text, in_is_public boolean)
      RETURNS register_plan_return
      LANGUAGE plpgsql
     AS $function$
@@ -82,13 +82,13 @@ def upgrade():
         reply register_plan_return;
         insert_sql TEXT;
     BEGIN
-        insert_sql := 'INSERT INTO public.plans (id, title, plan, query,
+        insert_sql := 'INSERT INTO public.plans (id, title, plan, sql,
         is_public, created, delete_key) VALUES ($1, $2, $3, $4, $5, now(), $6)';
         reply.delete_key := get_random_string( 50 );
         LOOP
             reply.id := get_random_string(use_hash_length);
             BEGIN
-                execute insert_sql using reply.id, in_title, in_plan, in_query, in_is_public, reply.delete_key;
+                execute insert_sql using reply.id, in_title, in_plan, in_sql, in_is_public, reply.delete_key;
                 RETURN reply;
             EXCEPTION WHEN unique_violation THEN
                 -- do nothing

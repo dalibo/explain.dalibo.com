@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div id="app" v-cloak class="container mt-2">
+  {% if deleted %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-warning">
+        The plan <b>{{ deleted }}</b> has been deleted.
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="row">
+    <div class="col d-flex">
+      <div class="text-muted">
+        For best results, use <code>EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON)</code>
+        <br>
+        <em>psql</em> users can export the plan to a file using <code>psql -qAt -f explain.sql > analyze.json</code>
+      </div>
+      <div class="dropdown ml-auto">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sample Plans
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a v-for="(sample, index) in samples" class="dropdown-item" v-on:click.prevent="loadSample(sample)" href>
+            {% raw %}{{ sample[0] }}{% endraw %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form method="POST" action="{{ url_for('new') }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <label for="titleInput">Title</span></label>
+      <input name="title" class="form-control col-sm-4" id="titleInput" />
+    </div>
+    <div class="form-group">
+      <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
+      <textarea name="plan" :class="['form-control', draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan\nOr drop a file"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="queryInput">Query</label>
+      <textarea name="query" :class="['form-control', draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query\nOr drop a file"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}
