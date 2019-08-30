@@ -1,0 +1,20 @@
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+# Unix-style newlines
+end_of_line = lf
+# Remove any whitespace characters preceding newline characters
+trim_trailing_whitespace = true
+# Newline ending every file
+insert_final_newline = true
+
+# 2 space indentation for UI
+[*.{css,html,js,json,scss,yml,rb}]
+indent_size = 2
+
+[Makefile]
+indent_size = 8
+indent_style = tab
