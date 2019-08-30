@@ -7,6 +7,9 @@ verify_ssl = true
 
 [packages]
 flask = "*"
+psycopg2-binary = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.6"
