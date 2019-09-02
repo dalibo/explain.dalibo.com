@@ -38,11 +38,11 @@ new Vue({
     },
 
     loadSample(sample) {
-      axios.get('samples/' + sample[1]).then((response) => {
+      axios.get(staticUrl + 'samples/' + sample[1]).then((response) => {
         this.planInput = response.request.responseText;
       });
       if (sample[2]) {
-        axios.get('samples/' + sample[2]).then((response) => {
+        axios.get(staticUrl + 'samples/' + sample[2]).then((response) => {
           this.queryInput = response.request.responseText;
         });
       } else {
