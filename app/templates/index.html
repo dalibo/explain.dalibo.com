@@ -62,5 +62,5 @@ New Plan
 <script>
 const staticUrl = "{{ url_for('static', filename='') }}";
 </script>
-<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{{ assets('index') | safe }}
 {% endblock %}

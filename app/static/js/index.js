@@ -1,3 +1,7 @@
+import './common.js';
+import axios from 'axios';
+import Vue from 'vue';
+
 new Vue({
   el: "#app",
   data: function() {

@@ -29,5 +29,5 @@ const query = "{{ plan.sql | safe |  replace('\"', '\\"') }}";
 {% endautoescape %}
 </script>
 
-<script src="{{ url_for('static', filename='js/plan.js') }}"></script>
+{{ assets('plan') | safe }}
 {% endblock %}

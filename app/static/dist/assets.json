@@ -1,0 +1,17 @@
+{
+  "index": {
+    "js": [
+      "dist/runtime.59c9f1a4.js",
+      "dist/vendors~index~plan.dab05f42.js",
+      "dist/vendors~index.cc4c5514.js",
+      "dist/index.a84f598d.js"
+    ]
+  },
+  "plan": {
+    "js": [
+      "dist/runtime.59c9f1a4.js",
+      "dist/vendors~index~plan.dab05f42.js",
+      "dist/plan.a10686df.js"
+    ]
+  }
+}

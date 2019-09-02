@@ -18,6 +18,8 @@ from wtforms.validators import (
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import datetime
+import os
+import json
 app = Flask(__name__, instance_relative_config=True)
 
 app.config.from_object('config')
@@ -99,6 +101,21 @@ def delete(id, key):
         db.session.delete(plan)
         db.session.commit()
     return redirect(url_for('index'))
+
+
+@app.context_processor
+def inject_assets():
+    def load_assets(entrypoint):
+        fn = os.path.realpath(__file__ + '/../static/dist/assets.json')
+        with open(fn) as f:
+            entrypoints = json.load(f)
+        script = '<script src="{}"></script>'
+        assets = entrypoints[entrypoint]
+        ret = []
+        for asset in assets['js']:
+            ret.append(script.format(url_for('static', filename=asset)))
+        return '\n'.join(ret)
+    return dict(assets=load_assets)
 
 
 if __name__ == '__main__':
