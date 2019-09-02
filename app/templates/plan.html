@@ -25,7 +25,7 @@
 <script>
 {% autoescape false %}
 const plan = `{{ plan.plan | safe |  replace('\"', '\\"') }}`;
-const query = "{{ plan.sql | safe |  replace('\"', '\\"') }}";
+const query = `{{ plan.sql | safe |  replace('\"', '\\"') }}`;
 {% endautoescape %}
 </script>
 
