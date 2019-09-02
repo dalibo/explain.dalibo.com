@@ -2,18 +2,18 @@
   "index": {
     "js": [
       "dist/runtime.379c480a.js",
-      "dist/vendors~index~plan.b5ae438a.js",
+      "dist/vendors~index~plan.2a0fb8fd.js",
       "dist/vendors~index.ca4b8c69.js",
-      "dist/index.9aca53f0.js"
+      "dist/index.fdb09e5e.js"
     ],
-    "css": "dist/index.e8fb7b06982827445730.css"
+    "css": "dist/index.4bade97f4704afa76e73.css"
   },
   "plan": {
     "js": [
       "dist/runtime.379c480a.js",
-      "dist/vendors~index~plan.b5ae438a.js",
-      "dist/plan.196f26dc.js"
+      "dist/vendors~index~plan.2a0fb8fd.js",
+      "dist/plan.3f610b35.js"
     ],
-    "css": "dist/plan.e8fb7b06982827445730.css"
+    "css": "dist/plan.4bade97f4704afa76e73.css"
   }
 }
