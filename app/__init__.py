@@ -105,16 +105,24 @@ def delete(id, key):
 
 @app.context_processor
 def inject_assets():
-    def load_assets(entrypoint):
+    def load_assets(type, entrypoint):
         fn = os.path.realpath(__file__ + '/../static/dist/assets.json')
         with open(fn) as f:
             entrypoints = json.load(f)
-        script = '<script src="{}"></script>'
-        assets = entrypoints[entrypoint]
+        if type == 'js':
+            tag = '<script src="{}"></script>'
+        elif type == 'css':
+            tag = '<link rel="stylesheet" href="{}">'
+        else:
+            raise 'unsupported type'
+        assets = entrypoints[entrypoint][type]
         ret = []
-        for asset in assets['js']:
-            ret.append(script.format(url_for('static', filename=asset)))
-        return '\n'.join(ret)
+        if isinstance(assets, list):
+            for asset in assets:
+                ret.append(tag.format(url_for('static', filename=asset)))
+            return '\n'.join(ret)
+        else:
+            return tag.format(url_for('static', filename=assets))
     return dict(assets=load_assets)
 
 

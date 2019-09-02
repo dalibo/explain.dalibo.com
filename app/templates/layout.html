@@ -4,6 +4,7 @@
     <title>{% block title %}{% endblock %} | explain.dalibo.com</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    {{ assets('css', asset) | safe }}
     <style>
       html,
       body {
@@ -45,4 +46,5 @@
       </div>
     </footer>
   </body>
+  {{ assets('js', asset) | safe }}
 </html>

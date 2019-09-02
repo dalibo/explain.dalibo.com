@@ -1,3 +1,5 @@
+{% set asset='index' %}
+
 {% extends "layout.html" %}
 
 {% block title %}
@@ -62,5 +64,4 @@ New Plan
 <script>
 const staticUrl = "{{ url_for('static', filename='') }}";
 </script>
-{{ assets('index') | safe }}
 {% endblock %}

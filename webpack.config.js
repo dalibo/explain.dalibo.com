@@ -1,6 +1,7 @@
 const path = require('path');
 const AssetsPlugin = require('assets-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'production',
@@ -29,6 +30,12 @@ module.exports = {
       prettyPrint: true,
       entrypoints: true,
       filename: './app/static/dist/assets.json',
+    }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: '[name].[hash].css',
+      chunkFilename: '[id].[hash].css'
     })
   ],
   module: {
@@ -44,7 +51,7 @@ module.exports = {
       {
         test: /\.(scss)$/,
         use: [{
-          loader: 'style-loader', // inject CSS to page
+          loader: MiniCssExtractPlugin.loader
         }, {
           loader: 'css-loader', // translates CSS into CommonJS modules
         }, {
