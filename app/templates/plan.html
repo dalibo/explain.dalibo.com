@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block title %}
+{{ plan.title or 'Plan ' + plan.id }}
+{% endblock %}
+
 {% block body %}
 <div class="d-flex flex-column h-100">
   {% if delete_key %}
