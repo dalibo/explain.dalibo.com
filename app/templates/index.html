@@ -6,6 +6,14 @@ New Plan
 
 {% block body %}
 <div id="app" v-cloak class="container mt-2">
+  <div class="row">
+    <div class="col-sm-12 text-center">
+      <h2>
+        <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" width="40px;">
+        explain.dalibo.com
+      </h2>
+    </div>
+  </div>
   {% if deleted %}
   <div class="row">
     <div class="col-sm-12">
@@ -15,7 +23,23 @@ New Plan
     </div>
   </div>
   {% endif %}
-  <div class="row">
+  <form method="POST" action="{{ url_for('new') }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <label for="titleInput">Title</span></label>
+      <input name="title" class="form-control col-sm-4" id="titleInput" />
+    </div>
+    <div class="form-group">
+      <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
+      <textarea name="plan" :class="['form-control', draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan\nOr drop a file"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="queryInput">Query</label>
+      <textarea name="query" :class="['form-control', draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query\nOr drop a file"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <div class="row mt-4">
     <div class="col d-flex">
       <div class="text-muted">
         For best results, use <code>EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON)</code>
@@ -34,22 +58,6 @@ New Plan
       </div>
     </div>
   </div>
-  <form method="POST" action="{{ url_for('new') }}">
-    {{ form.hidden_tag() }}
-    <div class="form-group">
-      <label for="titleInput">Title</span></label>
-      <input name="title" class="form-control col-sm-4" id="titleInput" />
-    </div>
-    <div class="form-group">
-      <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
-      <textarea name="plan" :class="['form-control', draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan\nOr drop a file"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="queryInput">Query</label>
-      <textarea name="query" :class="['form-control', draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query\nOr drop a file"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
 </div>
 <script>
 const staticUrl = "{{ url_for('static', filename='') }}";
