@@ -1,3 +1,4 @@
+import './common.js';
 import Vue from 'vue';
 import pev2 from '../lib/pev2.umd.min.js';
 

@@ -1,0 +1,4 @@
+$primary: #774b85 !default;
+$dark: darken($primary, 15%) !default;
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import './pev2';
