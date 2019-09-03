@@ -2,7 +2,40 @@
 
 PEV2 Flask application
 
-## Run App Using Docker
+# Installation
+
+```shell
+pip install pipenv
+pipenv install
+```
+
+Create a config file.
+
+```shell
+cp config.py instance
+```
+
+Modify the `config.py` file in the `instance` directory if needed.
+
+Run a Postgres instance in a docker container:
+
+```shell
+docker run -p 5432:5432 --rm --name explain -e POSTGRES_PASSWORD=postgres -d postgres
+```
+
+Create the DB:
+
+```
+FLASK_APP=app flask db upgrade
+```
+
+## Run
+
+```shell
+FLASK_DEBUG=1 FLASK_APP=app python -m flask run
+```
+
+# Run App Using Docker
 
 ```shell
 docker-compose up -d
@@ -11,7 +44,7 @@ docker-compose run web flask db upgrade
 
 Open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) in your browser.
 
-## Build assets
+# Build assets
 
 ```shell
 npm install
