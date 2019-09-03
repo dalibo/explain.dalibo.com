@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  web:
+    restart: always
+    build: .
+    ports:
+      - "5000:5000"
+    links:
+      - postgres:postgres
+    volumes:
+      - .:/app
+    environment:
+      DB_SERVICE: postgres
+
+  postgres:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db-data:
