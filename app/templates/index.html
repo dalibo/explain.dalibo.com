@@ -26,7 +26,6 @@ New Plan
   </div>
   {% endif %}
   <form method="POST" action="{{ url_for('new') }}">
-    {{ form.hidden_tag() }}
     <div class="form-group">
       <label for="titleInput">Title</span></label>
       <input name="title" class="form-control col-sm-4" id="titleInput" />

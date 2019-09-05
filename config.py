@@ -1,4 +1,5 @@
 import os
+WTF_CSRF_ENABLED = False
 SECRET_KEY = os.environ.get('SECRET_KEY', 'aSup3rS33kret')
 DEBUG = os.environ.get('DEBUG')
 DB_NAME = os.environ.get('DB_NAME', 'postgres')
