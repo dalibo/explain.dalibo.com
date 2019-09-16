@@ -3,4 +3,3 @@ $dark: darken($primary, 15%) !default;
 $link-color: saturate($primary, 10%);
 $body-color: #495057;
 @import 'node_modules/bootstrap/scss/bootstrap';
-@import './pev2';
