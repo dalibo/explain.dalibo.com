@@ -1,19 +1,28 @@
 {
+  "about": {
+    "js": [
+      "dist/runtime.379c480a.js",
+      "dist/vendors~about~index~plan.afb81191.js",
+      "dist/about.71b7a912.js"
+    ],
+    "css": "dist/about.22fc446bbc54cc6c92ef.css"
+  },
   "index": {
     "js": [
       "dist/runtime.379c480a.js",
-      "dist/vendors~index~plan.2a0fb8fd.js",
-      "dist/vendors~index.ca4b8c69.js",
-      "dist/index.fdb09e5e.js"
+      "dist/vendors~about~index~plan.afb81191.js",
+      "dist/vendors~index~plan.ef0d274f.js",
+      "dist/index.9b27551d.js"
     ],
-    "css": "dist/index.4bade97f4704afa76e73.css"
+    "css": "dist/index.22fc446bbc54cc6c92ef.css"
   },
   "plan": {
     "js": [
       "dist/runtime.379c480a.js",
-      "dist/vendors~index~plan.2a0fb8fd.js",
-      "dist/plan.3f610b35.js"
+      "dist/vendors~about~index~plan.afb81191.js",
+      "dist/vendors~index~plan.ef0d274f.js",
+      "dist/plan.113f8805.js"
     ],
-    "css": "dist/plan.4bade97f4704afa76e73.css"
+    "css": "dist/plan.22fc446bbc54cc6c92ef.css"
   }
 }

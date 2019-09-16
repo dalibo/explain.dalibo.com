@@ -54,7 +54,7 @@ def index():
 
 @app.route('/about')
 def about():
-    return ''
+    return render_template('about.html')
 
 
 class PlanForm(FlaskForm):
