@@ -1,6 +1,6 @@
 import './common.js';
 import Vue from 'vue';
-import pev2 from '../lib/pev2.umd.min.js';
+import pev2 from 'pev2';
 
 new Vue({
   el: "#app",
