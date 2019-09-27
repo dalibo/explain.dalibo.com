@@ -50,3 +50,10 @@ Open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) in your browser.
 npm install
 npm run watch
 ```
+
+# Releasing
+
+```shell
+git tag -a vx.x.x -m "x.x.x"
+git push --tags
+```
