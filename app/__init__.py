@@ -1,5 +1,6 @@
 from flask import (
     Flask,
+    jsonify,
     redirect,
     render_template,
     session,
@@ -91,6 +92,12 @@ def plan(id):
     delete_key = session.pop('delete_key', None)
     return render_template(
         'plan.html', plan=plan, delete_key=delete_key)
+
+
+@app.route('/plan/<id>.json')
+def plan_xhr(id):
+    plan = Plan.query.get_or_404(id)
+    return jsonify(dict(plan=plan.plan, query=plan.sql))
 
 
 @app.route('/plan/<id>/<key>')
