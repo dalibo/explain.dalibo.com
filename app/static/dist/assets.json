@@ -2,27 +2,27 @@
   "about": {
     "js": [
       "dist/runtime.379c480a.js",
-      "dist/vendors~about~index~plan.afb81191.js",
-      "dist/about.eaea681d.js"
+      "dist/vendors~about~index~plan.239ca0a0.js",
+      "dist/about.9ed9adec.js"
     ],
-    "css": "dist/about.e4aec0cae2c11417d69e.css"
+    "css": "dist/about.396f9b91585ae23ecc24.css"
   },
   "index": {
     "js": [
       "dist/runtime.379c480a.js",
-      "dist/vendors~about~index~plan.afb81191.js",
-      "dist/vendors~index~plan.2c090b7d.js",
-      "dist/index.d29a9639.js"
+      "dist/vendors~about~index~plan.239ca0a0.js",
+      "dist/vendors~index~plan.aef1a2c6.js",
+      "dist/index.3e0482e7.js"
     ],
-    "css": "dist/index.e4aec0cae2c11417d69e.css"
+    "css": "dist/index.396f9b91585ae23ecc24.css"
   },
   "plan": {
     "js": [
       "dist/runtime.379c480a.js",
-      "dist/vendors~about~index~plan.afb81191.js",
-      "dist/vendors~index~plan.2c090b7d.js",
-      "dist/plan.e135960d.js"
+      "dist/vendors~about~index~plan.239ca0a0.js",
+      "dist/vendors~index~plan.aef1a2c6.js",
+      "dist/plan.34b76ae8.js"
     ],
-    "css": "dist/plan.e4aec0cae2c11417d69e.css"
+    "css": "dist/plan.396f9b91585ae23ecc24.css"
   }
 }
