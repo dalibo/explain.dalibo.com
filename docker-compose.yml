@@ -12,6 +12,7 @@ services:
       - .:/app
     environment:
       DB_SERVICE: postgres
+      DEBUG: 1
 
   postgres:
     restart: always
