@@ -2,6 +2,7 @@ import './common.js';
 import Vue from 'vue';
 import pev2 from 'pev2';
 import axios from 'axios';
+import bootstrap from 'bootstrap';
 
 new Vue({
   el: "#app",
