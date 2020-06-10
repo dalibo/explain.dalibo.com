@@ -68,6 +68,14 @@ module.exports = {
           loader: 'sass-loader' // compiles Sass to CSS
         }]
       },
+      {
+        test: /\.(css)$/,
+        use: [{
+           loader: MiniCssExtractPlugin.loader
+        }, {
+          loader: 'css-loader'
+        }]
+      },
     ]
   },
   resolve: {

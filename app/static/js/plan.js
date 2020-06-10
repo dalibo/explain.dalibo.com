@@ -3,6 +3,7 @@ import Vue from 'vue';
 import pev2 from 'pev2';
 import axios from 'axios';
 import bootstrap from 'bootstrap';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 new Vue({
   el: "#app",
