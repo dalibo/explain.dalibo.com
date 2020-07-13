@@ -13,8 +13,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'app/static/dist'),
     publicPath: 'dist/',
-    filename: '[name].[chunkhash:8].js',
-    chunkFilename: '[name].[chunkhash:8].js'
+    filename: '[name].[chunkhash:8].js'
   },
   optimization: {
     // one runtime for all entrypoints
@@ -35,8 +34,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: '[name].[hash].css',
-      chunkFilename: '[id].[hash].css'
+      filename: '[name].[contenthash:8].css'
     })
   ],
   module: {
