@@ -9,9 +9,17 @@ About
 {% block body %}
 <div class="container mt-2">
   <div class="row">
+    <div class="col-sm-12 text-center">
+      <h2>
+        <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" width="40px;">
+        <a href="{{ url_for('index') }}">explain.dalibo.com</a>
+      </h2>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-12">
       <h2>
-        About <code>explain.dalibo.com</code>
+        About
       </h2>
       <p>
         This service lets you analyze, visualize and share <a href="http://www.postgresql.org/docs/current/static/sql-explain.html">Postgres Query Plans</a>. It will compute and highlight the most important information to make them easier to understand.
