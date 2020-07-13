@@ -1,6 +1,7 @@
 import './common.js';
 import axios from 'axios';
 import Vue from 'vue';
+import moment from 'moment';
 
 new Vue({
   el: "#app",
@@ -35,6 +36,10 @@ new Vue({
     });
   },
   methods: {
+
+    checkForm() {
+      this.titleInput = this.titleInput || 'Plan created on ' + moment().format("MMMM Do YYYY, h:mm a");;
+    },
 
     loadSample(sample) {
       this.titleInput = sample[0];

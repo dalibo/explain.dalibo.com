@@ -26,7 +26,7 @@ New Plan
     </div>
   </div>
   {% endif %}
-  <form method="POST" action="{{ url_for('plan') }}">
+  <form method="POST" action="{{ url_for('plan') }}" @submit="checkForm">
     <div class="form-group">
       <label for="titleInput">Title</span></label>
       <input name="title" class="form-control col-sm-4" v-model="titleInput" maxlength="100"/>
