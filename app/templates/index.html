@@ -29,7 +29,7 @@ New Plan
   <form method="POST" action="{{ url_for('plan') }}">
     <div class="form-group">
       <label for="titleInput">Title</span></label>
-      <input name="title" class="form-control col-sm-4" v-model="titleInput"/>
+      <input name="title" class="form-control col-sm-4" v-model="titleInput" maxlength="100"/>
     </div>
     <div class="form-group">
       <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
