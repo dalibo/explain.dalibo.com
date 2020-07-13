@@ -36,12 +36,6 @@ new Vue({
   },
   methods: {
 
-    submitPlan() {
-      planData[0] = this.planInput;
-      planData[1] = this.queryInput;
-      router.push({ path: 'plan' });
-    },
-
     loadSample(sample) {
       this.titleInput = sample[0];
       axios.get(staticUrl + 'samples/' + sample[1]).then((response) => {
