@@ -21,6 +21,7 @@ new Vue({
         ['Parallel (verbose)', 'plan_parallel.json'],
         ['Parallel (4 workers)', 'plan_parallel2.txt', 'plan_parallel2.sql']
       ],
+      titleInput: '',
       planInput: '',
       queryInput: '',
       draggingPlan: false,
@@ -42,6 +43,7 @@ new Vue({
     },
 
     loadSample(sample) {
+      this.titleInput = sample[0];
       axios.get(staticUrl + 'samples/' + sample[1]).then((response) => {
         this.planInput = response.request.responseText;
       });

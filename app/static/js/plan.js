@@ -5,6 +5,14 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+import VueTippy, { TippyComponent } from "vue-tippy";
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
+
+new Vue({
+  el: '#header'
+});
+
 new Vue({
   el: "#app",
   data: function() {
@@ -17,11 +25,13 @@ new Vue({
     pev2: pev2
   },
   created () {
-    axios
-      .get(window.location.href + '.json')
-      .then(response => {
-        this.plan = response.data.plan;
-        this.query = response.data.query;
-      })
+    this.plan = plan;
+    this.query = sql;
+    //axios
+      //.get(window.location.href + '.json')
+      //.then(response => {
+        //this.plan = response.data.plan;
+        //this.query = response.data.query;
+      //})
   }
 });

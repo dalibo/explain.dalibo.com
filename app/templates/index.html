@@ -7,6 +7,7 @@ New Plan
 {% endblock %}
 
 {% block body %}
+<main role="main" class="flex-grow-1 overflow-auto">
 <div id="app" v-cloak class="container mt-2">
   <div class="row">
     <div class="col-sm-12 text-center">
@@ -25,10 +26,10 @@ New Plan
     </div>
   </div>
   {% endif %}
-  <form method="POST" action="{{ url_for('new') }}">
+  <form method="POST" action="{{ url_for('plan') }}">
     <div class="form-group">
       <label for="titleInput">Title</span></label>
-      <input name="title" class="form-control col-sm-4" id="titleInput" />
+      <input name="title" class="form-control col-sm-4" v-model="titleInput"/>
     </div>
     <div class="form-group">
       <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
@@ -60,6 +61,21 @@ New Plan
     </div>
   </div>
 </div>
+</main>
+<footer class="footer bg-dark">
+  <nav class="navbar navbar-expand-md navbar-dark justify-content-between">
+    <div class="container">
+      <span class="navbar-text">
+        Service brought to you with <i class="fa fa-heart"></i> by <a href="https://dalibo.com">Dalibo</a>
+      </span>
+      <ul class="navbar-nav ml-auto">
+        <li>
+          <a class="nav-link" href="{{ url_for('about') }}">About</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</footer>
 <script>
 const staticUrl = "{{ url_for('static', filename='') }}";
 </script>
