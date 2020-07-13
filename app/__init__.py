@@ -3,6 +3,7 @@ from flask import (
     jsonify,
     redirect,
     render_template,
+    request,
     session,
     url_for,
 )
@@ -89,10 +90,10 @@ def new():
     return redirect(url_for('index'))
 
 
-@app.route('/plan', methods=['POST'])
+@app.route('/plan', methods=['GET', 'POST'])
 def plan():
     form = PlanForm()
-    if form.validate_on_submit():
+    if request.method == 'POST' and form.validate_on_submit():
         plan = dict(
             title=form.title.data,
             plan=form.plan.data,
