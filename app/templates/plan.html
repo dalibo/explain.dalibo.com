@@ -13,14 +13,6 @@ var plan = {{ plan.plan | tojson }};
 var sql = {{ plan.sql | tojson }};
 </script>
 <div class="d-flex flex-column h-100">
-  <div class="flex-grow-1 overflow-auto d-flex" id="app">
-    <pev2 :plan-source="plan" :plan-query="query" v-if="plan"></pev2>
-    <div v-else class="w-100 h-100 d-flex">
-      <div class="align-self-center mx-auto">
-        Loading
-      </div>
-    </div>
-  </div>
   {% if delete_key %}
   <div class="container">
     <div class="row justify-content-center">
@@ -35,6 +27,14 @@ var sql = {{ plan.sql | tojson }};
     </div>
   </div>
   {% endif %}
+  <div class="flex-grow-1 overflow-auto d-flex" id="app">
+    <pev2 :plan-source="plan" :plan-query="query" v-if="plan"></pev2>
+    <div v-else class="w-100 h-100 d-flex">
+      <div class="align-self-center mx-auto">
+        Loading
+      </div>
+    </div>
+  </div>
 </div>
 </main>
 {% endblock %}
