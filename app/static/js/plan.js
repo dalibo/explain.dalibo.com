@@ -57,11 +57,5 @@ new Vue({
   created () {
     this.plan = plan;
     this.query = sql;
-    //axios
-      //.get(window.location.href + '.json')
-      //.then(response => {
-        //this.plan = response.data.plan;
-        //this.query = response.data.query;
-      //})
   }
 });
