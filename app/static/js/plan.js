@@ -5,12 +5,42 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-import VueTippy, { TippyComponent } from "vue-tippy";
-Vue.use(VueTippy);
-Vue.component("tippy", TippyComponent);
+import VueTour from 'vue-tour';
+import 'vue-tour/dist/vue-tour.css';
+Vue.use(VueTour);
+
+const tourVersion = '1.16';
 
 new Vue({
-  el: '#header'
+  el: '#header',
+  data () {
+    return {
+      tourOptions: {
+        labels: {
+          buttonStop: 'Understood, thanks'
+        }
+      },
+      tourSteps: [
+        {
+          target: '#shareButton',
+          content: `The plan is not saved on the server until you click this button.<br>
+          Once done, you'll get a permanent link you can share with others.`
+        }
+      ],
+      tourCallbacks: {
+        onFinish () {
+          localStorage.setItem('tour', tourVersion);
+        }
+      }
+    }
+  },
+  mounted () {
+    const finishedTour = localStorage.getItem('tour');
+    if (!finishedTour || finishedTour !== tourVersion) {
+      const tour = this.$tours['tour'];
+      tour && tour.start();
+    }
+  }
 });
 
 new Vue({

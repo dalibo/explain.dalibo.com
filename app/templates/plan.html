@@ -58,8 +58,7 @@ var sql = {{ plan.sql | tojson }};
       <li class="nav-item active">
         <form method="POST" action="{{ url_for('new') }}">
           <button type="submit" class="btn btn-primary"
-            content="The plan will be stored on the server and a permanent URL will be generated for this plan so that you can share it."
-            v-tippy="{arrow: true}"
+            id="shareButton"
           >
             <i class="fa fa-share-alt"></i> Share
           </button>
@@ -75,5 +74,8 @@ var sql = {{ plan.sql | tojson }};
     </span>
     {% endif %}
   </nav>
+  {% if not plan.id %}
+  <v-tour name="tour" :steps="tourSteps" :callbacks="tourCallbacks" :options="tourOptions"></v-tour>
+  {% endif %}
 </header>
 {% endblock %}
