@@ -3,6 +3,7 @@ from flask import (
     jsonify,
     redirect,
     render_template,
+    request,
     session,
     url_for,
 )
@@ -66,6 +67,9 @@ class PlanForm(FlaskForm):
 
 @app.route('/new', methods=['POST'])
 def new():
+    '''
+    Save the plan in database and return shareable URL
+    '''
     form = PlanForm()
     if form.validate_on_submit():
         sql = 'SELECT register_plan(:title, :plan, :sql, :is_public)'
@@ -82,22 +86,29 @@ def new():
         result = query.fetchone()[0]
         (id, delete_key) = tuple(x for x in result[1:-1].split(','))
         session['delete_key'] = delete_key
-        return redirect(url_for('plan', id=id))
+        return redirect(url_for('plan_from_db', id=id))
+    return redirect(url_for('index'))
+
+
+@app.route('/plan', methods=['GET', 'POST'])
+def plan():
+    form = PlanForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        plan = dict(
+            title=form.title.data,
+            plan=form.plan.data,
+            sql=form.sql.data
+        )
+        return render_template('plan.html', plan=plan)
     return redirect(url_for('index'))
 
 
 @app.route('/plan/<id>')
-def plan(id):
+def plan_from_db(id):
     plan = Plan.query.get_or_404(id)
     delete_key = session.pop('delete_key', None)
     return render_template(
         'plan.html', plan=plan, delete_key=delete_key)
-
-
-@app.route('/plan/<id>.json')
-def plan_xhr(id):
-    plan = Plan.query.get_or_404(id)
-    return jsonify(dict(plan=plan.plan, query=plan.sql))
 
 
 @app.route('/plan/<id>/<key>')

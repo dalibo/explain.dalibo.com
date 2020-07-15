@@ -7,6 +7,7 @@ New Plan
 {% endblock %}
 
 {% block body %}
+<main role="main" class="flex-grow-1 overflow-auto">
 <div id="app" v-cloak class="container mt-2">
   <div class="row">
     <div class="col-sm-12 text-center">
@@ -25,17 +26,17 @@ New Plan
     </div>
   </div>
   {% endif %}
-  <form method="POST" action="{{ url_for('new') }}">
+  <form method="POST" action="{{ url_for('plan') }}" @submit="checkForm">
     <div class="form-group">
       <label for="titleInput">Title</span></label>
-      <input name="title" class="form-control col-sm-4" id="titleInput" />
+      <input name="title" class="form-control col-sm-4" v-model="titleInput" maxlength="100"/>
     </div>
     <div class="form-group">
       <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
       <textarea name="plan" :class="['form-control', draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan\nOr drop a file"></textarea>
     </div>
     <div class="form-group">
-      <label for="queryInput">Query</label>
+      <label for="queryInput">Query <span class="small text-muted">(optional)</span></label>
       <textarea name="sql" :class="['form-control', draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query\nOr drop a file"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -60,6 +61,21 @@ New Plan
     </div>
   </div>
 </div>
+</main>
+<footer class="footer bg-dark">
+  <nav class="navbar navbar-expand-md navbar-dark justify-content-between">
+    <div class="container">
+      <span class="navbar-text">
+        Service brought to you with <i class="fa fa-heart"></i> by <a href="https://dalibo.com">Dalibo</a>
+      </span>
+      <ul class="navbar-nav ml-auto">
+        <li>
+          <a class="nav-link" href="{{ url_for('about') }}">Help / About</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</footer>
 <script>
 const staticUrl = "{{ url_for('static', filename='') }}";
 </script>
