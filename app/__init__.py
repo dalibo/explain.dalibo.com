@@ -86,7 +86,7 @@ def new():
         result = query.fetchone()[0]
         (id, delete_key) = tuple(x for x in result[1:-1].split(','))
         session['delete_key'] = delete_key
-        return redirect(url_for('plan_from_db', id=id))
+        return jsonify(dict(id=id, delete_key=delete_key))
     return redirect(url_for('index'))
 
 
@@ -100,7 +100,7 @@ def plan():
             sql=form.sql.data
         )
         return render_template('plan.html', plan=plan)
-    return redirect(url_for('index'))
+    return render_template('plan.html')
 
 
 @app.route('/plan/<id>')

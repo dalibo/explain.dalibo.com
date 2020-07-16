@@ -2,8 +2,8 @@
   "about": {
     "js": [
       "dist/runtime.f5557a8b.js",
-      "dist/vendors~about~index~plan.80fc4849.js",
-      "dist/about.9a81c22f.js"
+      "dist/vendors~about~index~plan.91982c24.js",
+      "dist/about.9ab8bdbf.js"
     ],
     "css": [
       "dist/vendors~about~index~plan.8dac9fe1.css",
@@ -13,9 +13,9 @@
   "index": {
     "js": [
       "dist/runtime.f5557a8b.js",
-      "dist/vendors~about~index~plan.80fc4849.js",
-      "dist/vendors~index~plan.9abc3b35.js",
-      "dist/index.d8006df4.js"
+      "dist/vendors~about~index~plan.91982c24.js",
+      "dist/vendors~index~plan.da860695.js",
+      "dist/index.b960fd4d.js"
     ],
     "css": [
       "dist/vendors~about~index~plan.8dac9fe1.css",
@@ -25,9 +25,9 @@
   "plan": {
     "js": [
       "dist/runtime.f5557a8b.js",
-      "dist/vendors~about~index~plan.80fc4849.js",
-      "dist/vendors~index~plan.9abc3b35.js",
-      "dist/plan.05a1d1bb.js"
+      "dist/vendors~about~index~plan.91982c24.js",
+      "dist/vendors~index~plan.da860695.js",
+      "dist/plan.f7328e0e.js"
     ],
     "css": [
       "dist/vendors~about~index~plan.8dac9fe1.css",
