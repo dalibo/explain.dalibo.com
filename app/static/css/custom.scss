@@ -7,3 +7,11 @@ $body-color: #495057;
 [v-cloak] {
   display: none;
 }
+
+.link-gray {
+  color: $text-muted;
+
+  &:hover {
+    color: $link-color;
+  }
+}

@@ -85,9 +85,9 @@ New Plan
             <div class="col-6 text-right">
               <small>
                 <span v-if="plan.shareId">
-                  <i class="fa fa-link text-muted"></i>
-                  <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
-                    /plan/{{'{{plan.shareId}}'}}
+                  <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)" class="link-gray">
+                    <i class="fa fa-link"></i>
+                    plan/{{'{{plan.shareId}}'}}
                   </a>
                 </span>
               </small>
