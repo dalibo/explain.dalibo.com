@@ -48,7 +48,10 @@ var sql = {{ plan.sql | tojson }};
     </ul>
     {% else %}
     <span class="navbar-text">
-      plan/{{ plan.id }}
+      <a href="{{ url_for('plan_from_db', id=plan.id) }}">
+        <i class="fa fa-link"></i>
+        plan/{{ plan.id }}
+      </a>
     </span>
     {% endif %}
   </nav>
