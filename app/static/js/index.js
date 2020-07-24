@@ -38,9 +38,6 @@ new Vue({
   },
   mounted() {
     const textAreas = document.getElementsByTagName('textarea');
-    Array.prototype.forEach.call(textAreas, (elem) => {
-        elem.placeholder = elem.placeholder.replace(/\\n/g, '\n');
-    });
     this.loadPlans();
   },
   methods: {

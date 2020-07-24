@@ -8,7 +8,7 @@ New Plan
 
 {% block body %}
 <main role="main" class="flex-grow-1 overflow-auto">
-<div id="app" v-cloak class="container mt-2">
+<div id="app" class="container mt-2">
   <notifications position="top right"></notifications>
   <div class="row">
     <div class="col-sm-12 text-center">
@@ -27,11 +27,11 @@ New Plan
         </div>
         <div class="form-group">
           <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
-          <textarea name="plan" :class="['form-control', draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan\nOr drop a file"></textarea>
+          <textarea name="plan" class="form-control" :class="[draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan or drop a file"></textarea>
         </div>
         <div class="form-group">
           <label for="queryInput">Query <span class="small text-muted">(optional)</span></label>
-          <textarea name="sql" :class="['form-control', draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query\nOr drop a file"></textarea>
+          <textarea name="sql" class="form-control" :class="[draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query or drop a file"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
@@ -57,7 +57,7 @@ New Plan
     </div>
     <div class="col-sm-5">
       <h3>Plans</h3>
-      <ul class="list-group">
+      <ul class="list-group" v-cloak>
         <li class="list-group-item px-2 py-1" v-for="plan in plans">
           <div class="row">
             <div class="col">
