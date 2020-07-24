@@ -9,6 +9,7 @@ New Plan
 {% block body %}
 <main role="main" class="flex-grow-1 overflow-auto">
 <div id="app" v-cloak class="container mt-2">
+  <notifications position="top right"></notifications>
   <div class="row">
     <div class="col-sm-12 text-center">
       <h2>
@@ -17,15 +18,6 @@ New Plan
       </h2>
     </div>
   </div>
-  {% if deleted %}
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="alert alert-success d-inline-block">
-        The plan <b>{{ deleted }}</b> has been deleted.
-      </div>
-    </div>
-  </div>
-  {% endif %}
   <div class="row">
     <div class="col-sm-7">
       <form method="POST" action="{{ url_for('plan') }}" @submit="checkForm">
@@ -67,9 +59,20 @@ New Plan
       <h3>Plans</h3>
       <ul class="list-group">
         <li class="list-group-item px-2 py-1" v-for="plan in plans">
-          <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
-            {{ '{{ plan.title }}' }}
-          </a>
+          <div class="row">
+            <div class="col">
+              <button
+                class="btn btn-sm btn-outline-secondary py-0 float-right"
+                title="Delete plan"
+                v-on:click="deletePlan(plan)"
+              >
+                <i class="far fa-trash-alt"></i>
+              </button>
+              <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
+                {{ '{{ plan.title }}' }}
+              </a>
+            </div>
+          </div>
           <div class="row">
             <div class="col-6">
               <small class="text-muted">
@@ -81,9 +84,8 @@ New Plan
             </div>
             <div class="col-6 text-right">
               <small>
-                <span class="text-muted" v-if="plan.shareId">
-                  <i class="fa fa-database"></i>
-                  Saved ⋅
+                <span v-if="plan.shareId">
+                  <i class="fa fa-link text-muted"></i>
                   <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
                     /plan/{{'{{plan.shareId}}'}}
                   </a>

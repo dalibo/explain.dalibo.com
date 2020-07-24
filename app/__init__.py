@@ -115,7 +115,7 @@ def delete(id, key):
         session['deleted'] = id
         db.session.delete(plan)
         db.session.commit()
-    return redirect(url_for('index'))
+    return ('', 204)
 
 
 @app.context_processor

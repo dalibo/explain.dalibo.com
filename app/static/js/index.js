@@ -4,8 +4,10 @@ import Vue from 'vue';
 import moment from 'moment';
 import _ from 'lodash';
 import VueTimeago from 'vue-timeago';
+import Notifications from 'vue-notification';
 
 Vue.use(VueTimeago, {locale: 'en'});
+Vue.use(Notifications);
 
 new Vue({
   el: "#app",
@@ -39,15 +41,7 @@ new Vue({
     Array.prototype.forEach.call(textAreas, (elem) => {
         elem.placeholder = elem.placeholder.replace(/\\n/g, '\n');
     });
-
-    var plans = [];
-    for (var i in localStorage) {
-      if (_.startsWith(i, 'plan_')) {
-        plans.push(JSON.parse(localStorage[i]));
-      }
-    }
-
-    this.plans = _.chain(plans).sortBy('createdOn').reverse().value();
+    this.loadPlans();
   },
   methods: {
 
@@ -105,8 +99,34 @@ new Vue({
       reader.readAsText(file);
     },
 
+    loadPlans() {
+      var plans = [];
+      for (var i in localStorage) {
+        if (_.startsWith(i, 'plan_')) {
+          plans.push(JSON.parse(localStorage[i]));
+        }
+      }
+
+      this.plans = _.chain(plans).sortBy('createdOn').reverse().value();
+    },
+
     getPlanUrl(plan) {
       return plan.shareId ? '/' + plan.shareId : '#' + plan.id;
+    },
+
+    deletePlan(plan) {
+      if (confirm("You're about to delete plan \"" + plan.title + "\". Are you sure?")) {
+        localStorage.removeItem(plan.id);
+        if (plan.shareId) {
+          axios.get('/plan/' + plan.shareId + '/' + plan.deleteKey).then(() => {
+            this.$notify({
+              text: 'Plan removed from server',
+              type: 'success'
+            });
+          });
+        }
+        this.loadPlans();
+      }
     }
   }
 });
