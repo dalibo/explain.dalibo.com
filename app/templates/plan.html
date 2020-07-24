@@ -26,7 +26,7 @@ var sql = {{ plan.sql | tojson }};
         </a>
       </li>
     </ul>
-    <span class="navbar-text">
+    <span class="navbar-text" v-cloak>
       {% raw %}{{ title }}{% endraw %}
     </span>
     {% if not plan %}
