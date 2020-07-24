@@ -103,6 +103,10 @@ new Vue({
         input.dispatchEvent(new Event('input'));
       };
       reader.readAsText(file);
+    },
+
+    getPlanUrl(plan) {
+      return plan.shareId ? '/' + plan.shareId : '#' + plan.id;
     }
   }
 });

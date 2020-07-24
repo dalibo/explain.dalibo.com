@@ -86,7 +86,7 @@ def new():
         result = query.fetchone()[0]
         (id, delete_key) = tuple(x for x in result[1:-1].split(','))
         session['delete_key'] = delete_key
-        return jsonify(dict(id=id, delete_key=delete_key))
+        return jsonify(dict(id=id, deleteKey=delete_key))
     return redirect(url_for('index'))
 
 

@@ -32,15 +32,12 @@ var sql = {{ plan.sql | tojson }};
     {% if not plan %}
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <form method="POST" action="{{ url_for('new') }}">
+        <form method="POST" action="{{ url_for('new') }}" @submit.prevent="share">
           <button type="submit" class="btn btn-primary"
             id="shareButton"
           >
             <i class="fa fa-share-alt"></i> Share
           </button>
-          <input type="hidden" name="title" :value="title">
-          <input type="hidden" name="plan" :value="plan">
-          <input type="hidden" name="sql" :value="query">
         </form>
       </li>
     </ul>
