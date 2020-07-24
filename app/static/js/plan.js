@@ -50,11 +50,13 @@ new Vue({
       this.plan = planFromStorage.plan;
       this.query = planFromStorage.query;
       location.hash = '';
-    } else {
+    } else if (window.title !== undefined && window.plan !== undefined) {
       // Load from script tag
       this.title = title;
       this.plan = plan;
       this.query = sql;
+    } else {
+      window.location.href = "/";
     }
     const finishedTour = localStorage.getItem('tour');
     if (!finishedTour || finishedTour !== tourVersion) {
