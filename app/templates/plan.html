@@ -52,20 +52,6 @@ var sql = {{ plan.sql | tojson }};
   {% endif %}
 </header>
 <div class="d-flex flex-column h-100">
-  {% if delete_key %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="alert alert-warning border border-warning py-0 px-2 rounded alert-dismissible m-1">
-        To delete this plan, use the following
-        <b><a href="{{ url_for('delete', id=plan.id, key=delete_key) }}">link</a></b>.
-        <small class="text-muted">This link will not be shown any more, so you might want to bookmark it, just in case.</small>
-        <button type="button" class="btn btn-link" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    </div>
-  </div>
-  {% endif %}
   <div class="flex-grow-1 overflow-auto d-flex">
     <pev2 :plan-source="plan" :plan-query="query" v-if="plan"></pev2>
     <div v-else class="w-100 h-100 d-flex">
