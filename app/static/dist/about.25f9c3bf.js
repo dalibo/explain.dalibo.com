@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([["about"],{4:function(n,o,i){"use strict";i.r(o);i(9),i(10),i(6),i(11)},6:function(n,o,i){}},[[4,"runtime","vendors~about~index~plan"]]]);
