@@ -67,30 +67,30 @@ New Plan
       <h3>Plans</h3>
       <ul class="list-group">
         <li class="list-group-item px-2 py-1" v-for="plan in plans">
-            <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
-              {{ '{{ plan.title }}' }}
-            </a>
-            <div class="row">
-              <div class="col-6">
-                <small class="text-muted">
-                  created
-                  {% raw %}
-                  <timeago :datetime="plan.createdOn" :title="plan.createdOn.toString()"></timeago>
-                  {% endraw %}
-                </small>
-              </div>
-              <div class="col-6 text-right">
-                <small>
-                  <span class="text-muted" v-if="plan.shareId">
-                    <i class="fa fa-database"></i>
-                    Saved ⋅
-                    <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
-                      /plan/{{'{{plan.shareId}}'}}
-                    </a>
-                  </span>
-                </small>
-              </div>
+          <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
+            {{ '{{ plan.title }}' }}
+          </a>
+          <div class="row">
+            <div class="col-6">
+              <small class="text-muted">
+                created
+                {% raw %}
+                <timeago :datetime="plan.createdOn" :title="plan.createdOn.toString()"></timeago>
+                {% endraw %}
+              </small>
             </div>
+            <div class="col-6 text-right">
+              <small>
+                <span class="text-muted" v-if="plan.shareId">
+                  <i class="fa fa-database"></i>
+                  Saved ⋅
+                  <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
+                    /plan/{{'{{plan.shareId}}'}}
+                  </a>
+                </span>
+              </small>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
