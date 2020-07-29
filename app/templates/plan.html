@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block body %}
-<main role="main" class="flex-grow-1 overflow-auto">
 {% if plan %}
 <script>
 var title = {{ plan.title | tojson }};
@@ -59,7 +58,7 @@ var sql = {{ plan.sql | tojson }};
   <v-tour name="tour" :steps="tourSteps" :callbacks="tourCallbacks" :options="tourOptions"></v-tour>
   {% endif %}
 </header>
-<div class="d-flex flex-column h-100">
+<div class="d-flex flex-column flex-grow-1 overflow-auto">
   <div class="flex-grow-1 overflow-auto d-flex">
     <pev2 :plan-source="plan" :plan-query="query" v-if="plan"></pev2>
     <div v-else class="w-100 h-100 d-flex">
@@ -69,7 +68,6 @@ var sql = {{ plan.sql | tojson }};
     </div>
   </div>
 </div>
-</main>
 </div>
 {% endblock %}
 
