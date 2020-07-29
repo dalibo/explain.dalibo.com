@@ -53,10 +53,10 @@ New Plan
         <div class="col d-flex">
           <div class="">
             <p class="text-muted">
-            For best results, use <code>EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS)</code>
+            For best results, use <code>EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON)</code>
             <br>
             <em>psql</em> users can export the plan to a file using:
-            <pre class="ml-3"><code>psql -XqAt -f explain.sql > analyze.txt</code></pre>
+            <pre class="ml-3"><code>psql -XqAt -f explain.sql > analyze.json</code></pre>
             </p>
             <p>
             Submitted plan is not posted nor stored until you explicitely click the <b>share</b> button.
