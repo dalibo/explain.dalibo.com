@@ -8,7 +8,8 @@ New Plan
 
 {% block body %}
 <main role="main" class="flex-grow-1 overflow-auto">
-<div id="app" v-cloak class="container mt-2">
+<div id="app" class="container mt-2">
+  <notifications position="top right"></notifications>
   <div class="row">
     <div class="col-sm-12 text-center">
       <h2>
@@ -17,47 +18,97 @@ New Plan
       </h2>
     </div>
   </div>
-  {% if deleted %}
   <div class="row">
-    <div class="col-sm-12">
-      <div class="alert alert-success d-inline-block">
-        The plan <b>{{ deleted }}</b> has been deleted.
-      </div>
-    </div>
-  </div>
-  {% endif %}
-  <form method="POST" action="{{ url_for('plan') }}" @submit="checkForm">
-    <div class="form-group">
-      <label for="titleInput">Title</span></label>
-      <input name="title" class="form-control col-sm-4" v-model="titleInput" maxlength="100"/>
-    </div>
-    <div class="form-group">
-      <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
-      <textarea name="plan" :class="['form-control', draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan\nOr drop a file"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="queryInput">Query <span class="small text-muted">(optional)</span></label>
-      <textarea name="sql" :class="['form-control', draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query\nOr drop a file"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-  <div class="row mt-4">
-    <div class="col d-flex">
-      <div class="text-muted">
-        For best results, use <code>EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON)</code>
-        <br>
-        <em>psql</em> users can export the plan to a file using <code>psql -qAt -f explain.sql > analyze.json</code>
-      </div>
-      <div class="dropup ml-auto">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Sample Plans
-        </button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-          <a v-for="(sample, index) in samples" class="dropdown-item" v-on:click.prevent="loadSample(sample)" href>
-            {% raw %}{{ sample[0] }}{% endraw %}
-          </a>
+    <div class="col-sm-7">
+      <form method="POST" action="{{ url_for('plan') }}" @submit="checkForm">
+        <div class="form-group">
+          <label for="titleInput">Title</span></label>
+          <input name="title" class="form-control col-sm-4" v-model="titleInput" maxlength="100"/>
+        </div>
+        <div class="form-group">
+          <label for="planInput">Plan <span class="small text-muted">(text or JSON)</span></label>
+          <textarea name="plan" class="form-control" :class="[draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan or drop a file"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="queryInput">Query <span class="small text-muted">(optional)</span></label>
+          <textarea name="sql" class="form-control" :class="[draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query or drop a file"></textarea>
+        </div>
+        <div class="row">
+          <div class="col d-flex">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="dropup ml-auto">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sample Plans
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <a v-for="(sample, index) in samples" class="dropdown-item" v-on:click.prevent="loadSample(sample)" href>
+                  {% raw %}{{ sample[0] }}{% endraw %}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="row mt-4">
+        <div class="col d-flex">
+          <div class="">
+            <p class="text-muted">
+            For best results, use <code>EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON)</code>
+            <br>
+            <em>psql</em> users can export the plan to a file using <code>psql -qAt -f explain.sql > analyze.json</code>
+            </p>
+            <p>
+            Submitted plan is not posted nor stored until you explicitely click the <b>share</b> button.
+            </p>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="col-sm-5 mb-4">
+      <h3>Plans</h3>
+      <ul class="list-group" v-cloak>
+        <li class="list-group-item px-2 py-1" v-for="plan in plans">
+          <div class="row">
+            <div class="col">
+              <button
+                class="btn btn-sm btn-outline-secondary py-0 float-right"
+                title="Delete plan"
+                v-on:click="deletePlan(plan)"
+              >
+                <i class="far fa-trash-alt"></i>
+              </button>
+              <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
+                {{ '{{ plan.title }}' }}
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <small class="text-muted">
+                created
+                {% raw %}
+                <timeago :datetime="plan.createdOn" :title="plan.createdOn.toString()"></timeago>
+                {% endraw %}
+              </small>
+            </div>
+            <div class="col-6 text-right">
+              <small>
+                <span v-if="plan.shareId">
+                  <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)" class="link-gray">
+                    <i class="fa fa-link"></i>
+                    plan/{{'{{plan.shareId}}'}}
+                  </a>
+                </span>
+              </small>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <p class="text-muted text-center" v-if="!plans.length">
+        <em>
+          You haven't submitted any plan yet.
+        </em>
+      </p>
     </div>
   </div>
 </div>

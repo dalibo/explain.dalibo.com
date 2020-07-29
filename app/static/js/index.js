@@ -2,6 +2,12 @@ import './common.js';
 import axios from 'axios';
 import Vue from 'vue';
 import moment from 'moment';
+import _ from 'lodash';
+import VueTimeago from 'vue-timeago';
+import Notifications from 'vue-notification';
+
+Vue.use(VueTimeago, {locale: 'en'});
+Vue.use(Notifications);
 
 new Vue({
   el: "#app",
@@ -26,19 +32,32 @@ new Vue({
       planInput: '',
       queryInput: '',
       draggingPlan: false,
-      draggingQuery: false
+      draggingQuery: false,
+      plans: [],
     };
   },
   mounted() {
     const textAreas = document.getElementsByTagName('textarea');
-    Array.prototype.forEach.call(textAreas, (elem) => {
-        elem.placeholder = elem.placeholder.replace(/\\n/g, '\n');
-    });
+    this.loadPlans();
   },
   methods: {
 
-    checkForm() {
+    checkForm(event) {
+      var form = event.target;
+      event.preventDefault();
       this.titleInput = this.titleInput || 'Plan created on ' + moment().format("MMMM Do YYYY, h:mm a");;
+      var createdOn = new Date();
+      var id = 'plan_' + createdOn.getTime().toString();
+      localStorage.setItem(id,
+        JSON.stringify({
+          id: id,
+          title: this.titleInput,
+          plan: this.planInput,
+          query: this.queryInput,
+          createdOn: createdOn
+        })
+      );
+      window.location.href = '/plan#' + id;
     },
 
     loadSample(sample) {
@@ -75,6 +94,36 @@ new Vue({
         input.dispatchEvent(new Event('input'));
       };
       reader.readAsText(file);
+    },
+
+    loadPlans() {
+      var plans = [];
+      for (var i in localStorage) {
+        if (_.startsWith(i, 'plan_')) {
+          plans.push(JSON.parse(localStorage[i]));
+        }
+      }
+
+      this.plans = _.chain(plans).sortBy('createdOn').reverse().value();
+    },
+
+    getPlanUrl(plan) {
+      return plan.shareId ? '/' + plan.shareId : '#' + plan.id;
+    },
+
+    deletePlan(plan) {
+      if (confirm("You're about to delete plan \"" + plan.title + "\". Are you sure?")) {
+        localStorage.removeItem(plan.id);
+        if (plan.shareId) {
+          axios.get('/plan/' + plan.shareId + '/' + plan.deleteKey).then(() => {
+            this.$notify({
+              text: 'Plan removed from server',
+              type: 'success'
+            });
+          });
+        }
+        this.loadPlans();
+      }
     }
   }
 });

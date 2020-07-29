@@ -3,31 +3,63 @@
 {% extends "layout.html" %}
 
 {% block title %}
-{{ plan.title or 'Plan' }}
+{{ plan.title if plan else '' }}
 {% endblock %}
 
 {% block body %}
-<main role="main" class="flex-grow-1 overflow-auto">
+{% if plan %}
 <script>
+var title = {{ plan.title | tojson }};
 var plan = {{ plan.plan | tojson }};
 var sql = {{ plan.sql | tojson }};
 </script>
-<div class="d-flex flex-column h-100">
-  {% if delete_key %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="alert alert-warning border border-warning py-0 px-2 rounded alert-dismissible m-1">
-        To delete this plan, use the following
-        <b><a href="{{ url_for('delete', id=plan.id, key=delete_key) }}">link</a></b>.
-        <small class="text-muted">This link will not be shown any more, so you might want to bookmark it, just in case.</small>
-        <button type="button" class="btn btn-link" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    </div>
-  </div>
+{% endif %}
+<div id="app" class="d-flex flex-column h-100">
+<header class="header bg-dark">
+  <nav class="navbar navbar-expand-md navbar-dark justify-content-between">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link p-0" href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" height="35px;">
+          Explain.dalibo.com
+        </a>
+      </li>
+      <li class="nav-item ml-3">
+        <a class="btn btn-outline-primary text-white" href="{{ url_for('index') }}">
+          + New Plan
+        </a>
+      </li>
+    </ul>
+    <span class="navbar-text" v-cloak>
+      {% raw %}{{ title }}{% endraw %}
+    </span>
+    {% if not plan %}
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <form method="POST" action="{{ url_for('new') }}" @submit.prevent="share">
+          <button type="submit" class="btn btn-primary"
+            id="shareButton"
+          >
+            <i class="fa fa-share-alt"></i> Share
+          </button>
+        </form>
+      </li>
+    </ul>
+    {% else %}
+    <span class="navbar-text">
+      <a href="{{ url_for('plan_from_db', id=plan.id) }}">
+        <i class="fa fa-link"></i>
+        plan/{{ plan.id }}
+      </a>
+    </span>
+    {% endif %}
+  </nav>
+  {% if not plan %}
+  <v-tour name="tour" :steps="tourSteps" :callbacks="tourCallbacks" :options="tourOptions"></v-tour>
   {% endif %}
-  <div class="flex-grow-1 overflow-auto d-flex" id="app">
+</header>
+<div class="d-flex flex-column flex-grow-1 overflow-auto">
+  <div class="flex-grow-1 overflow-auto d-flex">
     <pev2 :plan-source="plan" :plan-query="query" v-if="plan"></pev2>
     <div v-else class="w-100 h-100 d-flex">
       <div class="align-self-center mx-auto">
@@ -36,46 +68,8 @@ var sql = {{ plan.sql | tojson }};
     </div>
   </div>
 </div>
-</main>
+</div>
 {% endblock %}
 
 {% block header %}
-<header class="header bg-dark" id="header">
-  <nav class="navbar navbar-expand-md navbar-dark justify-content-between">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link p-0" href="{{ url_for('index') }}">
-          <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" height="35px;">
-          Explain.dalibo.com
-        </a>
-      </li>
-    </ul>
-    <span class="navbar-text">
-      {{ plan.title }}
-    </span>
-    {% if not plan.id %}
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <form method="POST" action="{{ url_for('new') }}">
-          <button type="submit" class="btn btn-primary"
-            id="shareButton"
-          >
-            <i class="fa fa-share-alt"></i> Share
-          </button>
-          <input type="hidden" name="title" value="{{ plan.title }}">
-          <input type="hidden" name="plan" value="{{ plan.plan }}">
-          <input type="hidden" name="sql" value="{{ plan.sql }}">
-        </form>
-      </li>
-    </ul>
-    {% else %}
-    <span class="navbar-text">
-      plan/{{ plan.id }}
-    </span>
-    {% endif %}
-  </nav>
-  {% if not plan.id %}
-  <v-tour name="tour" :steps="tourSteps" :callbacks="tourCallbacks" :options="tourOptions"></v-tour>
-  {% endif %}
-</header>
 {% endblock %}

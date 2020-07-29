@@ -3,3 +3,15 @@ $dark: darken($primary, 15%) !default;
 $link-color: #007bff;
 $body-color: #495057;
 @import 'node_modules/bootstrap/scss/bootstrap';
+
+[v-cloak] {
+  display: none;
+}
+
+.link-gray {
+  color: $text-muted;
+
+  &:hover {
+    color: $link-color;
+  }
+}

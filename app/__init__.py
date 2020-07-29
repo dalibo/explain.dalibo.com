@@ -85,8 +85,7 @@ def new():
         db.session.commit()
         result = query.fetchone()[0]
         (id, delete_key) = tuple(x for x in result[1:-1].split(','))
-        session['delete_key'] = delete_key
-        return redirect(url_for('plan_from_db', id=id))
+        return jsonify(dict(id=id, deleteKey=delete_key))
     return redirect(url_for('index'))
 
 
@@ -100,15 +99,13 @@ def plan():
             sql=form.sql.data
         )
         return render_template('plan.html', plan=plan)
-    return redirect(url_for('index'))
+    return render_template('plan.html')
 
 
 @app.route('/plan/<id>')
 def plan_from_db(id):
     plan = Plan.query.get_or_404(id)
-    delete_key = session.pop('delete_key', None)
-    return render_template(
-        'plan.html', plan=plan, delete_key=delete_key)
+    return render_template('plan.html', plan=plan)
 
 
 @app.route('/plan/<id>/<key>')
@@ -118,7 +115,7 @@ def delete(id, key):
         session['deleted'] = id
         db.session.delete(plan)
         db.session.commit()
-    return redirect(url_for('index'))
+    return ('', 204)
 
 
 @app.context_processor
