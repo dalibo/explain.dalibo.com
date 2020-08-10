@@ -73,6 +73,12 @@ About
         <br>
         <code class="text-muted bg-light d-block">$ curl -Ls -w %{url_effective} -d '{"plan":"Seq Scan on tenk1  (cost=0.00..333.00 rows=10000 width=148)"}' -H "Content-Type: application/json" -X POST {{ url_for('new', _external=True) }} -o /dev/null</code>
       </p>
+      <h4>
+        Directly from psql
+      </h4>
+      <p>
+      You can send your plans directly from <em>psql</em> using the <em><a href="https://github.com/agneum/plan-exporter">plan-exporter</a></em> utility.
+      </p>
       <h3>
         Help us improve this service
       </h3>
