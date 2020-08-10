@@ -67,6 +67,15 @@ class PlanForm(FlaskForm):
 
 @app.route('/new', methods=['POST'])
 def new():
+    return save()
+
+
+@app.route('/new.json', methods=['POST'])
+def new_json():
+    return save(json=True)
+
+
+def save(json=False):
     '''
     Save the plan in database and return shareable URL
     '''
@@ -85,7 +94,9 @@ def new():
         db.session.commit()
         result = query.fetchone()[0]
         (id, delete_key) = tuple(x for x in result[1:-1].split(','))
-        return jsonify(dict(id=id, deleteKey=delete_key))
+        if json:
+            return jsonify(dict(id=id, deleteKey=delete_key))
+        return redirect(url_for('plan_from_db', id=id))
     return redirect(url_for('index'))
 
 
