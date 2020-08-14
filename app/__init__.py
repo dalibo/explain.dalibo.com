@@ -62,7 +62,7 @@ def about():
 class PlanForm(FlaskForm):
     title = StringField('Title')
     plan = TextAreaField('Plan', validators=[DataRequired()])
-    sql = TextAreaField('Query')
+    query = TextAreaField('Query')
 
 
 @app.route('/new', methods=['POST'])
@@ -81,13 +81,13 @@ def save(json=False):
     '''
     form = PlanForm()
     if form.validate_on_submit():
-        sql = 'SELECT register_plan(:title, :plan, :sql, :is_public)'
+        sql = 'SELECT register_plan(:title, :plan, :query, :is_public)'
         query = db.session.execute(
             sql,
             {
                 'title': form.title.data,
                 'plan': form.plan.data,
-                'sql': form.sql.data,
+                'query': form.query.data,
                 'is_public': False
             }
         )
@@ -100,16 +100,8 @@ def save(json=False):
     return redirect(url_for('index'))
 
 
-@app.route('/plan', methods=['GET', 'POST'])
+@app.route('/plan', methods=['GET'])
 def plan():
-    form = PlanForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        plan = dict(
-            title=form.title.data,
-            plan=form.plan.data,
-            sql=form.sql.data
-        )
-        return render_template('plan.html', plan=plan)
     return render_template('plan.html')
 
 
