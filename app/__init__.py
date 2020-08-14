@@ -100,16 +100,8 @@ def save(json=False):
     return redirect(url_for('index'))
 
 
-@app.route('/plan', methods=['GET', 'POST'])
+@app.route('/plan', methods=['GET'])
 def plan():
-    form = PlanForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        plan = dict(
-            title=form.title.data,
-            plan=form.plan.data,
-            sql=form.sql.data
-        )
-        return render_template('plan.html', plan=plan)
     return render_template('plan.html')
 
 
