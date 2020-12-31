@@ -73,8 +73,9 @@ New Plan
             <div class="col">
               <button
                 class="btn btn-sm btn-outline-secondary py-0 float-right"
-                title="Delete plan"
-                v-on:click="deletePlan(plan)"
+                title="Remove plan from list"
+                data-toggle="modal" data-target="#deletePlanModal"
+                v-on:click="planToDelete = plan"
               >
                 <i class="far fa-trash-alt"></i>
               </button>
@@ -103,11 +104,38 @@ New Plan
           </div>
         </li>
       </ul>
-      <p class="text-muted text-center" v-if="!plans.length">
+      <p class="text-muted text-center" v-if="!plans.length" v-cloak>
         <em>
           You haven't submitted any plan yet.
         </em>
       </p>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="deletePlanModal" tabindex="-1" aria-labelledby="deletePlanModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Remove plan <b>{% raw %}{{ planToDelete && planToDelete.title }}{% endraw %}</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" @click="planToDelete = null">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" v-if="planToDelete && planToDelete.shareId">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="deleteFromServer">
+            <label class="custom-control-label" for="customSwitch1">Also delete from server</label>
+          </div>
+          <small class="form-text text-muted">
+            If you shared a link to this plan (social media, email, etc.), you probably want to keep it there.
+          </small>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="planToDelete = null" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" @click="deletePlan(planToDelete)">Delete</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Vue from 'vue';
 import moment from 'moment';
 import _ from 'lodash';
+import $ from 'jquery';
 import VueTimeago from 'vue-timeago';
 import Notifications from 'vue-notification';
 
@@ -34,7 +35,14 @@ new Vue({
       draggingPlan: false,
       draggingQuery: false,
       plans: [],
+      planToDelete: null,
+      deleteFromServer: false,
     };
+  },
+  watch: {
+    planToDelete: function(newPlan, oldPlan) {
+      this.deleteFromServer = false;
+    }
   },
   mounted() {
     const textAreas = document.getElementsByTagName('textarea');
@@ -112,18 +120,18 @@ new Vue({
     },
 
     deletePlan(plan) {
-      if (confirm("You're about to delete plan \"" + plan.title + "\". Are you sure?")) {
-        localStorage.removeItem(plan.id);
-        if (plan.shareId) {
-          axios.get('/plan/' + plan.shareId + '/' + plan.deleteKey).then(() => {
-            this.$notify({
-              text: 'Plan removed from server',
-              type: 'success'
-            });
-          });
-        }
-        this.loadPlans();
+      if (this.deleteFromServer && plan.shareId) {
+        axios.get('/plan/' + plan.shareId + '/' + plan.deleteKey)
+          .then(this.onPlanDelete.bind(this, plan));
+      } else {
+        this.onPlanDelete(plan);
       }
+    },
+
+    onPlanDelete(plan) {
+      localStorage.removeItem(plan.id ? plan.id : 'plan_' + plan.shareId);
+      this.loadPlans();
+      $('#deletePlanModal').modal('hide');
     }
   }
 });

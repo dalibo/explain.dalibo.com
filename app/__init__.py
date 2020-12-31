@@ -46,6 +46,10 @@ class Plan(db.Model):
         {'postgresql_partition_by': 'HASH (id)'}
     )
 
+    def as_dict(self):
+        return dict(shareId=self.id, title=self.title, plan=self.plan,
+                    sql=self.sql,)
+
 
 @app.route('/')
 def index():
