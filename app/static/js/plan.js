@@ -47,6 +47,7 @@ new Vue({
       // Load from localStorage
       var planFromStorage = JSON.parse(localStorage.getItem(this.id));
       this.title = planFromStorage.title;
+      document.title = this.title + ' ' + document.title;
       this.plan = planFromStorage.plan;
       this.query = planFromStorage.query;
       location.hash = '';
