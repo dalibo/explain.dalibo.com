@@ -15,10 +15,7 @@ new Vue({
   el: "#app",
   data: function() {
     return {
-      id: '',
-      plan: '',
-      query: '',
-      title: '',
+      plan: null,
       tourOptions: {
         labels: {
           buttonStop: 'Understood, thanks'
@@ -41,23 +38,35 @@ new Vue({
   components: {
     pev2: pev2
   },
+  computed: {
+    planInLocalStorage () {
+      // finds the plan in local storage
+      for (var i in localStorage) {
+        if (_.startsWith(i, 'plan_')) {
+          const plan = JSON.parse(localStorage[i]);
+          if (plan.shareId == this.plan.shareId) {
+            return localStorage.getItem(i);
+          }
+        }
+      }
+      return false;
+    },
+  },
   created () {
-    this.id = location.hash.replace('#', '');
-    if (this.id) {
-      // Load from localStorage
-      var planFromStorage = JSON.parse(localStorage.getItem(this.id));
-      this.title = planFromStorage.title;
-      document.title = this.title + ' ' + document.title;
-      this.plan = planFromStorage.plan;
-      this.query = planFromStorage.query;
-      location.hash = '';
-    } else if (window.title !== undefined && window.plan !== undefined) {
+    if (window.plan !== undefined) {
       // Load from script tag
-      this.title = title;
       this.plan = plan;
-      this.query = sql;
     } else {
-      window.location.href = "/";
+      this.id = location.hash.replace('#', '');
+      if (this.id) {
+        // Load from localStorage
+        this.plan = JSON.parse(localStorage.getItem(this.id));
+        this.plan.sql = this.plan.query;
+        document.title = this.plan.title + ' ' + document.title;
+        location.hash = '';
+      } else {
+        window.location.href = "/";
+      }
     }
     const finishedTour = localStorage.getItem('tour');
     if (!finishedTour || finishedTour !== tourVersion) {
@@ -71,9 +80,9 @@ new Vue({
       var form = event.target;
       //event.preventDefault();
       axios.post(form.action, {
-        title: this.title,
-        plan: this.plan,
-        query: this.query
+        title: this.plan.title,
+        plan: this.plan.plan,
+        query: this.plan.query
       }).then((response) => {
         var data = response.data;
         var planFromStorage = JSON.parse(localStorage.getItem(this.id));
@@ -82,7 +91,7 @@ new Vue({
         localStorage.setItem(this.id, JSON.stringify(planFromStorage));
 
         // redirect to page with plan from server
-        window.location.href = "/plan/" + data.id;
+        window.location.href = "/plan/" + data.id + location.hash;
       });
     }
   }

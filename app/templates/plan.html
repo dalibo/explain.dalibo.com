@@ -9,9 +9,7 @@
 {% block body %}
 {% if plan %}
 <script>
-var title = {{ plan.title | tojson }};
-var plan = {{ plan.plan | tojson }};
-var sql = {{ plan.sql | tojson }};
+var plan = {{ plan.as_dict() | tojson }};
 </script>
 {% endif %}
 <div id="app" class="d-flex flex-column h-100">
@@ -31,7 +29,7 @@ var sql = {{ plan.sql | tojson }};
       </li>
     </ul>
     <span class="navbar-text" v-cloak>
-      {% raw %}{{ title }}{% endraw %}
+      {% raw %}{{ plan.title }}{% endraw %}
     </span>
     {% if not plan %}
     <ul class="navbar-nav">
@@ -60,7 +58,7 @@ var sql = {{ plan.sql | tojson }};
 </header>
 <div class="d-flex flex-column flex-grow-1 overflow-auto">
   <div class="flex-grow-1 overflow-auto d-flex">
-    <pev2 :plan-source="plan" :plan-query="query" v-if="plan"></pev2>
+    <pev2 :plan-source="plan.plan" :plan-query="plan.sql" v-if="plan"></pev2>
     <div v-else class="w-100 h-100 d-flex">
       <div class="align-self-center mx-auto">
         Loading
