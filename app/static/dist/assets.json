@@ -14,8 +14,8 @@
     "js": [
       "dist/runtime.f5557a8b.js",
       "dist/vendors~about~index~plan.6d01f81c.js",
-      "dist/vendors~index~plan.24c8fd1f.js",
-      "dist/index.631d1e0a.js"
+      "dist/vendors~index~plan.15fcfd3c.js",
+      "dist/index.b9fbf334.js"
     ],
     "css": [
       "dist/vendors~about~index~plan.8dac9fe1.css",
@@ -26,12 +26,12 @@
     "js": [
       "dist/runtime.f5557a8b.js",
       "dist/vendors~about~index~plan.6d01f81c.js",
-      "dist/vendors~index~plan.24c8fd1f.js",
-      "dist/plan.c66d531c.js"
+      "dist/vendors~index~plan.15fcfd3c.js",
+      "dist/plan.d2b3ae87.js"
     ],
     "css": [
       "dist/vendors~about~index~plan.8dac9fe1.css",
-      "dist/plan.9566b9b1.css"
+      "dist/plan.fd49685b.css"
     ]
   }
 }
