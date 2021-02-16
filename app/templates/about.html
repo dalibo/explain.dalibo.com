@@ -3,7 +3,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-About
+About |
 {% endblock %}
 
 {% block body %}
@@ -13,10 +13,13 @@ About
 <script>hljs.initHighlightingOnLoad();</script>
 <div class="container mt-2">
   <div class="row">
-    <div class="col-sm-12 text-center">
+    <div class="col-sm-12">
       <h2>
         <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" width="40px;">
         <a href="{{ url_for('index') }}">explain.dalibo.com</a>
+        <small class="text-muted ml-4">
+          PostgreSQL execution plan visualizer
+        </small>
       </h2>
     </div>
   </div>

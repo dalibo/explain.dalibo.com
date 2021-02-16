@@ -13,7 +13,11 @@
     </script>
     {% endif %}
 
-    <title>{% block title %}{% endblock %} | explain.dalibo.com</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Visualizing and understanding your PostgreSQL execution plans made easy.">
+
+    <title>{% block title %}{% endblock %} explain.dalibo.com</title>
+
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
     {{ assets('css', asset) | safe }}
     <style>

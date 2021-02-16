@@ -3,7 +3,6 @@
 {% extends "layout.html" %}
 
 {% block title %}
-New Plan
 {% endblock %}
 
 {% block body %}
@@ -11,11 +10,17 @@ New Plan
 <div id="app" class="container mt-2">
   <notifications position="top right"></notifications>
   <div class="row">
-    <div class="col-sm-12 text-center">
+    <div class="col-sm-12">
       <h2>
         <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" width="40px;">
         explain.dalibo.com
+        <small class="text-muted ml-4">
+          PostgreSQL execution plan visualizer
+        </small>
       </h2>
+      <p class="lead">
+        Visualizing and understanding PostgreSQL EXPLAIN plans made easy.
+      </p>
     </div>
   </div>
   <div class="row">

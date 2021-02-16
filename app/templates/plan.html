@@ -3,7 +3,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-{{ plan.title if plan else '' }}
+{{ plan.title + ' |' if plan else ' | ' }}
 {% endblock %}
 
 {% block body %}
@@ -19,7 +19,7 @@ var plan = {{ plan.as_dict() | tojson }};
       <li class="nav-item">
         <a class="nav-link p-0" href="{{ url_for('index') }}">
           <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" height="35px;">
-          Explain.dalibo.com
+          explain.dalibo.com
         </a>
       </li>
       <li class="nav-item ml-3">
