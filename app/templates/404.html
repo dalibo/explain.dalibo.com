@@ -1,0 +1,40 @@
+{% set asset='about' %}
+
+{% extends "layout.html" %}
+
+{% block title %}
+404 |
+{% endblock %}
+
+{% block body %}
+<main role="main" class="flex-grow-1 overflow-auto">
+<div class="container mt-2">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>
+        <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" width="40px;">
+        <a href="{{ url_for('index') }}">explain.dalibo.com</a>
+        <small class="text-muted ml-4">
+          PostgreSQL execution plan visualizer
+        </small>
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h2 class="text-danger">
+        Oops
+        <span class="small text-muted">
+        Something went wrong.
+        </span>
+      </h2>
+      <p>
+      {{ description }}
+      </p>
+    </div>
+  </div>
+</div>
+
+</main>
+{% include 'footer.html' %}
+{% endblock %}
