@@ -111,13 +111,13 @@ def plan():
 
 @app.route('/plan/<id>')
 def plan_from_db(id):
-    plan = Plan.query.get_or_404(id)
+    plan = Plan.query.get_or_404(id, description="This plan doesn't exist.")
     return render_template('plan.html', plan=plan)
 
 
 @app.route('/plan/<id>/<key>')
 def delete(id, key):
-    plan = Plan.query.get_or_404(id)
+    plan = Plan.query.get_or_404(id, description="This plan doesn't exist.")
     if plan.delete_key == key:
         session['deleted'] = id
         db.session.delete(plan)
@@ -153,6 +153,12 @@ def inject_assets():
 @app.route('/plan_error')
 def plan_error():
     return render_template('plan_error.html')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html', description=str(e)), 404
 
 
 if __name__ == '__main__':
