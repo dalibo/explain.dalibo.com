@@ -58,14 +58,15 @@ new Vue({
       this.plan = plan;
     } else {
       this.id = location.hash.replace('#', '');
-      if (this.id) {
-        // Load from localStorage
-        this.plan = JSON.parse(localStorage.getItem(this.id));
+      // Load from localStorage
+      this.plan = JSON.parse(localStorage.getItem(this.id));
+      if (this.plan) {
         this.plan.sql = this.plan.query;
         document.title = this.plan.title + ' ' + document.title;
         location.hash = '';
       } else {
-        window.location.href = "/";
+        // No hash in URL redirect to home page
+        window.location.href = "/plan_error";
       }
     }
     const finishedTour = localStorage.getItem('tour');

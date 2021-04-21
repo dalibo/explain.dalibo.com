@@ -137,7 +137,9 @@ def inject_assets():
             tag = '<link rel="stylesheet" href="{}">'
         else:
             raise 'unsupported type'
-        assets = entrypoints[entrypoint][type]
+        assets = []
+        if entrypoint:
+            assets = entrypoints[entrypoint][type]
         ret = []
         if isinstance(assets, list):
             for asset in assets:
@@ -146,6 +148,11 @@ def inject_assets():
         else:
             return tag.format(url_for('static', filename=assets))
     return dict(assets=load_assets)
+
+
+@app.route('/plan_error')
+def plan_error():
+    return render_template('plan_error.html')
 
 
 if __name__ == '__main__':
