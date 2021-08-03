@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% if not config.DEBUG %}
+    {% if not config.DEBUG and config.GOOGLE_ANALYTICS %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-637331-20"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.GOOGLE_ANALYTICS }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'UA-637331-20');
+      gtag('config', '{{ config.GOOGLE_ANALYTICS }}');
     </script>
     {% endif %}
 
