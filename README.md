@@ -5,8 +5,7 @@ PEV2 Flask application
 # Installation
 
 ```shell
-pip install pipenv
-pipenv install
+pip install -r requirements.txt
 ```
 
 Create a config file.
