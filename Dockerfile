@@ -1,4 +1,4 @@
-FROM python:3.7-slim
+FROM python:3-alpine
 
 ENV FLASK_APP "app"
 ENV FLASK_ENV "development"
@@ -6,11 +6,15 @@ ENV FLASK_DEBUG True
 
 RUN mkdir /app
 WORKDIR /app
-COPY Pip* /app/
+COPY requirements.txt /app/
 
-RUN pip install --upgrade pip && \
-    pip install pipenv && \
-    pipenv install --dev --system --deploy --ignore-pipfile
+RUN \
+    apk add --no-cache postgresql-libs && \
+    apk add --no-cache --virtual .build-deps gcc g++ musl-dev postgresql-dev && \
+    pip install --upgrade pip
+
+RUN \
+    pip install -r requirements.txt
 
 ADD . /app
 
