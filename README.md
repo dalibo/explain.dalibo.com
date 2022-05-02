@@ -22,12 +22,6 @@ Run a Postgres instance in a docker container:
 docker run -p 5432:5432 --rm --name explain -e POSTGRES_PASSWORD=postgres -d postgres
 ```
 
-Create the DB:
-
-```
-FLASK_APP=app flask db upgrade
-```
-
 ## Run
 
 ```shell
@@ -38,7 +32,6 @@ FLASK_DEBUG=1 FLASK_APP=app python -m flask run
 
 ```shell
 docker-compose up -d
-docker-compose run web flask db upgrade
 ```
 
 Open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) in your browser.

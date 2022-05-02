@@ -32,17 +32,6 @@ var plan = {{ plan.as_dict() | tojson }};
       {% raw %}{{ plan.title }}{% endraw %}
     </span>
     {% if not plan %}
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <form method="POST" action="{{ url_for('new_json') }}" @submit.prevent="share">
-          <button type="submit" class="btn btn-primary"
-            id="shareButton"
-          >
-            <i class="fa fa-share-alt"></i> Share
-          </button>
-        </form>
-      </li>
-    </ul>
     {% else %}
     <span class="navbar-text">
       <a href="{{ url_for('plan_from_db', id=plan.id) }}">

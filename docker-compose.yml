@@ -5,24 +5,8 @@ services:
     restart: always
     build: .
     ports:
-      - "5000:5000"
-    links:
-      - postgres:postgres
+      - "5555:5000"
     volumes:
       - .:/app
     environment:
-      DB_SERVICE: postgres
       DEBUG: 1
-
-  postgres:
-    restart: always
-    image: postgres:latest
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_PASSWORD: postgres
-
-volumes:
-  db-data:
