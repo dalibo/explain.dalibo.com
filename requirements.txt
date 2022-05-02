@@ -1,4 +1,4 @@
-flask==1.1.1
+flask==2.1.2
 psycopg2-binary==2.8.3
 flask-sqlalchemy==2.5.1
 flask-migrate==2.5.2
