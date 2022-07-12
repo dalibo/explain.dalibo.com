@@ -1,0 +1,12 @@
+[flake8]
+doctests = true
+exclude =
+  .eggs
+  .tox
+  .venv
+select = B,C,E,F,W,T4,B9
+ignore =
+  E203, # whitespace before ':'
+  E266, # too many leading '#' for block comment
+  E501, # line too long
+  W503, # line break before binary operator
