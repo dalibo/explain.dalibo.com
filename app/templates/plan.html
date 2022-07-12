@@ -18,7 +18,7 @@ var plan = {{ plan.as_dict() | tojson }};
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link p-0" href="{{ url_for('index') }}">
-          <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" height="35px;">
+          <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" style="height:35px;">
           explain.dalibo.com
         </a>
       </li>
@@ -31,22 +31,10 @@ var plan = {{ plan.as_dict() | tojson }};
     <span class="navbar-text" v-cloak>
       {% raw %}{{ plan.title }}{% endraw %}
     </span>
-    {% if not plan %}
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <form method="POST" action="{{ url_for('new_json') }}" @submit.prevent="share">
-          <button type="submit" class="btn btn-primary"
-            id="shareButton"
-          >
-            <i class="fa fa-share-alt"></i> Share
-          </button>
-        </form>
-      </li>
-    </ul>
-    {% else %}
+    {% if plan %}
     <span class="navbar-text">
       <a href="{{ url_for('plan_from_db', id=plan.id) }}">
-        <i class="fa fa-link"></i>
+        <font-awesome-icon icon="link"></font-awesome-icon>
         plan/{{ plan.id }}
       </a>
     </span>

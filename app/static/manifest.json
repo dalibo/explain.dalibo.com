@@ -1,0 +1,34 @@
+{
+  "app/static/js/common.js": {
+    "file": "assets/about.f1bd2955.js",
+    "src": "app/static/js/common.js",
+    "isEntry": true,
+    "css": [
+      "assets/about.d8e52460.css"
+    ]
+  },
+  "app/static/js/index.js": {
+    "file": "assets/index.92c3b639.js",
+    "src": "app/static/js/index.js",
+    "isEntry": true,
+    "imports": [
+      "app/static/js/common.js",
+      "_axios.9f43128b.js"
+    ]
+  },
+  "app/static/js/plan.js": {
+    "file": "assets/plan.164a5dc6.js",
+    "src": "app/static/js/plan.js",
+    "isEntry": true,
+    "imports": [
+      "app/static/js/common.js",
+      "_axios.9f43128b.js"
+    ],
+    "css": [
+      "assets/plan.c37e75ab.css"
+    ]
+  },
+  "_axios.9f43128b.js": {
+    "file": "assets/axios.9f43128b.js"
+  }
+}

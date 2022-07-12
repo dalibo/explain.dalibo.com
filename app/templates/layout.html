@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% if not config.DEBUG and config.GOOGLE_ANALYTICS %}
+    {% if not config.FLASK_DEBUG and config.GOOGLE_ANALYTICS %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.GOOGLE_ANALYTICS }}"></script>
     <script>
@@ -19,7 +19,11 @@
     <title>{% block title %}{% endblock %} explain.dalibo.com</title>
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
-    {{ assets('css', asset) | safe }}
+    {% if config.DEBUG %}
+    <script type="module" src="http://localhost:3000/app/static/js/{{ asset }}.js"></script>
+    {% else %}
+    {{ assets(asset) | safe  }}
+    {% endif %}
     <style>
       html,
       body {
@@ -33,5 +37,4 @@
 
     {% block body %}{% endblock %}
   </body>
-  {{ assets('js', asset) | safe }}
 </html>
