@@ -8,11 +8,10 @@
 {% block body %}
 <main role="main" class="flex-grow-1 overflow-auto">
 <div id="app" class="container mt-2">
-  <notifications position="top right"></notifications>
   <div class="row">
     <div class="col-sm-12">
       <h2>
-        <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" width="40px;">
+        <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" style="width:40px;">
         explain.dalibo.com
         <small class="text-muted ml-4">
           PostgreSQL execution plan visualizer
@@ -25,7 +24,7 @@
   </div>
   <div class="row">
     <div class="col-sm-7">
-      <form method="POST" action="{{ url_for('plan') }}" @submit="checkForm">
+      <form method="POST" action="{{ url_for('new_json') }}" @submit="checkForm">
         <div class="form-group">
           <label for="titleInput">Title</span></label>
           <input name="title" class="form-control col-sm-4" v-model="titleInput" maxlength="100"/>
@@ -63,9 +62,6 @@
             <em>psql</em> users can export the plan to a file using:
             <pre class="ml-3"><code>psql -XqAt -f explain.sql > analyze.json</code></pre>
             </p>
-            <p>
-            Submitted plan is not posted nor stored until you explicitely click the <b>share</b> button.
-            </p>
           </div>
         </div>
       </div>
@@ -82,9 +78,12 @@
                 data-toggle="modal" data-target="#deletePlanModal"
                 v-on:click="planToDelete = plan"
               >
-                <i class="far fa-trash-alt"></i>
+                <font-awesome-icon icon="trash-alt"></font-awesome-icon>
               </button>
-              <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)">
+              <a :href="'{{ url_for('plan')  }}' + getPlanUrl(plan)" v-if="plan.shareId">
+                {{ '{{ plan.title }}' }}
+              </a>
+              <a href="" @click.prevent="share('{{ url_for('new_json') }}', plan)" v-else>
                 {{ '{{ plan.title }}' }}
               </a>
             </div>
@@ -93,14 +92,16 @@
             <div class="col-6">
               <small class="text-muted">
                 created
-                <timeago :datetime="plan.createdOn" :title="plan.createdOn.toString()"></timeago>
+                <span  :title="plan.createdOn.toString()">
+                <timeago :datetime="plan.createdOn"></timeago>
+                </span>
               </small>
             </div>
             <div class="col-6 text-right">
               <small>
                 <span v-if="plan.shareId">
                   <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)" class="link-gray">
-                    <i class="fa fa-link"></i>
+                    <font-awesome-icon icon="link"></font-awesome-icon>
                     plan/{{'{{plan.shareId}}'}}
                   </a>
                 </span>

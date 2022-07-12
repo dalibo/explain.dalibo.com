@@ -115,26 +115,38 @@ def delete(id, key):
 
 @app.context_processor
 def inject_assets():
-    def load_assets(type, entrypoint):
-        fn = os.path.realpath(__file__ + "/../static/dist/assets.json")
-        with open(fn) as f:
-            entrypoints = json.load(f)
-        if type == "js":
-            tag = '<script src="{}"></script>'
-        elif type == "css":
-            tag = '<link rel="stylesheet" href="{}">'
-        else:
-            raise "unsupported type"
-        assets = []
-        if entrypoint:
-            assets = entrypoints[entrypoint][type]
-        ret = []
-        if isinstance(assets, list):
-            for asset in assets:
-                ret.append(tag.format(url_for("static", filename=asset)))
-            return "\n".join(ret)
-        else:
-            return tag.format(url_for("static", filename=assets))
+    fn = os.path.realpath(__file__ + "../../static/manifest.json")
+    with open(fn) as f:
+        entrypoints = json.load(f)
+
+    def build_url(asset):
+        return url_for("static", filename=asset)
+
+    def build_js_tag(asset):
+        return f'<script type="module" src="{build_url(asset)}"></script>'
+
+    def build_css_tag(assets):
+        return "\n".join(
+            [f'<link rel="stylesheet" href="{build_url(asset)}">' for asset in assets]
+        )
+
+    def load_assets(entrypoint):
+        tags = []
+        generate_tags(f"app/static/js/{entrypoint}.js", tags)
+        return "\n".join(tags)
+
+    def generate_tags(entrypoint, tags):
+        if entrypoint in entrypoints:
+            manifest_entry = entrypoints[entrypoint]
+
+            if "imports" in manifest_entry:
+                for import_ in manifest_entry["imports"]:
+                    generate_tags(import_, tags)
+
+            if "file" in manifest_entry:
+                tags.append(build_js_tag(manifest_entry["file"]))
+            if "css" in manifest_entry:
+                tags.append(build_css_tag(manifest_entry["css"]))
 
     return dict(assets=load_assets)
 
