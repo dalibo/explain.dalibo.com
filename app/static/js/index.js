@@ -53,13 +53,27 @@ const app = createApp({
   },
   methods: {
     checkForm(event) {
-      var form = event.target;
       event.preventDefault();
+      const dontAskAgain = localStorage.getItem("dontAskBeforeSubmit");
+      if (dontAskAgain) {
+        this.submitForm();
+      } else {
+        $("#confirmSubmitModal").modal("show");
+      }
+    },
+
+    submitForm() {
+      // User don't want to be asked again
+      const dontAskAgain = $("#dontAskAgain")[0].checked;
+      if (dontAskAgain) {
+        localStorage.setItem("dontAskBeforeSubmit", true);
+      }
+
+      var form = $("#submitForm")[0];
       this.titleInput =
         this.titleInput ||
         "Plan created on " + moment().format("MMMM Do YYYY, h:mm a");
       var createdOn = new Date();
-      var form = event.target;
       this.share(form.action, {
         title: this.titleInput,
         plan: this.planInput,
