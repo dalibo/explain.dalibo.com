@@ -115,12 +115,12 @@ def delete(id, key):
 
 @app.context_processor
 def inject_assets():
-    fn = os.path.realpath(__file__ + "../../static/manifest.json")
+    fn = os.path.realpath(__file__ + "../../static/dist/manifest.json")
     with open(fn) as f:
         entrypoints = json.load(f)
 
     def build_url(asset):
-        return url_for("static", filename=asset)
+        return url_for("static", filename="dist/" + asset)
 
     def build_js_tag(asset):
         return f'<script type="module" src="{build_url(asset)}"></script>'

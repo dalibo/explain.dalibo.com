@@ -1,9 +1,10 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import { emptyDir } from "rollup-plugin-empty-dir";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), emptyDir()],
   build: {
     manifest: true,
     rollupOptions: {
@@ -13,7 +14,7 @@ export default defineConfig({
         plan: "/app/static/js/plan.js",
       },
       output: {
-        dir: "app/static",
+        dir: "app/static/dist",
       },
     },
   },

@@ -13,6 +13,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
     "prettier": "^2.7.1",
+    "rollup-plugin-empty-dir": "^1.0.5",
     "vite": "^2.9.9"
   },
   "dependencies": {
