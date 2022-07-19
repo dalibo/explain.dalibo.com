@@ -38,6 +38,7 @@ const app = createApp({
       draggingPlan: false,
       draggingQuery: false,
       plans: [],
+      plan: null,
       planToDelete: null,
       deleteFromServer: false,
     };
@@ -53,33 +54,38 @@ const app = createApp({
   },
   methods: {
     checkForm(event) {
+      this.plan = null;
       event.preventDefault();
       const dontAskAgain = localStorage.getItem("dontAskBeforeSubmit");
       if (dontAskAgain) {
-        this.submitForm();
+        this.submitPlan();
       } else {
         $("#confirmSubmitModal").modal("show");
       }
     },
 
-    submitForm() {
+    submitPlan() {
       // User don't want to be asked again
       const dontAskAgain = $("#dontAskAgain")[0].checked;
       if (dontAskAgain) {
         localStorage.setItem("dontAskBeforeSubmit", true);
       }
 
-      var form = $("#submitForm")[0];
-      this.titleInput =
-        this.titleInput ||
-        "Plan created on " + moment().format("MMMM Do YYYY, h:mm a");
-      var createdOn = new Date();
-      this.share(form.action, {
-        title: this.titleInput,
-        plan: this.planInput,
-        query: this.queryInput,
-        createdOn: createdOn,
-      });
+      let plan = this.plan;
+      // plan comes from form or from plans list and has never been submitted
+      if (!plan) {
+        this.titleInput =
+          this.titleInput ||
+          "Plan created on " + moment().format("MMMM Do YYYY, h:mm a");
+        var createdOn = new Date();
+        plan = {
+          title: this.titleInput,
+          plan: this.planInput,
+          query: this.queryInput,
+          createdOn: createdOn,
+        };
+      }
+      this.share(plan);
     },
 
     loadSample(sample) {
@@ -129,6 +135,16 @@ const app = createApp({
       this.plans = _.chain(plans).sortBy("createdOn").reverse().value();
     },
 
+    loadPlan(plan) {
+      this.plan = plan;
+      const dontAskAgain = localStorage.getItem("dontAskBeforeSubmit");
+      if (dontAskAgain) {
+        this.share(plan);
+      } else {
+        $("#confirmSubmitModal").modal("show");
+      }
+    },
+
     getPlanUrl(plan) {
       return plan.shareId ? "/" + plan.shareId : "#" + plan.id;
     },
@@ -149,9 +165,10 @@ const app = createApp({
       $("#deletePlanModal").modal("hide");
     },
 
-    share(url, plan) {
+    share(plan) {
+      var form = $("#submitForm")[0];
       axios
-        .post(url, {
+        .post(form.action, {
           title: plan.title,
           plan: plan.plan,
           query: plan.query,
