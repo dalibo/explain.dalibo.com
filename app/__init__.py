@@ -94,7 +94,7 @@ def save(json=False):
 
 @app.route("/plan", methods=["GET"])
 def plan():
-    return render_template("plan.html")
+    return redirect(url_for("plan_error"))
 
 
 @app.route("/plan/<id>")
