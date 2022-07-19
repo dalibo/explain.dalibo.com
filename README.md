@@ -31,7 +31,7 @@ FLASK_APP=app flask db upgrade
 ## Run
 
 ```shell
-FLASK_DEBUG=1 FLASK_APP=app python -m flask run
+FLASK_APP=app python -m flask run
 ```
 
 # Run App Using Docker
@@ -45,9 +45,22 @@ Open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) in your browser.
 
 # Build assets
 
+Requires Node > 16
+
 ```shell
 npm install
-npm run watch
+npm run build
+```
+
+You can also run the app in DEBUG mode. In this case, run the following
+commands in two consoles.
+
+```shell
+npm run dev
+```
+
+```shell
+FLASK_DEBUG=1 FLASK_APP=app python -m flask run
 ```
 
 # Releasing
