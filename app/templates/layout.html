@@ -20,7 +20,7 @@
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
     {% if config.DEBUG %}
-    <script type="module" src="http://localhost:3000/app/static/js/{{ asset }}.js"></script>
+    <script type="module" src="http://localhost:5173/app/static/js/{{ asset }}.js"></script>
     {% else %}
     {{ assets(asset) | safe  }}
     {% endif %}

@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.3.3",
+    "@vitejs/plugin-vue": "^3.0.1",
     "prettier": "^2.7.1",
     "rollup-plugin-empty-dir": "^1.0.5",
-    "vite": "^2.9.9"
+    "vite": "^3.0.5"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -27,7 +27,7 @@
     "file-loader": "^4.2.0",
     "jquery": "^3.4.1",
     "moment": "^2.29.4",
-    "pev2": "^1.2.0",
+    "pev2": "^1.4.0",
     "popper.js": "^1.15.0",
     "vue": "^3.2.25",
     "vue-timeago3": "^2.3.0"
