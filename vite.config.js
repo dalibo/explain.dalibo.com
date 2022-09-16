@@ -5,6 +5,9 @@ import { emptyDir } from "rollup-plugin-empty-dir";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), emptyDir()],
+  resolve: {
+    dedupe: ["vue"],
+  },
   build: {
     manifest: true,
     rollupOptions: {
