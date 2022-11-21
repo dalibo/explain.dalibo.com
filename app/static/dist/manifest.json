@@ -1,6 +1,6 @@
 {
   "app/static/js/common.js": {
-    "file": "assets/about.accbc592.js",
+    "file": "assets/about.c1675214.js",
     "src": "app/static/js/common.js",
     "isEntry": true,
     "css": [
@@ -8,28 +8,28 @@
     ]
   },
   "app/static/js/index.js": {
-    "file": "assets/index.5cdcfc66.js",
+    "file": "assets/index.b7daee81.js",
     "src": "app/static/js/index.js",
     "isEntry": true,
     "imports": [
       "app/static/js/common.js",
-      "_index.b86fdb10.js"
+      "_index.4f1de353.js"
     ]
   },
   "app/static/js/plan.js": {
-    "file": "assets/plan.4468704c.js",
+    "file": "assets/plan.b1b5c29a.js",
     "src": "app/static/js/plan.js",
     "isEntry": true,
     "imports": [
       "app/static/js/common.js",
-      "_index.b86fdb10.js"
+      "_index.4f1de353.js"
     ],
     "css": [
       "assets/plan.035cc545.css"
     ]
   },
-  "_index.b86fdb10.js": {
-    "file": "assets/index.b86fdb10.js",
+  "_index.4f1de353.js": {
+    "file": "assets/index.4f1de353.js",
     "imports": [
       "app/static/js/common.js"
     ]
