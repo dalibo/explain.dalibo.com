@@ -1,8 +1,6 @@
 FROM python:3-alpine
 
 ENV FLASK_APP "app"
-ENV FLASK_ENV "development"
-ENV FLASK_DEBUG True
 
 RUN mkdir /app
 WORKDIR /app
