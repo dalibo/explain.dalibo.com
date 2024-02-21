@@ -6,6 +6,7 @@ import timeago from "vue-timeago3";
 import _ from "lodash";
 import $ from "jquery";
 import "vite/modulepreload-polyfill";
+import { Modal } from "bootstrap";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +14,9 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 // Add all icons to the library
 library.add(fas);
+
+let confirmModal;
+let deleteModal;
 
 const app = createApp({
   data: function () {
@@ -51,6 +55,8 @@ const app = createApp({
   mounted() {
     const textAreas = document.getElementsByTagName("textarea");
     this.loadPlans();
+    confirmModal = new Modal("#confirmSubmitModal");
+    deleteModal = new Modal("#deletePlanModal");
   },
   methods: {
     checkForm(event) {
@@ -60,7 +66,7 @@ const app = createApp({
       if (dontAskAgain) {
         this.submitPlan();
       } else {
-        $("#confirmSubmitModal").modal("show");
+        confirmModal.show();
       }
     },
 
@@ -141,7 +147,7 @@ const app = createApp({
       if (dontAskAgain) {
         this.share(plan);
       } else {
-        $("#confirmSubmitModal").modal("show");
+        confirmModal.show();
       }
     },
 
@@ -162,7 +168,7 @@ const app = createApp({
     onPlanDelete(plan) {
       localStorage.removeItem(plan.id ? plan.id : "plan_" + plan.shareId);
       this.loadPlans();
-      $("#deletePlanModal").modal("hide");
+      deleteModal.hide();
     },
 
     share(plan) {

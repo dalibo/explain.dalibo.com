@@ -1,45 +1,42 @@
 {
   "app/static/js/common.js": {
-    "file": "assets/about.da5e1847.js",
+    "file": "assets/about.f91d303a.js",
     "src": "app/static/js/common.js",
     "isEntry": true,
     "css": [
-      "assets/common.39571ca4.css"
+      "assets/common.758dfe43.css"
     ]
   },
   "app/static/js/index.js": {
-    "file": "assets/index.db89515a.js",
+    "file": "assets/index.22ba3424.js",
     "src": "app/static/js/index.js",
     "isEntry": true,
     "imports": [
       "app/static/js/common.js",
-      "_index.f47ff482.js"
+      "_index.d2a4c001.js"
     ]
   },
   "app/static/js/plan.js": {
-    "file": "assets/plan.c516869a.js",
+    "file": "assets/plan.54dbcdff.js",
     "src": "app/static/js/plan.js",
     "isEntry": true,
     "imports": [
       "app/static/js/common.js",
-      "_index.f47ff482.js"
+      "_index.d2a4c001.js"
     ],
     "css": [
-      "assets/plan.f7f700de.css"
+      "assets/plan.ee3a2fc8.css"
     ]
   },
-  "_index.f47ff482.js": {
-    "file": "assets/index.f47ff482.js",
-    "imports": [
-      "app/static/js/common.js"
-    ]
+  "_index.d2a4c001.js": {
+    "file": "assets/index.d2a4c001.js"
   },
   "app/static/js/plan.css": {
-    "file": "assets/plan.f7f700de.css",
+    "file": "assets/plan.ee3a2fc8.css",
     "src": "app/static/js/plan.css"
   },
   "app/static/js/common.css": {
-    "file": "assets/common.39571ca4.css",
+    "file": "assets/common.758dfe43.css",
     "src": "app/static/js/common.css"
   }
 }
