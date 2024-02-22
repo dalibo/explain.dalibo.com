@@ -7,6 +7,7 @@ import _ from "lodash";
 import $ from "jquery";
 import "vite/modulepreload-polyfill";
 import { Modal } from "bootstrap";
+import { onMounted, ref, watch } from "vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -17,104 +18,89 @@ library.add(fas);
 
 let confirmModal;
 let deleteModal;
-
 const app = createApp({
-  data: function () {
-    return {
-      samples: [
-        ["Example 1 (JSON)", "plan_1.json", "plan_1.sql"],
-        ["Example 1 (plain text)", "plan_1.txt", "plan_1.sql"],
-        ["Example 2", "plan_2.json", "plan_2.sql"],
-        ["Example 3", "plan_3.json", "plan_3.sql"],
-        ["Example 4", "plan_4.json"],
-        ["Example 5", "plan_5.json", "plan_5.sql"],
-        ["With subplan", "plan_6.txt"],
-        ["With CTE", "plan_7.txt"],
-        ["Very large plan", "plan_8.json"],
-        ["With trigger", "plan_trigger.json", "plan_trigger.sql"],
-        ["With trigger (plain text)", "plan_trigger.txt", "plan_trigger_2.sql"],
-        ["Parallel (verbose)", "plan_parallel.json"],
-        ["Parallel (4 workers)", "plan_parallel2.txt", "plan_parallel2.sql"],
-      ],
-      titleInput: "",
-      planInput: "",
-      queryInput: "",
-      draggingPlan: false,
-      draggingQuery: false,
-      plans: [],
-      plan: null,
-      planToDelete: null,
-      deleteFromServer: false,
-    };
-  },
-  watch: {
-    planToDelete: function (newPlan, oldPlan) {
-      this.deleteFromServer = false;
-    },
-  },
-  mounted() {
-    const textAreas = document.getElementsByTagName("textarea");
-    this.loadPlans();
-    confirmModal = new Modal("#confirmSubmitModal");
-    deleteModal = new Modal("#deletePlanModal");
-  },
-  methods: {
-    checkForm(event) {
-      this.plan = null;
+  setup() {
+    const samples = [
+      ["Example 1 (JSON)", "plan_1.json", "plan_1.sql"],
+      ["Example 1 (plain text)", "plan_1.txt", "plan_1.sql"],
+      ["Example 2", "plan_2.json", "plan_2.sql"],
+      ["Example 3", "plan_3.json", "plan_3.sql"],
+      ["Example 4", "plan_4.json"],
+      ["Example 5", "plan_5.json", "plan_5.sql"],
+      ["With subplan", "plan_6.txt"],
+      ["With CTE", "plan_7.txt"],
+      ["Very large plan", "plan_8.json"],
+      ["With trigger", "plan_trigger.json", "plan_trigger.sql"],
+      ["With trigger (plain text)", "plan_trigger.txt", "plan_trigger_2.sql"],
+      ["Parallel (verbose)", "plan_parallel.json"],
+      ["Parallel (4 workers)", "plan_parallel2.txt", "plan_parallel2.sql"],
+    ];
+    const titleInput = ref("");
+    const planInput = ref("");
+    const queryInput = ref("");
+    const draggingPlan = ref(false);
+    const draggingQuery = ref(false);
+    const plans = ref([]);
+    const plan = ref(null);
+    const planToDelete = ref(null);
+    const deleteFromServer = ref(false);
+
+    function checkForm(event) {
+      plan.value = null;
       event.preventDefault();
       const dontAskAgain = localStorage.getItem("dontAskBeforeSubmit");
       if (dontAskAgain) {
-        this.submitPlan();
+        submitPlan();
       } else {
         confirmModal.show();
       }
-    },
+    }
 
-    submitPlan() {
+    function submitPlan() {
       // User don't want to be asked again
       const dontAskAgain = $("#dontAskAgain")[0].checked;
       if (dontAskAgain) {
         localStorage.setItem("dontAskBeforeSubmit", true);
       }
 
-      let plan = this.plan;
+      let inputPlan = plan.value;
       // plan comes from form or from plans list and has never been submitted
-      if (!plan) {
-        this.titleInput =
-          this.titleInput ||
+      if (!inputPlan) {
+        titleInput.value =
+          titleInput.value ||
           "Plan created on " + moment().format("MMMM Do YYYY, h:mm a");
         var createdOn = new Date();
-        plan = {
-          title: this.titleInput,
-          plan: this.planInput,
-          query: this.queryInput,
+        inputPlan = {
+          title: titleInput.value,
+          plan: planInput.value,
+          query: queryInput.value,
           createdOn: createdOn,
         };
       }
-      this.share(plan);
-    },
+      share(inputPlan);
+    }
 
-    loadSample(sample) {
-      this.titleInput = sample[0];
+    function loadSample(sample) {
+      titleInput.value = sample[0];
       axios.get(staticUrl + "samples/" + sample[1]).then((response) => {
-        this.planInput = response.request.responseText;
+        planInput.value = response.request.responseText;
       });
       if (sample[2]) {
         axios.get(staticUrl + "samples/" + sample[2]).then((response) => {
-          this.queryInput = response.request.responseText;
+          queryInput.value = response.request.responseText;
         });
       } else {
-        this.queryInput = "";
+        queryInput.value = "";
       }
-    },
+    }
 
-    handleDrop(event) {
+    function handleDrop(event) {
       const input = event.srcElement;
       if (!(input instanceof HTMLTextAreaElement)) {
         return;
       }
-      this.draggingPlan = false;
-      this.draggingQuery = false;
+      draggingPlan.value = false;
+      draggingQuery.value = false;
       if (!event.dataTransfer) {
         return;
       }
@@ -128,50 +114,49 @@ const app = createApp({
         input.dispatchEvent(new Event("input"));
       };
       reader.readAsText(file);
-    },
+    }
 
-    loadPlans() {
-      var plans = [];
+    function loadPlans() {
+      var storedPlans = [];
       for (var i in localStorage) {
         if (_.startsWith(i, "plan_")) {
-          plans.push(JSON.parse(localStorage[i]));
+          storedPlans.push(JSON.parse(localStorage[i]));
         }
       }
+      plans.value = _.chain(storedPlans).sortBy("createdOn").reverse().value();
+    }
 
-      this.plans = _.chain(plans).sortBy("createdOn").reverse().value();
-    },
-
-    loadPlan(plan) {
-      this.plan = plan;
+    function loadPlan(plan) {
+      plan.value = plan;
       const dontAskAgain = localStorage.getItem("dontAskBeforeSubmit");
       if (dontAskAgain) {
-        this.share(plan);
+        share(plan);
       } else {
         confirmModal.show();
       }
-    },
+    }
 
-    getPlanUrl(plan) {
+    function getPlanUrl(plan) {
       return plan.shareId ? "/" + plan.shareId : "#" + plan.id;
-    },
+    }
 
-    deletePlan(plan) {
-      if (this.deleteFromServer && plan.shareId) {
+    function deletePlan(plan) {
+      if (deleteFromServer.value && plan.shareId) {
         axios
           .get("/plan/" + plan.shareId + "/" + plan.deleteKey)
-          .then(this.onPlanDelete.bind(this, plan));
+          .then(onPlanDelete.bind(this, plan));
       } else {
-        this.onPlanDelete(plan);
+        onPlanDelete(plan);
       }
-    },
+    }
 
-    onPlanDelete(plan) {
+    function onPlanDelete(plan) {
       localStorage.removeItem(plan.id ? plan.id : "plan_" + plan.shareId);
-      this.loadPlans();
+      loadPlans();
       deleteModal.hide();
-    },
+    }
 
-    share(plan) {
+    function share(plan) {
       var form = $("#submitForm")[0];
       axios
         .post(form.action, {
@@ -197,7 +182,38 @@ const app = createApp({
           // redirect to page with plan from server
           window.location.href = "/plan/" + data.id;
         });
-    },
+    }
+
+    onMounted(() => {
+      const textAreas = document.getElementsByTagName("textarea");
+      loadPlans();
+      confirmModal = new Modal($("#confirmSubmitModal")[0]);
+      deleteModal = new Modal($("#deletePlanModal")[0]);
+    });
+
+    watch(planToDelete, (newPlan, oldPlan) => {
+      deleteFromServer.value = false;
+    });
+
+    return {
+      samples,
+      titleInput,
+      planInput,
+      queryInput,
+      draggingPlan,
+      draggingQuery,
+      plans,
+      plan,
+      planToDelete,
+      deleteFromServer,
+      checkForm,
+      submitPlan,
+      loadSample,
+      handleDrop,
+      loadPlan,
+      getPlanUrl,
+      deletePlan,
+    };
   },
 });
 app.use(timeago);

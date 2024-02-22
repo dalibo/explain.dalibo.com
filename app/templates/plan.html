@@ -9,7 +9,7 @@
 {% block body %}
 {% if plan %}
 <script>
-var plan = {{ plan.as_dict() | tojson }};
+var planData = {{ plan.as_dict() | tojson }};
 </script>
 {% endif %}
 <div id="app" class="d-flex flex-column h-100">
