@@ -1,5 +1,5 @@
 import "./common.js";
-import { createApp } from "vue/dist/vue.esm-bundler";
+import { createApp } from "vue";
 import { Plan } from "pev2";
 import { ref } from "vue";
 

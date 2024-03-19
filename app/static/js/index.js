@@ -1,6 +1,6 @@
 import "./common.js";
 import axios from "axios";
-import { createApp } from "vue/dist/vue.esm-bundler";
+import { createApp } from "vue";
 import moment from "moment";
 import timeago from "vue-timeago3";
 import _ from "lodash";
