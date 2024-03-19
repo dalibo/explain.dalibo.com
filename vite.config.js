@@ -7,6 +7,9 @@ export default defineConfig({
   plugins: [vue(), emptyDir()],
   resolve: {
     dedupe: ["vue"],
+    alias: {
+      vue: "vue/dist/vue.esm-bundler.js",
+    },
   },
   build: {
     manifest: true,
