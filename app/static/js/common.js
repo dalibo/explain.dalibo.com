@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 // Add all icons to the library
 library.add(fas);
-const app = createApp({});
-app.component("font-awesome-icon", FontAwesomeIcon);
-app.mount("#footer");
+
+if (document.getElementById("footer")) {
+  const app = createApp({});
+  app.component("font-awesome-icon", FontAwesomeIcon);
+  app.mount("#footer");
+}
