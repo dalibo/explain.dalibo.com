@@ -4,7 +4,6 @@ import { createApp } from "vue";
 import moment from "moment";
 import timeago from "vue-timeago3";
 import _ from "lodash";
-import $ from "jquery";
 import "vite/modulepreload-polyfill";
 import { Modal } from "bootstrap";
 import { onMounted, ref, watch } from "vue";
@@ -58,7 +57,7 @@ const app = createApp({
 
     function submitPlan() {
       // User don't want to be asked again
-      const dontAskAgain = $("#dontAskAgain")[0].checked;
+      const dontAskAgain = document.getElementById("dontAskAgain").checked;
       if (dontAskAgain) {
         localStorage.setItem("dontAskBeforeSubmit", true);
       }
@@ -156,7 +155,7 @@ const app = createApp({
     }
 
     function share(plan) {
-      const form = $("#submitForm")[0];
+      const form = document.getElementById("submitForm");
       axios
         .post(form.action, {
           title: plan.title,
@@ -186,8 +185,8 @@ const app = createApp({
     onMounted(() => {
       const textAreas = document.getElementsByTagName("textarea");
       loadPlans();
-      confirmModal = new Modal($("#confirmSubmitModal")[0]);
-      deleteModal = new Modal($("#deletePlanModal")[0]);
+      confirmModal = new Modal(document.getElementById("confirmSubmitModal"));
+      deleteModal = new Modal(document.getElementById("deletePlanModal"));
     });
 
     watch(planToDelete, (newPlan, oldPlan) => {
