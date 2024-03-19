@@ -69,12 +69,11 @@ const app = createApp({
         titleInput.value =
           titleInput.value ||
           "Plan created on " + moment().format("MMMM Do YYYY, h:mm a");
-        var createdOn = new Date();
         inputPlan = {
           title: titleInput.value,
           plan: planInput.value,
           query: queryInput.value,
-          createdOn: createdOn,
+          createdOn: new Date(),
         };
       }
       share(inputPlan);
@@ -117,8 +116,8 @@ const app = createApp({
     }
 
     function loadPlans() {
-      var storedPlans = [];
-      for (var i in localStorage) {
+      const storedPlans = [];
+      for (let i in localStorage) {
         if (_.startsWith(i, "plan_")) {
           storedPlans.push(JSON.parse(localStorage[i]));
         }
@@ -157,7 +156,7 @@ const app = createApp({
     }
 
     function share(plan) {
-      var form = $("#submitForm")[0];
+      const form = $("#submitForm")[0];
       axios
         .post(form.action, {
           title: plan.title,
@@ -166,7 +165,7 @@ const app = createApp({
         })
         .then((response) => {
           localStorage.removeItem(plan.id);
-          var data = response.data;
+          const data = response.data;
           const id = "plan_" + data.id;
           localStorage.setItem(
             id,
