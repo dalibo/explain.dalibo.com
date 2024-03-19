@@ -25,6 +25,12 @@ export default defineConfig({
       },
       output: {
         dir: "app/static/dist",
+        manualChunks: {
+          // Split external library from transpiled code.
+          lodash: ["lodash"],
+          vue: ["vue"],
+          pev2: ["pev2"],
+        },
       },
     },
   },
