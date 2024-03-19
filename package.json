@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.0.1",
+    "@vitejs/plugin-vue": "^5.0.4",
     "prettier": "^2.7.1",
     "rollup-plugin-empty-dir": "^1.0.5",
-    "vite": "^3.0.5"
+    "vite": "^5.2.8"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
