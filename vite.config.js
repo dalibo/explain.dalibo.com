@@ -11,6 +11,10 @@ export default defineConfig({
       vue: "vue/dist/vue.esm-bundler.js",
     },
   },
+  define: {
+    // enable hydration mismatch details in production build
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "true",
+  },
   build: {
     manifest: true,
     rollupOptions: {
