@@ -27,7 +27,7 @@
       <form method="POST" action="{{ url_for('new_json') }}" @submit="checkForm" id="submitForm">
         <div class="mb-3">
           <label for="titleInput" class="form-label">Title</span></label>
-          <input name="title" class="form-control col-sm-4" v-model="titleInput" maxlength="100"/>
+          <input name="title" class="form-control col-sm-4" id="titleInput" v-model="titleInput" maxlength="100"/>
         </div>
         <div class="mb-3">
           <label for="planInput" class="form-label">Plan <span class="small text-muted">(text or JSON)</span></label>
