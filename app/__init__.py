@@ -115,7 +115,7 @@ def delete(id, key):
 
 @app.context_processor
 def inject_assets():
-    fn = os.path.realpath(__file__ + "../../static/dist/manifest.json")
+    fn = os.path.realpath(__file__ + "../../static/dist/.vite/manifest.json")
     with open(fn) as f:
         entrypoints = json.load(f)
 
