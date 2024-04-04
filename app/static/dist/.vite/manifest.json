@@ -1,0 +1,54 @@
+{
+  "_lodash-CXGpkqCe.js": {
+    "file": "assets/lodash-CXGpkqCe.js",
+    "name": "lodash"
+  },
+  "_pev2-B50z8Fwn.js": {
+    "file": "assets/pev2-B50z8Fwn.js",
+    "name": "pev2",
+    "imports": [
+      "_vue-CCCXMz7o.js"
+    ]
+  },
+  "_vue-CCCXMz7o.js": {
+    "file": "assets/vue-CCCXMz7o.js",
+    "name": "vue"
+  },
+  "app/static/js/common.js": {
+    "file": "assets/about-DyrXBQiL.js",
+    "name": "about",
+    "src": "app/static/js/common.js",
+    "isEntry": true,
+    "imports": [
+      "_vue-CCCXMz7o.js"
+    ],
+    "css": [
+      "assets/about-DswCMznZ.css"
+    ]
+  },
+  "app/static/js/index.js": {
+    "file": "assets/index-BbaVuJt5.js",
+    "name": "index",
+    "src": "app/static/js/index.js",
+    "isEntry": true,
+    "imports": [
+      "app/static/js/common.js",
+      "_vue-CCCXMz7o.js",
+      "_lodash-CXGpkqCe.js"
+    ]
+  },
+  "app/static/js/plan.js": {
+    "file": "assets/plan-DzXOm82j.js",
+    "name": "plan",
+    "src": "app/static/js/plan.js",
+    "isEntry": true,
+    "imports": [
+      "app/static/js/common.js",
+      "_vue-CCCXMz7o.js",
+      "_pev2-B50z8Fwn.js"
+    ],
+    "css": [
+      "assets/plan-CSDVKU8H.css"
+    ]
+  }
+}
