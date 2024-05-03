@@ -36,5 +36,5 @@ jobs:
           push: ${{ github.ref == 'refs/heads/main' }}
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/${{ github.repository_owner }}/pev2-server:${{ env.TAG }}
-            ghcr.io/${{ github.repository_owner }}/pev2-server:latest
+            ghcr.io/${{ github.repository_owner }}/pev2:${{ env.TAG }}
+            ghcr.io/${{ github.repository_owner }}/pev2:latest
