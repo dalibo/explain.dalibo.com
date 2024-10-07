@@ -74,7 +74,7 @@ About |
 &lt;/form&gt;</code></pre>
         Here's an example using <em>cURL</em>:
         <br>
-        <code class="text-muted bg-light d-block">$ curl -Ls -w %{url_effective} -d '{"plan":"Seq Scan on tenk1  (cost=0.00..333.00 rows=10000 width=148)"}' -H "Content-Type: application/json" -X POST {{ url_for('new', _external=True) }} -o /dev/null</code>
+        <code class="text-muted bg-light d-block">$ curl -Ls -w %{url_effective} -d '{"plan":"Seq Scan on tenk1  (cost=0.00..333.00 rows=10000 width=148)", "title": "My simple plan", "query": "The corresponding query"}' -H "Content-Type: application/json" -X POST {{ url_for('new', _external=True) }} -o /dev/null</code>
       </p>
       <h4>
         Directly from psql
