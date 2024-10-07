@@ -29,7 +29,7 @@ var planData = {{ plan.as_dict() | tojson }};
       </li>
     </ul>
     <span class="navbar-text" v-cloak>
-      {% raw %}{{ plan.title }}{% endraw %}
+      {% raw %}{{ plan.title || '' }}{% endraw %}
     </span>
     {% if plan %}
     <span class="navbar-text">
@@ -46,7 +46,7 @@ var planData = {{ plan.as_dict() | tojson }};
 </header>
 <div class="d-flex flex-column flex-grow-1 overflow-auto">
   <div class="flex-grow-1 overflow-auto d-flex">
-    <pev2 :plan-source="plan.plan" :plan-query="plan.sql" v-if="plan"></pev2>
+    <pev2 :plan-source="plan.plan" :plan-query="plan.sql || ''" v-if="plan"></pev2>
     <div v-else class="w-100 h-100 d-flex">
       <div class="align-self-center mx-auto">
         Loading
