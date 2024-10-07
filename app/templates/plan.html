@@ -3,7 +3,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-{{ plan.title + ' |' if plan else ' | ' }}
+{{ plan.title or '' + ' |' if plan else ' | ' }}
 {% endblock %}
 
 {% block body %}
