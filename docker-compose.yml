@@ -1,7 +1,7 @@
 services:
   web:
     restart: always
-    build: .
+    image: ghcr.io/dalibo/explain.dalibo.com:latest
     ports:
       - "5000:5000"
     links:
