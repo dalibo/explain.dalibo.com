@@ -37,8 +37,8 @@ FLASK_APP=app python -m flask run
 # Run App Using Docker
 
 ```shell
-docker-compose up -d
-docker-compose run web flask db upgrade
+docker compose up -d
+docker compose run web flask db upgrade
 ```
 
 Open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) in your browser.

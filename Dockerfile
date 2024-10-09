@@ -1,20 +1,16 @@
-FROM python:3-alpine
+FROM python:3.12-alpine
 
 ENV FLASK_APP "app"
 
-RUN mkdir /app
-WORKDIR /app
-COPY requirements.txt /app/
-
-RUN \
-    apk add --no-cache postgresql-libs && \
-    apk add --no-cache --virtual .build-deps gcc g++ musl-dev postgresql-dev && \
-    pip install --upgrade pip
-
-RUN \
-    pip install -r requirements.txt
-
 ADD . /app
+
+WORKDIR /app
+
+RUN apk add --no-cache libpq-dev gcc musl-dev
+
+RUN pip install --no-cache-dir --upgrade pip
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
 
