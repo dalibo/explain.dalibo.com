@@ -15,3 +15,10 @@ $body-color: #495057;
     color: $link-color;
   }
 }
+
+.tippy-box {
+  background-color: $dark !important;
+}
+.tippy-arrow {
+  color: $dark !important;
+}
