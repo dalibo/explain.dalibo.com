@@ -181,6 +181,19 @@ const app = createApp({
         });
     }
 
+    function formattedDate(date) {
+      return new Date(date).toLocaleDateString(navigator.language, {
+        weekday: "short", // Example: "Thu"
+        year: "numeric", // Example: "2023"
+        month: "short", // Example: "Nov"
+        day: "numeric", // Example: "9"
+        hour: "numeric", // Example: "11"
+        minute: "numeric", // Example: "15"
+        second: "numeric", // Optional: show seconds
+        timeZoneName: "short", // Show time zone like "GMT+1"
+      });
+    }
+
     onMounted(() => {
       const textAreas = document.getElementsByTagName("textarea");
       loadPlans();
@@ -210,6 +223,7 @@ const app = createApp({
       loadPlan,
       getPlanUrl,
       deletePlan,
+      formattedDate,
     };
   },
 });
