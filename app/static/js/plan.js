@@ -2,6 +2,7 @@ import "./common.js";
 import { createApp } from "vue";
 import { Plan } from "pev2";
 import { ref } from "vue";
+import Created from "./created.vue";
 
 import "pev2/dist/style.css";
 
@@ -18,6 +19,7 @@ const app = createApp({
   },
   components: {
     pev2: Plan,
+    created: Created,
   },
 });
 app.component("font-awesome-icon", FontAwesomeIcon);
