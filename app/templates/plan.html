@@ -32,11 +32,12 @@ var planData = {{ plan.as_dict() | tojson }};
       {% raw %}{{ plan.title || '' }}{% endraw %}
     </span>
     {% if plan %}
-    <span class="navbar-text">
+    <span class="navbar-text p-0 text-end d-flex flex-column">
       <a href="{{ url_for('plan_from_db', id=plan.id) }}">
         <font-awesome-icon icon="link"></font-awesome-icon>
         plan/{{ plan.id }}
       </a>
+      <created date="{{ plan.created }}"></created>
     </span>
     {% endif %}
   </nav>
