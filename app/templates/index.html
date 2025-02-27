@@ -92,7 +92,8 @@
             <div class="col-6">
               <small class="text-muted">
                 created
-                <span  :title="plan.createdOn.toString()">
+                <span
+                  :title="formattedDate(plan.createdOn)">
                 <timeago :datetime="plan.createdOn"></timeago>
                 </span>
               </small>
