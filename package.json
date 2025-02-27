@@ -14,7 +14,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "prettier": "^2.7.1",
     "rollup-plugin-empty-dir": "^1.0.5",
-    "vite": "^5.2.8"
+    "vite": "^6.2.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
