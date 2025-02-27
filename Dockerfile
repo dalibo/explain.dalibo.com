@@ -1,7 +1,7 @@
 # =====================================
 # Stage 1: Build dependencies
 # =====================================
-FROM python:3.12-alpine AS builder
+FROM python:3.13-alpine AS builder
 
 # Install system-level build dependencies:
 # - libpq-dev: Required for PostgreSQL client library (https://pkgs.alpinelinux.org/package/edge/main/x86/libpq-dev)
@@ -22,7 +22,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /build/wheels -r requirements
 # =====================================
 # Stage 2: Final runtime image
 # =====================================
-FROM python:3.12-alpine
+FROM python:3.13-alpine
 
 # Copy wheel files from builder stage
 COPY --from=builder /build/wheels /wheels
