@@ -1,0 +1,18 @@
+target-version = "py313"
+exclude = ["migrations"]
+
+[lint]
+extend-select = [
+    "B",  # flake8-bugbear
+    "B9", # flake8-bugbear
+    "C",  # mccabe
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "I",  # isort
+    "RUF100",  # unused-noqa
+    "UP", # pyupgrade
+    "W",  # pycodestyle warnings
+]
+ignore = [
+    "C901", # too complex
+]
