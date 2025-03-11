@@ -31,12 +31,12 @@ class Plan(db.Model):
     __table_args__ = {"postgresql_partition_by": "HASH (id)"}
 
     def as_dict(self):
-        return dict(
-            shareId=self.id,
-            title=self.title,
-            plan=self.plan,
-            sql=self.sql,
-        )
+        return {
+            "shareId": self.id,
+            "title": self.title,
+            "plan": self.plan,
+            "sql": self.sql,
+        }
 
 
 @app.route("/")
@@ -87,7 +87,7 @@ def save(json=False):
         result = query.fetchone()[0]
         (id, delete_key) = tuple(x for x in result[1:-1].split(","))
         if json:
-            return jsonify(dict(id=id, deleteKey=delete_key))
+            return jsonify({"id": id, "deleteKey": delete_key})
         return redirect(url_for("plan_from_db", id=id))
     return redirect(url_for("index"))
 
@@ -148,7 +148,7 @@ def inject_assets():
             if "css" in manifest_entry:
                 tags.append(build_css_tag(manifest_entry["css"]))
 
-    return dict(assets=load_assets)
+    return {"assets": load_assets}
 
 
 @app.route("/plan_error")
