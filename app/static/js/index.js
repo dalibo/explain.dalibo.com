@@ -9,10 +9,14 @@ import { Modal } from "bootstrap";
 import { onMounted, ref, watch } from "vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faLink, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleInfo,
+  faLink,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faLink, faTrashAlt);
+library.add(faCircleInfo, faLink, faTrashAlt);
 
 let confirmModal;
 let deleteModal;
