@@ -15,7 +15,7 @@
     "name": "vue"
   },
   "app/static/js/common.js": {
-    "file": "assets/about-C-86WtE6.js",
+    "file": "assets/about-Dx_7df1N.js",
     "name": "about",
     "src": "app/static/js/common.js",
     "isEntry": true,
@@ -27,7 +27,7 @@
     ]
   },
   "app/static/js/index.js": {
-    "file": "assets/index-BqQVz-jL.js",
+    "file": "assets/index-CBGXmzr2.js",
     "name": "index",
     "src": "app/static/js/index.js",
     "isEntry": true,
@@ -38,7 +38,7 @@
     ]
   },
   "app/static/js/plan.js": {
-    "file": "assets/plan-Cu_Fu6tG.js",
+    "file": "assets/plan-CQgkSLck.js",
     "name": "plan",
     "src": "app/static/js/plan.js",
     "isEntry": true,
