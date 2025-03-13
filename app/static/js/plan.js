@@ -4,7 +4,7 @@ import { Plan } from "pev2";
 import { ref } from "vue";
 import Created from "./created.vue";
 
-import "pev2/dist/style.css";
+import "pev2/dist/pev2.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
