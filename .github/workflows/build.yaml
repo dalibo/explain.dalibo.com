@@ -1,0 +1,63 @@
+name: Deploy
+
+on:
+  pull_request: {}
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: The version of the release.
+
+jobs:
+  build:
+    name: Build and Push
+
+    runs-on: generic-docker-ubuntu-2204-amd64-4g
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: SectorLabs/actions/configure-aws@configure-aws-v1.3.0
+      with:
+        role-arn: ${{ vars.ENVIRONMENT_DEPLOY_AWS_OIDC_IAM_ROLE_ARN }}
+
+    - name: Login to Amazon ECR
+      if: ${{ github.event_name != 'pull_request' }}
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Compute release version
+      id: version
+      run: |
+        if [ "${{ github.event_name == 'push' }}" = "true" ]; then
+          version="${GITHUB_REF#refs/*/}"
+        elif [ "${{ github.event_name == 'workflow_dispatch' }}" = "true" ]; then
+          version="${{ inputs.version }}"
+        else
+          version="" # Let the action decide the tag
+        fi
+
+        if [ "$version" = "" ]; then
+          echo "No version was specified. It will be computed from the tag."
+        else
+          echo "Computed version: $version"
+        fi
+
+        echo "Computed version: $version"
+        echo "result=$version" >> $GITHUB_OUTPUT
+
+    - name: Build and Push to ECR
+      uses: SectorLabs/actions/build-push-ecr@build-push-ecr-v1.6.0
+      id: build
+      with:
+        ecr-url: '541024694663.dkr.ecr.eu-west-1.amazonaws.com'
+        ecr-repository: 'tools/pev2'
+        tag: ${{ steps.version.outputs.result }}
+        cache-key: 'tools/pev2'
+        push: ${{ github.event_name != 'pull_request' }}
