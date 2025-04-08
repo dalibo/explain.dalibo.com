@@ -10,6 +10,7 @@ services:
     volumes:
       - .:/app
     environment:
+      DEBUG_TB_PROFILER_ENABLED: true
       DB_SERVICE: postgres
 
   postgres:
