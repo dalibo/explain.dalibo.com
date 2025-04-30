@@ -16,27 +16,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+import samples from "./samples.ts";
+
 library.add(faCircleInfo, faLink, faTrashAlt);
 
 let confirmModal;
 let deleteModal;
 const app = createApp({
   setup() {
-    const samples = [
-      ["Example 1 (JSON)", "plan_1.json", "plan_1.sql"],
-      ["Example 1 (plain text)", "plan_1.txt", "plan_1.sql"],
-      ["Example 2", "plan_2.json", "plan_2.sql"],
-      ["Example 3", "plan_3.json", "plan_3.sql"],
-      ["Example 4", "plan_4.json"],
-      ["Example 5", "plan_5.json", "plan_5.sql"],
-      ["With subplan", "plan_6.txt"],
-      ["With CTE", "plan_7.txt"],
-      ["Very large plan", "plan_8.json"],
-      ["With trigger", "plan_trigger.json", "plan_trigger.sql"],
-      ["With trigger (plain text)", "plan_trigger.txt", "plan_trigger_2.sql"],
-      ["Parallel (verbose)", "plan_parallel.json"],
-      ["Parallel (4 workers)", "plan_parallel2.txt", "plan_parallel2.sql"],
-    ];
     const titleInput = ref("");
     const planInput = ref("");
     const queryInput = ref("");
@@ -82,17 +69,7 @@ const app = createApp({
     }
 
     function loadSample(sample) {
-      titleInput.value = sample[0];
-      axios.get(staticUrl + "samples/" + sample[1]).then((response) => {
-        planInput.value = response.request.responseText;
-      });
-      if (sample[2]) {
-        axios.get(staticUrl + "samples/" + sample[2]).then((response) => {
-          queryInput.value = response.request.responseText;
-        });
-      } else {
-        queryInput.value = "";
-      }
+      [titleInput.value, planInput.value, queryInput.value] = sample;
     }
 
     function handleDrop(event) {

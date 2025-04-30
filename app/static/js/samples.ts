@@ -1,4 +1,2708 @@
-{
+const plan1_source = `Nested Loop Left Join  (cost=11.95..28.52 rows=5 width=157) (actual time=0.010..0.010 rows=0 loops=1)
+  Output: rel_users_exams.user_username, rel_users_exams.exam_id, rel_users_exams.started_at, rel_users_exams.finished_at, exam_1.id, exam_1.title, exam_1.date_from, exam_1.date_to, exam_1.created, exam_1.created_by_, exam_1.duration, exam_1.success_threshold, exam_1.published
+  Inner Unique: true
+  Join Filter: (exam_1.id = rel_users_exams.exam_id)
+  Buffers: shared hit=1
+  ->  Bitmap Heap Scan on public.rel_users_exams  (cost=11.80..20.27 rows=5 width=52) (actual time=0.009..0.009 rows=0 loops=1)
+        Output: rel_users_exams.user_username, rel_users_exams.exam_id, rel_users_exams.started_at, rel_users_exams.finished_at
+        Recheck Cond: (1 = rel_users_exams.exam_id)
+        Buffers: shared hit=1
+        ->  Bitmap Index Scan on rel_users_exams_pkey  (cost=0.00..11.80 rows=5 width=0) (actual time=0.005..0.005 rows=0 loops=1)
+              Index Cond: (1 = rel_users_exams.exam_id)
+              Buffers: shared hit=1
+  ->  Materialize  (cost=0.15..8.17 rows=1 width=105) (never executed)
+        Output: exam_1.id, exam_1.title, exam_1.date_from, exam_1.date_to, exam_1.created, exam_1.created_by_, exam_1.duration, exam_1.success_threshold, exam_1.published
+        ->  Index Scan using exam_pkey on public.exam exam_1  (cost=0.15..8.17 rows=1 width=105) (never executed)
+              Output: exam_1.id, exam_1.title, exam_1.date_from, exam_1.date_to, exam_1.created, exam_1.created_by_, exam_1.duration, exam_1.success_threshold, exam_1.published
+              Index Cond: (exam_1.id = 1)
+Planning Time: 1.110 ms
+Execution Time: 0.170 ms
+`
+const plan1_query = `/* A join between two tables */
+SELECT rel_users_exams.user_username AS rel_users_exams_user_username,
+         rel_users_exams.exam_id AS rel_users_exams_exam_id,
+         rel_users_exams.started_at AS rel_users_exams_started_at,
+         rel_users_exams.finished_at AS rel_users_exams_finished_at,
+         exam_1.id AS exam_1_id,
+         exam_1.title AS exam_1_title,
+         exam_1.date_from AS exam_1_date_from,
+         exam_1.date_to AS exam_1_date_to,
+         exam_1.created AS exam_1_created,
+         exam_1.created_by_ AS exam_1_created_by_,
+         exam_1.duration AS exam_1_duration,
+         exam_1.success_threshold AS exam_1_success_threshold,
+         exam_1.published AS exam_1_published
+FROM rel_users_exams LEFT OUTER
+JOIN exam AS exam_1
+    ON exam_1.id = rel_users_exams.exam_id
+WHERE 1 = rel_users_exams.exam_id;
+`
+
+const plan1_source_json = `[
+  {
+    "Plan": {
+      "Node Type": "Nested Loop",
+      "Parallel Aware": false,
+      "Join Type": "Left",
+      "Startup Cost": 11.95,
+      "Total Cost": 28.52,
+      "Plan Rows": 5,
+      "Plan Width": 157,
+      "Actual Startup Time": 0.007,
+      "Actual Total Time": 0.007,
+      "Actual Rows": 0,
+      "Actual Loops": 1,
+      "Output": ["rel_users_exams.user_username", "rel_users_exams.exam_id", "rel_users_exams.started_at", "rel_users_exams.finished_at", "exam_1.id", "exam_1.title", "exam_1.date_from", "exam_1.date_to", "exam_1.created", "exam_1.created_by_", "exam_1.duration", "exam_1.success_threshold", "exam_1.published"],
+      "Inner Unique": true,
+      "Join Filter": "(exam_1.id = rel_users_exams.exam_id)",
+      "Rows Removed by Join Filter": 0,
+      "Shared Hit Blocks": 1,
+      "Shared Read Blocks": 0,
+      "Shared Dirtied Blocks": 0,
+      "Shared Written Blocks": 0,
+      "Local Hit Blocks": 0,
+      "Local Read Blocks": 0,
+      "Local Dirtied Blocks": 0,
+      "Local Written Blocks": 0,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0,
+      "Plans": [
+        {
+          "Node Type": "Bitmap Heap Scan",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Relation Name": "rel_users_exams",
+          "Schema": "public",
+          "Alias": "rel_users_exams",
+          "Startup Cost": 11.80,
+          "Total Cost": 20.27,
+          "Plan Rows": 5,
+          "Plan Width": 52,
+          "Actual Startup Time": 0.006,
+          "Actual Total Time": 0.006,
+          "Actual Rows": 0,
+          "Actual Loops": 1,
+          "Output": ["rel_users_exams.user_username", "rel_users_exams.exam_id", "rel_users_exams.started_at", "rel_users_exams.finished_at"],
+          "Recheck Cond": "(1 = rel_users_exams.exam_id)",
+          "Rows Removed by Index Recheck": 0,
+          "Exact Heap Blocks": 0,
+          "Lossy Heap Blocks": 0,
+          "Shared Hit Blocks": 1,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Index Name": "rel_users_exams_pkey",
+              "Startup Cost": 0.00,
+              "Total Cost": 11.80,
+              "Plan Rows": 5,
+              "Plan Width": 0,
+              "Actual Startup Time": 0.003,
+              "Actual Total Time": 0.004,
+              "Actual Rows": 0,
+              "Actual Loops": 1,
+              "Index Cond": "(1 = rel_users_exams.exam_id)",
+              "Shared Hit Blocks": 1,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            }
+          ]
+        },
+        {
+          "Node Type": "Materialize",
+          "Parent Relationship": "Inner",
+          "Parallel Aware": false,
+          "Startup Cost": 0.15,
+          "Total Cost": 8.17,
+          "Plan Rows": 1,
+          "Plan Width": 105,
+          "Actual Startup Time": 0.000,
+          "Actual Total Time": 0.000,
+          "Actual Rows": 0,
+          "Actual Loops": 0,
+          "Output": ["exam_1.id", "exam_1.title", "exam_1.date_from", "exam_1.date_to", "exam_1.created", "exam_1.created_by_", "exam_1.duration", "exam_1.success_threshold", "exam_1.published"],
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Index Scan",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Scan Direction": "Forward",
+              "Index Name": "exam_pkey",
+              "Relation Name": "exam",
+              "Schema": "public",
+              "Alias": "exam_1",
+              "Startup Cost": 0.15,
+              "Total Cost": 8.17,
+              "Plan Rows": 1,
+              "Plan Width": 105,
+              "Actual Startup Time": 0.000,
+              "Actual Total Time": 0.000,
+              "Actual Rows": 0,
+              "Actual Loops": 0,
+              "Output": ["exam_1.id", "exam_1.title", "exam_1.date_from", "exam_1.date_to", "exam_1.created", "exam_1.created_by_", "exam_1.duration", "exam_1.success_threshold", "exam_1.published"],
+              "Index Cond": "(exam_1.id = 1)",
+              "Rows Removed by Index Recheck": 0,
+              "Shared Hit Blocks": 0,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            }
+          ]
+        }
+      ]
+    },
+    "Planning Time": 0.905,
+    "Triggers": [
+    ],
+    "Execution Time": 0.134
+  }
+]`
+
+const plan2_source = `[
+  {
+    "Plan": {
+      "Node Type": "Sort",
+      "Parallel Aware": false,
+      "Startup Cost": 624.86,
+      "Total Cost": 625.88,
+      "Plan Rows": 410,
+      "Plan Width": 726,
+      "Actual Startup Time": 6.039,
+      "Actual Total Time": 6.088,
+      "Actual Rows": 339,
+      "Actual Loops": 1,
+      "Output": ["rel_users_exams.user_username", "rel_users_exams.exam_id", "rel_users_exams.started_at", "rel_users_exams.finished_at", "answer_1.id", "answer_1.text", "answer_1.correct", "answer_1.fraction", "answer_1.question_id", "question_1.id", "question_1.title", "question_1.text", "question_1.file", "question_1.type", "question_1.source", "question_1.exam_id", "exam_1.id", "exam_1.title", "exam_1.date_from", "exam_1.date_to", "exam_1.created", "exam_1.created_by_", "exam_1.duration", "exam_1.success_threshold", "exam_1.published"],
+      "Sort Key": ["question_1.id"],
+      "Sort Method": "quicksort",
+      "Sort Space Used": 409,
+      "Sort Space Type": "Memory",
+      "Shared Hit Blocks": 363,
+      "Shared Read Blocks": 0,
+      "Shared Dirtied Blocks": 0,
+      "Shared Written Blocks": 0,
+      "Local Hit Blocks": 0,
+      "Local Read Blocks": 0,
+      "Local Dirtied Blocks": 0,
+      "Local Written Blocks": 0,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0,
+      "Plans": [
+        {
+          "Node Type": "Nested Loop",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Join Type": "Left",
+          "Startup Cost": 228.60,
+          "Total Cost": 607.06,
+          "Plan Rows": 410,
+          "Plan Width": 726,
+          "Actual Startup Time": 1.074,
+          "Actual Total Time": 5.576,
+          "Actual Rows": 339,
+          "Actual Loops": 1,
+          "Output": ["rel_users_exams.user_username", "rel_users_exams.exam_id", "rel_users_exams.started_at", "rel_users_exams.finished_at", "answer_1.id", "answer_1.text", "answer_1.correct", "answer_1.fraction", "answer_1.question_id", "question_1.id", "question_1.title", "question_1.text", "question_1.file", "question_1.type", "question_1.source", "question_1.exam_id", "exam_1.id", "exam_1.title", "exam_1.date_from", "exam_1.date_to", "exam_1.created", "exam_1.created_by_", "exam_1.duration", "exam_1.success_threshold", "exam_1.published"],
+          "Join Filter": "(exam_1.id = question_1.exam_id)",
+          "Rows Removed by Join Filter": 0,
+          "Shared Hit Blocks": 360,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Nested Loop",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Join Type": "Left",
+              "Startup Cost": 0.00,
+              "Total Cost": 2.94,
+              "Plan Rows": 1,
+              "Plan Width": 99,
+              "Actual Startup Time": 0.025,
+              "Actual Total Time": 0.033,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Output": ["rel_users_exams.user_username", "rel_users_exams.exam_id", "rel_users_exams.started_at", "rel_users_exams.finished_at", "exam_1.id", "exam_1.title", "exam_1.date_from", "exam_1.date_to", "exam_1.created", "exam_1.created_by_", "exam_1.duration", "exam_1.success_threshold", "exam_1.published"],
+              "Join Filter": "(exam_1.id = rel_users_exams.exam_id)",
+              "Rows Removed by Join Filter": 0,
+              "Shared Hit Blocks": 2,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Relation Name": "rel_users_exams",
+                  "Schema": "public",
+                  "Alias": "rel_users_exams",
+                  "Startup Cost": 0.00,
+                  "Total Cost": 1.73,
+                  "Plan Rows": 1,
+                  "Plan Width": 27,
+                  "Actual Startup Time": 0.016,
+                  "Actual Total Time": 0.021,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Output": ["rel_users_exams.user_username", "rel_users_exams.exam_id", "rel_users_exams.started_at", "rel_users_exams.finished_at"],
+                  "Filter": "((rel_users_exams.exam_id = 1) AND ((rel_users_exams.user_username)::text = 'nicolas1'::text))",
+                  "Rows Removed by Filter": 56,
+                  "Shared Hit Blocks": 1,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                },
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Relation Name": "exam",
+                  "Schema": "public",
+                  "Alias": "exam_1",
+                  "Startup Cost": 0.00,
+                  "Total Cost": 1.19,
+                  "Plan Rows": 1,
+                  "Plan Width": 72,
+                  "Actual Startup Time": 0.006,
+                  "Actual Total Time": 0.009,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Output": ["exam_1.id", "exam_1.title", "exam_1.date_from", "exam_1.date_to", "exam_1.created", "exam_1.created_by_", "exam_1.duration", "exam_1.success_threshold", "exam_1.published"],
+                  "Filter": "(exam_1.id = 1)",
+                  "Rows Removed by Filter": 35,
+                  "Shared Hit Blocks": 1,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            {
+              "Node Type": "Hash Join",
+              "Parent Relationship": "Inner",
+              "Parallel Aware": false,
+              "Join Type": "Right",
+              "Startup Cost": 228.60,
+              "Total Cost": 599.00,
+              "Plan Rows": 410,
+              "Plan Width": 627,
+              "Actual Startup Time": 1.047,
+              "Actual Total Time": 5.420,
+              "Actual Rows": 339,
+              "Actual Loops": 1,
+              "Output": ["question_1.id", "question_1.title", "question_1.text", "question_1.file", "question_1.type", "question_1.source", "question_1.exam_id", "answer_1.id", "answer_1.text", "answer_1.correct", "answer_1.fraction", "answer_1.question_id"],
+              "Hash Cond": "(answer_1.question_id = question_1.id)",
+              "Shared Hit Blocks": 358,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Relation Name": "answer",
+                  "Schema": "public",
+                  "Alias": "answer_1",
+                  "Startup Cost": 0.00,
+                  "Total Cost": 311.13,
+                  "Plan Rows": 14713,
+                  "Plan Width": 55,
+                  "Actual Startup Time": 0.007,
+                  "Actual Total Time": 1.962,
+                  "Actual Rows": 14726,
+                  "Actual Loops": 1,
+                  "Output": ["answer_1.id", "answer_1.text", "answer_1.correct", "answer_1.fraction", "answer_1.question_id"],
+                  "Shared Hit Blocks": 164,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                },
+                {
+                  "Node Type": "Hash",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Startup Cost": 227.66,
+                  "Total Cost": 227.66,
+                  "Plan Rows": 75,
+                  "Plan Width": 572,
+                  "Actual Startup Time": 1.025,
+                  "Actual Total Time": 1.025,
+                  "Actual Rows": 63,
+                  "Actual Loops": 1,
+                  "Output": ["question_1.id", "question_1.title", "question_1.text", "question_1.file", "question_1.type", "question_1.source", "question_1.exam_id"],
+                  "Hash Buckets": 1024,
+                  "Original Hash Buckets": 1024,
+                  "Hash Batches": 1,
+                  "Original Hash Batches": 1,
+                  "Peak Memory Usage": 46,
+                  "Shared Hit Blocks": 194,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Relation Name": "question",
+                      "Schema": "public",
+                      "Alias": "question_1",
+                      "Startup Cost": 0.00,
+                      "Total Cost": 227.66,
+                      "Plan Rows": 75,
+                      "Plan Width": 572,
+                      "Actual Startup Time": 0.004,
+                      "Actual Total Time": 0.984,
+                      "Actual Rows": 63,
+                      "Actual Loops": 1,
+                      "Output": ["question_1.id", "question_1.title", "question_1.text", "question_1.file", "question_1.type", "question_1.source", "question_1.exam_id"],
+                      "Filter": "(question_1.exam_id = 1)",
+                      "Rows Removed by Filter": 2637,
+                      "Shared Hit Blocks": 194,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Planning Time": 1.206,
+    "Triggers": [
+    ],
+    "Execution Time": 6.248
+  }
+]
+`
+
+const plan2_query = `/* Joins between four tables */
+SELECT rel_users_exams.user_username AS rel_users_exams_user_username,
+         rel_users_exams.exam_id AS rel_users_exams_exam_id,
+         rel_users_exams.started_at AS rel_users_exams_started_at,
+         rel_users_exams.finished_at AS rel_users_exams_finished_at,
+         answer_1.id AS answer_1_id,
+         answer_1.text AS answer_1_text,
+         answer_1.correct AS answer_1_correct,
+         answer_1.fraction AS answer_1_fraction,
+         answer_1.question_id AS answer_1_question_id,
+         question_1.id AS question_1_id,
+         question_1.title AS question_1_title,
+         question_1.text AS question_1_text,
+         question_1.file AS question_1_file,
+         question_1.type AS question_1_type,
+         question_1.source AS question_1_source,
+         question_1.exam_id AS question_1_exam_id,
+         exam_1.id AS exam_1_id,
+         exam_1.title AS exam_1_title,
+         exam_1.date_from AS exam_1_date_from,
+         exam_1.date_to AS exam_1_date_to,
+         exam_1.created AS exam_1_created,
+         exam_1.created_by_ AS exam_1_created_by_,
+         exam_1.duration AS exam_1_duration,
+         exam_1.success_threshold AS exam_1_success_threshold,
+         exam_1.published AS exam_1_published
+FROM rel_users_exams LEFT OUTER
+JOIN exam AS exam_1
+    ON exam_1.id = rel_users_exams.exam_id LEFT OUTER
+JOIN question AS question_1
+    ON exam_1.id = question_1.exam_id LEFT OUTER
+JOIN answer AS answer_1
+    ON question_1.id = answer_1.question_id
+WHERE rel_users_exams.user_username = %(param_1)s
+        AND rel_users_exams.exam_id = %(param_2)s
+ORDER BY  question_1.id;
+`
+
+const plan_many_ctes = `[
+  {
+    "Plan": {
+      "Node Type": "Sort",
+      "Startup Cost": 1460.74,
+      "Total Cost": 1470.87,
+      "Plan Rows": 4050,
+      "Plan Width": 183,
+      "Actual Startup Time": 13.766,
+      "Actual Total Time": 13.793,
+      "Actual Rows": 352,
+      "Actual Loops": 1,
+      "Output": ["sv.variant_id", "sv.sku", "sp.slug", "sp.name", "vc.color", "pr.min_price", "pcc.available_colors", "sv.product_id"],
+      "Sort Key": ["sv.product_id"],
+      "Sort Method": "quicksort",
+      "Sort Space Used": 101,
+      "Sort Space Type": "Memory",
+      "Shared Hit Blocks": 2695,
+      "Shared Read Blocks": 0,
+      "Shared Dirtied Blocks": 0,
+      "Shared Written Blocks": 0,
+      "Local Hit Blocks": 0,
+      "Local Read Blocks": 0,
+      "Local Dirtied Blocks": 0,
+      "Local Written Blocks": 0,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0,
+      "I/O Read Time": 0.000,
+      "I/O Write Time": 0.000,
+      "Plans": [
+        {
+          "Node Type": "Seq Scan",
+          "Parent Relationship": "InitPlan",
+          "Subplan Name": "CTE catalog_variants",
+          "Relation Name": "spree_variants",
+          "Schema": "public",
+          "Alias": "spree_variants",
+          "Startup Cost": 0.00,
+          "Total Cost": 80.47,
+          "Plan Rows": 352,
+          "Plan Width": 19,
+          "Actual Startup Time": 0.022,
+          "Actual Total Time": 0.740,
+          "Actual Rows": 352,
+          "Actual Loops": 1,
+          "Output": ["spree_variants.id", "spree_variants.product_id", "spree_variants.sku"],
+          "Filter": "((spree_variants.deleted_at IS NULL) AND spree_variants.show_in_catalog)",
+          "Rows Removed by Filter": 3595,
+          "Shared Hit Blocks": 41,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "I/O Read Time": 0.000,
+          "I/O Write Time": 0.000
+        },
+        {
+          "Node Type": "Aggregate",
+          "Strategy": "Sorted",
+          "Parent Relationship": "InitPlan",
+          "Subplan Name": "CTE product_color_classifications",
+          "Startup Cost": 288.86,
+          "Total Cost": 292.38,
+          "Plan Rows": 176,
+          "Plan Width": 12,
+          "Actual Startup Time": 2.799,
+          "Actual Total Time": 3.980,
+          "Actual Rows": 311,
+          "Actual Loops": 1,
+          "Output": ["sv_1.product_id", "array_agg(DISTINCT sov.presentation)"],
+          "Group Key": ["sv_1.product_id"],
+          "Shared Hit Blocks": 1295,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "I/O Read Time": 0.000,
+          "I/O Write Time": 0.000,
+          "Plans": [
+            {
+              "Node Type": "Sort",
+              "Parent Relationship": "Outer",
+              "Startup Cost": 288.86,
+              "Total Cost": 289.30,
+              "Plan Rows": 176,
+              "Plan Width": 12,
+              "Actual Startup Time": 2.676,
+              "Actual Total Time": 2.705,
+              "Actual Rows": 352,
+              "Actual Loops": 1,
+              "Output": ["sv_1.product_id", "sov.presentation"],
+              "Sort Key": ["sv_1.product_id"],
+              "Sort Method": "quicksort",
+              "Sort Space Used": 41,
+              "Sort Space Type": "Memory",
+              "Shared Hit Blocks": 1287,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "I/O Read Time": 0.000,
+              "I/O Write Time": 0.000,
+              "Plans": [
+                {
+                  "Node Type": "Hash Join",
+                  "Parent Relationship": "Outer",
+                  "Join Type": "Inner",
+                  "Startup Cost": 20.28,
+                  "Total Cost": 282.30,
+                  "Plan Rows": 176,
+                  "Plan Width": 12,
+                  "Actual Startup Time": 0.312,
+                  "Actual Total Time": 2.450,
+                  "Actual Rows": 352,
+                  "Actual Loops": 1,
+                  "Output": ["sv_1.product_id", "sov.presentation"],
+                  "Hash Cond": "(sov_sv.option_value_id = sov.id)",
+                  "Shared Hit Blocks": 1287,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "I/O Read Time": 0.000,
+                  "I/O Write Time": 0.000,
+                  "Plans": [
+                    {
+                      "Node Type": "Nested Loop",
+                      "Parent Relationship": "Outer",
+                      "Join Type": "Inner",
+                      "Startup Cost": 12.71,
+                      "Total Cost": 270.98,
+                      "Plan Rows": 528,
+                      "Plan Width": 8,
+                      "Actual Startup Time": 0.229,
+                      "Actual Total Time": 2.086,
+                      "Actual Rows": 1056,
+                      "Actual Loops": 1,
+                      "Output": ["sv_1.product_id", "sov_sv.option_value_id"],
+                      "Shared Hit Blocks": 1284,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "Hash Join",
+                          "Parent Relationship": "Outer",
+                          "Join Type": "Inner",
+                          "Startup Cost": 12.42,
+                          "Total Cost": 24.30,
+                          "Plan Rows": 176,
+                          "Plan Width": 12,
+                          "Actual Startup Time": 0.221,
+                          "Actual Total Time": 0.468,
+                          "Actual Rows": 352,
+                          "Actual Loops": 1,
+                          "Output": ["sv_1.product_id", "sv_1.variant_id", "catalog_variants.variant_id"],
+                          "Hash Cond": "(sv_1.variant_id = catalog_variants.variant_id)",
+                          "Shared Hit Blocks": 0,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000,
+                          "Plans": [
+                            {
+                              "Node Type": "CTE Scan",
+                              "Parent Relationship": "Outer",
+                              "CTE Name": "catalog_variants",
+                              "Alias": "sv_1",
+                              "Startup Cost": 0.00,
+                              "Total Cost": 7.04,
+                              "Plan Rows": 352,
+                              "Plan Width": 8,
+                              "Actual Startup Time": 0.000,
+                              "Actual Total Time": 0.086,
+                              "Actual Rows": 352,
+                              "Actual Loops": 1,
+                              "Output": ["sv_1.variant_id", "sv_1.product_id", "sv_1.sku"],
+                              "Shared Hit Blocks": 0,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000
+                            },
+                            {
+                              "Node Type": "Hash",
+                              "Parent Relationship": "Inner",
+                              "Startup Cost": 9.92,
+                              "Total Cost": 9.92,
+                              "Plan Rows": 200,
+                              "Plan Width": 4,
+                              "Actual Startup Time": 0.212,
+                              "Actual Total Time": 0.212,
+                              "Actual Rows": 352,
+                              "Actual Loops": 1,
+                              "Output": ["catalog_variants.variant_id"],
+                              "Hash Buckets": 1024,
+                              "Original Hash Buckets": 1024,
+                              "Hash Batches": 1,
+                              "Original Hash Batches": 1,
+                              "Peak Memory Usage": 21,
+                              "Shared Hit Blocks": 0,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000,
+                              "Plans": [
+                                {
+                                  "Node Type": "Aggregate",
+                                  "Strategy": "Hashed",
+                                  "Parent Relationship": "Outer",
+                                  "Startup Cost": 7.92,
+                                  "Total Cost": 9.92,
+                                  "Plan Rows": 200,
+                                  "Plan Width": 4,
+                                  "Actual Startup Time": 0.112,
+                                  "Actual Total Time": 0.158,
+                                  "Actual Rows": 352,
+                                  "Actual Loops": 1,
+                                  "Output": ["catalog_variants.variant_id"],
+                                  "Group Key": ["catalog_variants.variant_id"],
+                                  "Shared Hit Blocks": 0,
+                                  "Shared Read Blocks": 0,
+                                  "Shared Dirtied Blocks": 0,
+                                  "Shared Written Blocks": 0,
+                                  "Local Hit Blocks": 0,
+                                  "Local Read Blocks": 0,
+                                  "Local Dirtied Blocks": 0,
+                                  "Local Written Blocks": 0,
+                                  "Temp Read Blocks": 0,
+                                  "Temp Written Blocks": 0,
+                                  "I/O Read Time": 0.000,
+                                  "I/O Write Time": 0.000,
+                                  "Plans": [
+                                    {
+                                      "Node Type": "CTE Scan",
+                                      "Parent Relationship": "Outer",
+                                      "CTE Name": "catalog_variants",
+                                      "Alias": "catalog_variants",
+                                      "Startup Cost": 0.00,
+                                      "Total Cost": 7.04,
+                                      "Plan Rows": 352,
+                                      "Plan Width": 4,
+                                      "Actual Startup Time": 0.001,
+                                      "Actual Total Time": 0.029,
+                                      "Actual Rows": 352,
+                                      "Actual Loops": 1,
+                                      "Output": ["catalog_variants.variant_id", "catalog_variants.product_id", "catalog_variants.sku"],
+                                      "Shared Hit Blocks": 0,
+                                      "Shared Read Blocks": 0,
+                                      "Shared Dirtied Blocks": 0,
+                                      "Shared Written Blocks": 0,
+                                      "Local Hit Blocks": 0,
+                                      "Local Read Blocks": 0,
+                                      "Local Dirtied Blocks": 0,
+                                      "Local Written Blocks": 0,
+                                      "Temp Read Blocks": 0,
+                                      "Temp Written Blocks": 0,
+                                      "I/O Read Time": 0.000,
+                                      "I/O Write Time": 0.000
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Inner",
+                          "Scan Direction": "Forward",
+                          "Index Name": "index_spree_option_values_variants_on_variant_id",
+                          "Relation Name": "spree_option_values_variants",
+                          "Schema": "public",
+                          "Alias": "sov_sv",
+                          "Startup Cost": 0.29,
+                          "Total Cost": 1.37,
+                          "Plan Rows": 3,
+                          "Plan Width": 8,
+                          "Actual Startup Time": 0.002,
+                          "Actual Total Time": 0.003,
+                          "Actual Rows": 3,
+                          "Actual Loops": 352,
+                          "Output": ["sov_sv.variant_id", "sov_sv.option_value_id", "sov_sv.id"],
+                          "Index Cond": "(sov_sv.variant_id = sv_1.variant_id)",
+                          "Rows Removed by Index Recheck": 0,
+                          "Shared Hit Blocks": 1284,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Hash",
+                      "Parent Relationship": "Inner",
+                      "Startup Cost": 6.69,
+                      "Total Cost": 6.69,
+                      "Plan Rows": 71,
+                      "Plan Width": 12,
+                      "Actual Startup Time": 0.064,
+                      "Actual Total Time": 0.064,
+                      "Actual Rows": 11,
+                      "Actual Loops": 1,
+                      "Output": ["sov.presentation", "sov.id"],
+                      "Hash Buckets": 1024,
+                      "Original Hash Buckets": 1024,
+                      "Hash Batches": 1,
+                      "Original Hash Batches": 1,
+                      "Peak Memory Usage": 9,
+                      "Shared Hit Blocks": 3,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "Hash Join",
+                          "Parent Relationship": "Outer",
+                          "Join Type": "Inner",
+                          "Startup Cost": 1.05,
+                          "Total Cost": 6.69,
+                          "Plan Rows": 71,
+                          "Plan Width": 12,
+                          "Actual Startup Time": 0.020,
+                          "Actual Total Time": 0.062,
+                          "Actual Rows": 11,
+                          "Actual Loops": 1,
+                          "Output": ["sov.presentation", "sov.id"],
+                          "Hash Cond": "(sov.option_type_id = sot.id)",
+                          "Shared Hit Blocks": 3,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000,
+                          "Plans": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Parent Relationship": "Outer",
+                              "Relation Name": "spree_option_values",
+                              "Schema": "public",
+                              "Alias": "sov",
+                              "Startup Cost": 0.00,
+                              "Total Cost": 4.13,
+                              "Plan Rows": 213,
+                              "Plan Width": 16,
+                              "Actual Startup Time": 0.003,
+                              "Actual Total Time": 0.017,
+                              "Actual Rows": 213,
+                              "Actual Loops": 1,
+                              "Output": ["sov.id", "sov.position", "sov.name", "sov.presentation", "sov.option_type_id", "sov.created_at", "sov.updated_at"],
+                              "Shared Hit Blocks": 2,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000
+                            },
+                            {
+                              "Node Type": "Hash",
+                              "Parent Relationship": "Inner",
+                              "Startup Cost": 1.04,
+                              "Total Cost": 1.04,
+                              "Plan Rows": 1,
+                              "Plan Width": 4,
+                              "Actual Startup Time": 0.007,
+                              "Actual Total Time": 0.007,
+                              "Actual Rows": 1,
+                              "Actual Loops": 1,
+                              "Output": ["sot.id"],
+                              "Hash Buckets": 1024,
+                              "Original Hash Buckets": 1024,
+                              "Hash Batches": 1,
+                              "Original Hash Batches": 1,
+                              "Peak Memory Usage": 9,
+                              "Shared Hit Blocks": 1,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000,
+                              "Plans": [
+                                {
+                                  "Node Type": "Seq Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Relation Name": "spree_option_types",
+                                  "Schema": "public",
+                                  "Alias": "sot",
+                                  "Startup Cost": 0.00,
+                                  "Total Cost": 1.04,
+                                  "Plan Rows": 1,
+                                  "Plan Width": 4,
+                                  "Actual Startup Time": 0.003,
+                                  "Actual Total Time": 0.003,
+                                  "Actual Rows": 1,
+                                  "Actual Loops": 1,
+                                  "Output": ["sot.id"],
+                                  "Filter": "((sot.name)::text = 'color_classification'::text)",
+                                  "Rows Removed by Filter": 2,
+                                  "Shared Hit Blocks": 1,
+                                  "Shared Read Blocks": 0,
+                                  "Shared Dirtied Blocks": 0,
+                                  "Shared Written Blocks": 0,
+                                  "Local Hit Blocks": 0,
+                                  "Local Read Blocks": 0,
+                                  "Local Dirtied Blocks": 0,
+                                  "Local Written Blocks": 0,
+                                  "Temp Read Blocks": 0,
+                                  "Temp Written Blocks": 0,
+                                  "I/O Read Time": 0.000,
+                                  "I/O Write Time": 0.000
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Node Type": "Hash Join",
+          "Parent Relationship": "InitPlan",
+          "Subplan Name": "CTE variant_colors",
+          "Join Type": "Inner",
+          "Startup Cost": 20.28,
+          "Total Cost": 282.30,
+          "Plan Rows": 176,
+          "Plan Width": 12,
+          "Actual Startup Time": 0.357,
+          "Actual Total Time": 1.844,
+          "Actual Rows": 352,
+          "Actual Loops": 1,
+          "Output": ["sv_2.variant_id", "sov_1.presentation"],
+          "Hash Cond": "(sov_sv_1.option_value_id = sov_1.id)",
+          "Shared Hit Blocks": 1287,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "I/O Read Time": 0.000,
+          "I/O Write Time": 0.000,
+          "Plans": [
+            {
+              "Node Type": "Nested Loop",
+              "Parent Relationship": "Outer",
+              "Join Type": "Inner",
+              "Startup Cost": 12.71,
+              "Total Cost": 270.98,
+              "Plan Rows": 528,
+              "Plan Width": 8,
+              "Actual Startup Time": 0.233,
+              "Actual Total Time": 1.555,
+              "Actual Rows": 1056,
+              "Actual Loops": 1,
+              "Output": ["sv_2.variant_id", "sov_sv_1.option_value_id"],
+              "Shared Hit Blocks": 1284,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "I/O Read Time": 0.000,
+              "I/O Write Time": 0.000,
+              "Plans": [
+                {
+                  "Node Type": "Hash Join",
+                  "Parent Relationship": "Outer",
+                  "Join Type": "Inner",
+                  "Startup Cost": 12.42,
+                  "Total Cost": 24.30,
+                  "Plan Rows": 176,
+                  "Plan Width": 8,
+                  "Actual Startup Time": 0.214,
+                  "Actual Total Time": 0.350,
+                  "Actual Rows": 352,
+                  "Actual Loops": 1,
+                  "Output": ["sv_2.variant_id", "catalog_variants_1.variant_id"],
+                  "Hash Cond": "(sv_2.variant_id = catalog_variants_1.variant_id)",
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "I/O Read Time": 0.000,
+                  "I/O Write Time": 0.000,
+                  "Plans": [
+                    {
+                      "Node Type": "CTE Scan",
+                      "Parent Relationship": "Outer",
+                      "CTE Name": "catalog_variants",
+                      "Alias": "sv_2",
+                      "Startup Cost": 0.00,
+                      "Total Cost": 7.04,
+                      "Plan Rows": 352,
+                      "Plan Width": 4,
+                      "Actual Startup Time": 0.000,
+                      "Actual Total Time": 0.046,
+                      "Actual Rows": 352,
+                      "Actual Loops": 1,
+                      "Output": ["sv_2.variant_id", "sv_2.product_id", "sv_2.sku"],
+                      "Shared Hit Blocks": 0,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000
+                    },
+                    {
+                      "Node Type": "Hash",
+                      "Parent Relationship": "Inner",
+                      "Startup Cost": 9.92,
+                      "Total Cost": 9.92,
+                      "Plan Rows": 200,
+                      "Plan Width": 4,
+                      "Actual Startup Time": 0.204,
+                      "Actual Total Time": 0.204,
+                      "Actual Rows": 352,
+                      "Actual Loops": 1,
+                      "Output": ["catalog_variants_1.variant_id"],
+                      "Hash Buckets": 1024,
+                      "Original Hash Buckets": 1024,
+                      "Hash Batches": 1,
+                      "Original Hash Batches": 1,
+                      "Peak Memory Usage": 21,
+                      "Shared Hit Blocks": 0,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "Aggregate",
+                          "Strategy": "Hashed",
+                          "Parent Relationship": "Outer",
+                          "Startup Cost": 7.92,
+                          "Total Cost": 9.92,
+                          "Plan Rows": 200,
+                          "Plan Width": 4,
+                          "Actual Startup Time": 0.115,
+                          "Actual Total Time": 0.150,
+                          "Actual Rows": 352,
+                          "Actual Loops": 1,
+                          "Output": ["catalog_variants_1.variant_id"],
+                          "Group Key": ["catalog_variants_1.variant_id"],
+                          "Shared Hit Blocks": 0,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000,
+                          "Plans": [
+                            {
+                              "Node Type": "CTE Scan",
+                              "Parent Relationship": "Outer",
+                              "CTE Name": "catalog_variants",
+                              "Alias": "catalog_variants_1",
+                              "Startup Cost": 0.00,
+                              "Total Cost": 7.04,
+                              "Plan Rows": 352,
+                              "Plan Width": 4,
+                              "Actual Startup Time": 0.001,
+                              "Actual Total Time": 0.027,
+                              "Actual Rows": 352,
+                              "Actual Loops": 1,
+                              "Output": ["catalog_variants_1.variant_id", "catalog_variants_1.product_id", "catalog_variants_1.sku"],
+                              "Shared Hit Blocks": 0,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Inner",
+                  "Scan Direction": "Forward",
+                  "Index Name": "index_spree_option_values_variants_on_variant_id",
+                  "Relation Name": "spree_option_values_variants",
+                  "Schema": "public",
+                  "Alias": "sov_sv_1",
+                  "Startup Cost": 0.29,
+                  "Total Cost": 1.37,
+                  "Plan Rows": 3,
+                  "Plan Width": 8,
+                  "Actual Startup Time": 0.002,
+                  "Actual Total Time": 0.003,
+                  "Actual Rows": 3,
+                  "Actual Loops": 352,
+                  "Output": ["sov_sv_1.variant_id", "sov_sv_1.option_value_id", "sov_sv_1.id"],
+                  "Index Cond": "(sov_sv_1.variant_id = sv_2.variant_id)",
+                  "Rows Removed by Index Recheck": 0,
+                  "Shared Hit Blocks": 1284,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "I/O Read Time": 0.000,
+                  "I/O Write Time": 0.000
+                }
+              ]
+            },
+            {
+              "Node Type": "Hash",
+              "Parent Relationship": "Inner",
+              "Startup Cost": 6.69,
+              "Total Cost": 6.69,
+              "Plan Rows": 71,
+              "Plan Width": 12,
+              "Actual Startup Time": 0.109,
+              "Actual Total Time": 0.109,
+              "Actual Rows": 88,
+              "Actual Loops": 1,
+              "Output": ["sov_1.presentation", "sov_1.id"],
+              "Hash Buckets": 1024,
+              "Original Hash Buckets": 1024,
+              "Hash Batches": 1,
+              "Original Hash Batches": 1,
+              "Peak Memory Usage": 13,
+              "Shared Hit Blocks": 3,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "I/O Read Time": 0.000,
+              "I/O Write Time": 0.000,
+              "Plans": [
+                {
+                  "Node Type": "Hash Join",
+                  "Parent Relationship": "Outer",
+                  "Join Type": "Inner",
+                  "Startup Cost": 1.05,
+                  "Total Cost": 6.69,
+                  "Plan Rows": 71,
+                  "Plan Width": 12,
+                  "Actual Startup Time": 0.034,
+                  "Actual Total Time": 0.090,
+                  "Actual Rows": 88,
+                  "Actual Loops": 1,
+                  "Output": ["sov_1.presentation", "sov_1.id"],
+                  "Hash Cond": "(sov_1.option_type_id = sot_1.id)",
+                  "Shared Hit Blocks": 3,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "I/O Read Time": 0.000,
+                  "I/O Write Time": 0.000,
+                  "Plans": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Parent Relationship": "Outer",
+                      "Relation Name": "spree_option_values",
+                      "Schema": "public",
+                      "Alias": "sov_1",
+                      "Startup Cost": 0.00,
+                      "Total Cost": 4.13,
+                      "Plan Rows": 213,
+                      "Plan Width": 16,
+                      "Actual Startup Time": 0.007,
+                      "Actual Total Time": 0.028,
+                      "Actual Rows": 213,
+                      "Actual Loops": 1,
+                      "Output": ["sov_1.id", "sov_1.position", "sov_1.name", "sov_1.presentation", "sov_1.option_type_id", "sov_1.created_at", "sov_1.updated_at"],
+                      "Shared Hit Blocks": 2,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000
+                    },
+                    {
+                      "Node Type": "Hash",
+                      "Parent Relationship": "Inner",
+                      "Startup Cost": 1.04,
+                      "Total Cost": 1.04,
+                      "Plan Rows": 1,
+                      "Plan Width": 4,
+                      "Actual Startup Time": 0.018,
+                      "Actual Total Time": 0.018,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Output": ["sot_1.id"],
+                      "Hash Buckets": 1024,
+                      "Original Hash Buckets": 1024,
+                      "Hash Batches": 1,
+                      "Original Hash Batches": 1,
+                      "Peak Memory Usage": 9,
+                      "Shared Hit Blocks": 1,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "Seq Scan",
+                          "Parent Relationship": "Outer",
+                          "Relation Name": "spree_option_types",
+                          "Schema": "public",
+                          "Alias": "sot_1",
+                          "Startup Cost": 0.00,
+                          "Total Cost": 1.04,
+                          "Plan Rows": 1,
+                          "Plan Width": 4,
+                          "Actual Startup Time": 0.014,
+                          "Actual Total Time": 0.015,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Output": ["sot_1.id"],
+                          "Filter": "((sot_1.name)::text = 'color'::text)",
+                          "Rows Removed by Filter": 2,
+                          "Shared Hit Blocks": 1,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Node Type": "Aggregate",
+          "Strategy": "Hashed",
+          "Parent Relationship": "InitPlan",
+          "Subplan Name": "CTE variants_min_prices",
+          "Startup Cost": 225.63,
+          "Total Cost": 271.84,
+          "Plan Rows": 4621,
+          "Plan Width": 7,
+          "Actual Startup Time": 5.936,
+          "Actual Total Time": 6.037,
+          "Actual Rows": 352,
+          "Actual Loops": 1,
+          "Output": ["spree_prices.variant_id", "COALESCE(min(spree_prices.amount), '0'::numeric)"],
+          "Group Key": ["spree_prices.variant_id"],
+          "Shared Hit Blocks": 102,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "I/O Read Time": 0.000,
+          "I/O Write Time": 0.000,
+          "Plans": [
+            {
+              "Node Type": "Hash Join",
+              "Parent Relationship": "Outer",
+              "Join Type": "Inner",
+              "Startup Cost": 12.42,
+              "Total Cost": 202.53,
+              "Plan Rows": 4621,
+              "Plan Width": 7,
+              "Actual Startup Time": 2.415,
+              "Actual Total Time": 5.785,
+              "Actual Rows": 352,
+              "Actual Loops": 1,
+              "Output": ["spree_prices.variant_id", "spree_prices.amount"],
+              "Hash Cond": "(spree_prices.variant_id = catalog_variants_2.variant_id)",
+              "Shared Hit Blocks": 102,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "I/O Read Time": 0.000,
+              "I/O Write Time": 0.000,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Outer",
+                  "Relation Name": "spree_prices",
+                  "Schema": "public",
+                  "Alias": "spree_prices",
+                  "Startup Cost": 0.00,
+                  "Total Cost": 153.42,
+                  "Plan Rows": 9242,
+                  "Plan Width": 7,
+                  "Actual Startup Time": 0.023,
+                  "Actual Total Time": 2.548,
+                  "Actual Rows": 9242,
+                  "Actual Loops": 1,
+                  "Output": ["spree_prices.id", "spree_prices.variant_id", "spree_prices.amount", "spree_prices.currency", "spree_prices.deleted_at", "spree_prices.is_default"],
+                  "Shared Hit Blocks": 61,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "I/O Read Time": 0.000,
+                  "I/O Write Time": 0.000
+                },
+                {
+                  "Node Type": "Hash",
+                  "Parent Relationship": "Inner",
+                  "Startup Cost": 9.92,
+                  "Total Cost": 9.92,
+                  "Plan Rows": 200,
+                  "Plan Width": 4,
+                  "Actual Startup Time": 1.229,
+                  "Actual Total Time": 1.229,
+                  "Actual Rows": 352,
+                  "Actual Loops": 1,
+                  "Output": ["catalog_variants_2.variant_id"],
+                  "Hash Buckets": 1024,
+                  "Original Hash Buckets": 1024,
+                  "Hash Batches": 1,
+                  "Original Hash Batches": 1,
+                  "Peak Memory Usage": 21,
+                  "Shared Hit Blocks": 41,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "I/O Read Time": 0.000,
+                  "I/O Write Time": 0.000,
+                  "Plans": [
+                    {
+                      "Node Type": "Aggregate",
+                      "Strategy": "Hashed",
+                      "Parent Relationship": "Outer",
+                      "Startup Cost": 7.92,
+                      "Total Cost": 9.92,
+                      "Plan Rows": 200,
+                      "Plan Width": 4,
+                      "Actual Startup Time": 1.075,
+                      "Actual Total Time": 1.140,
+                      "Actual Rows": 352,
+                      "Actual Loops": 1,
+                      "Output": ["catalog_variants_2.variant_id"],
+                      "Group Key": ["catalog_variants_2.variant_id"],
+                      "Shared Hit Blocks": 41,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "CTE Scan",
+                          "Parent Relationship": "Outer",
+                          "CTE Name": "catalog_variants",
+                          "Alias": "catalog_variants_2",
+                          "Startup Cost": 0.00,
+                          "Total Cost": 7.04,
+                          "Plan Rows": 352,
+                          "Plan Width": 4,
+                          "Actual Startup Time": 0.024,
+                          "Actual Total Time": 0.915,
+                          "Actual Rows": 352,
+                          "Actual Loops": 1,
+                          "Output": ["catalog_variants_2.variant_id", "catalog_variants_2.product_id", "catalog_variants_2.sku"],
+                          "Shared Hit Blocks": 41,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Node Type": "Hash Join",
+          "Parent Relationship": "Outer",
+          "Join Type": "Inner",
+          "Startup Cost": 42.71,
+          "Total Cost": 291.08,
+          "Plan Rows": 4050,
+          "Plan Width": 183,
+          "Actual Startup Time": 13.149,
+          "Actual Total Time": 13.526,
+          "Actual Rows": 352,
+          "Actual Loops": 1,
+          "Output": ["sv.variant_id", "sv.sku", "sp.slug", "sp.name", "vc.color", "pr.min_price", "pcc.available_colors", "sv.product_id"],
+          "Hash Cond": "(pr.variant_id = sv.variant_id)",
+          "Shared Hit Blocks": 2692,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "I/O Read Time": 0.000,
+          "I/O Write Time": 0.000,
+          "Plans": [
+            {
+              "Node Type": "CTE Scan",
+              "Parent Relationship": "Outer",
+              "CTE Name": "variants_min_prices",
+              "Alias": "pr",
+              "Startup Cost": 0.00,
+              "Total Cost": 92.42,
+              "Plan Rows": 4621,
+              "Plan Width": 36,
+              "Actual Startup Time": 5.939,
+              "Actual Total Time": 6.157,
+              "Actual Rows": 352,
+              "Actual Loops": 1,
+              "Output": ["pr.variant_id", "pr.min_price"],
+              "Shared Hit Blocks": 102,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "I/O Read Time": 0.000,
+              "I/O Write Time": 0.000
+            },
+            {
+              "Node Type": "Hash",
+              "Parent Relationship": "Inner",
+              "Startup Cost": 40.52,
+              "Total Cost": 40.52,
+              "Plan Rows": 175,
+              "Plan Width": 155,
+              "Actual Startup Time": 7.189,
+              "Actual Total Time": 7.189,
+              "Actual Rows": 352,
+              "Actual Loops": 1,
+              "Output": ["sv.variant_id", "sv.sku", "sv.product_id", "sp.slug", "sp.name", "vc.color", "vc.variant_id", "pcc.available_colors"],
+              "Hash Buckets": 1024,
+              "Original Hash Buckets": 1024,
+              "Hash Batches": 1,
+              "Original Hash Batches": 1,
+              "Peak Memory Usage": 63,
+              "Shared Hit Blocks": 2590,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "I/O Read Time": 0.000,
+              "I/O Write Time": 0.000,
+              "Plans": [
+                {
+                  "Node Type": "Hash Join",
+                  "Parent Relationship": "Outer",
+                  "Join Type": "Inner",
+                  "Startup Cost": 27.68,
+                  "Total Cost": 40.52,
+                  "Plan Rows": 175,
+                  "Plan Width": 155,
+                  "Actual Startup Time": 6.664,
+                  "Actual Total Time": 7.024,
+                  "Actual Rows": 352,
+                  "Actual Loops": 1,
+                  "Output": ["sv.variant_id", "sv.sku", "sv.product_id", "sp.slug", "sp.name", "vc.color", "vc.variant_id", "pcc.available_colors"],
+                  "Hash Cond": "(sv.variant_id = vc.variant_id)",
+                  "Shared Hit Blocks": 2590,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "I/O Read Time": 0.000,
+                  "I/O Write Time": 0.000,
+                  "Plans": [
+                    {
+                      "Node Type": "Hash Join",
+                      "Parent Relationship": "Outer",
+                      "Join Type": "Inner",
+                      "Startup Cost": 21.96,
+                      "Total Cost": 32.31,
+                      "Plan Rows": 199,
+                      "Plan Width": 119,
+                      "Actual Startup Time": 4.636,
+                      "Actual Total Time": 4.846,
+                      "Actual Rows": 352,
+                      "Actual Loops": 1,
+                      "Output": ["sv.variant_id", "sv.sku", "sv.product_id", "sp.slug", "sp.name", "pcc.available_colors"],
+                      "Hash Cond": "(sv.product_id = sp.id)",
+                      "Shared Hit Blocks": 1303,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "CTE Scan",
+                          "Parent Relationship": "Outer",
+                          "CTE Name": "catalog_variants",
+                          "Alias": "sv",
+                          "Startup Cost": 0.00,
+                          "Total Cost": 7.04,
+                          "Plan Rows": 352,
+                          "Plan Width": 40,
+                          "Actual Startup Time": 0.001,
+                          "Actual Total Time": 0.059,
+                          "Actual Rows": 352,
+                          "Actual Loops": 1,
+                          "Output": ["sv.variant_id", "sv.product_id", "sv.sku"],
+                          "Shared Hit Blocks": 0,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000
+                        },
+                        {
+                          "Node Type": "Hash",
+                          "Parent Relationship": "Inner",
+                          "Startup Cost": 19.76,
+                          "Total Cost": 19.76,
+                          "Plan Rows": 176,
+                          "Plan Width": 87,
+                          "Actual Startup Time": 4.622,
+                          "Actual Total Time": 4.622,
+                          "Actual Rows": 311,
+                          "Actual Loops": 1,
+                          "Output": ["sp.slug", "sp.name", "sp.id", "pcc.available_colors", "pcc.product_id"],
+                          "Hash Buckets": 1024,
+                          "Original Hash Buckets": 1024,
+                          "Hash Batches": 1,
+                          "Original Hash Batches": 1,
+                          "Peak Memory Usage": 47,
+                          "Shared Hit Blocks": 1303,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000,
+                          "Plans": [
+                            {
+                              "Node Type": "Hash Join",
+                              "Parent Relationship": "Outer",
+                              "Join Type": "Inner",
+                              "Startup Cost": 5.72,
+                              "Total Cost": 19.76,
+                              "Plan Rows": 176,
+                              "Plan Width": 87,
+                              "Actual Startup Time": 4.258,
+                              "Actual Total Time": 4.510,
+                              "Actual Rows": 311,
+                              "Actual Loops": 1,
+                              "Output": ["sp.slug", "sp.name", "sp.id", "pcc.available_colors", "pcc.product_id"],
+                              "Hash Cond": "(sp.id = pcc.product_id)",
+                              "Shared Hit Blocks": 1303,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000,
+                              "Plans": [
+                                {
+                                  "Node Type": "Seq Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Relation Name": "spree_products",
+                                  "Schema": "public",
+                                  "Alias": "sp",
+                                  "Startup Cost": 0.00,
+                                  "Total Cost": 11.11,
+                                  "Plan Rows": 311,
+                                  "Plan Width": 51,
+                                  "Actual Startup Time": 0.016,
+                                  "Actual Total Time": 0.115,
+                                  "Actual Rows": 311,
+                                  "Actual Loops": 1,
+                                  "Output": ["sp.id", "sp.name", "sp.description", "sp.available_on", "sp.deleted_at", "sp.slug", "sp.meta_description", "sp.meta_keywords", "sp.tax_category_id", "sp.shipping_category_id", "sp.created_at", "sp.updated_at", "sp.promotionable", "sp.meta_title", "sp.fashion_xl_id"],
+                                  "Filter": "(sp.deleted_at IS NULL)",
+                                  "Rows Removed by Filter": 0,
+                                  "Shared Hit Blocks": 8,
+                                  "Shared Read Blocks": 0,
+                                  "Shared Dirtied Blocks": 0,
+                                  "Shared Written Blocks": 0,
+                                  "Local Hit Blocks": 0,
+                                  "Local Read Blocks": 0,
+                                  "Local Dirtied Blocks": 0,
+                                  "Local Written Blocks": 0,
+                                  "Temp Read Blocks": 0,
+                                  "Temp Written Blocks": 0,
+                                  "I/O Read Time": 0.000,
+                                  "I/O Write Time": 0.000
+                                },
+                                {
+                                  "Node Type": "Hash",
+                                  "Parent Relationship": "Inner",
+                                  "Startup Cost": 3.52,
+                                  "Total Cost": 3.52,
+                                  "Plan Rows": 176,
+                                  "Plan Width": 36,
+                                  "Actual Startup Time": 4.228,
+                                  "Actual Total Time": 4.228,
+                                  "Actual Rows": 311,
+                                  "Actual Loops": 1,
+                                  "Output": ["pcc.available_colors", "pcc.product_id"],
+                                  "Hash Buckets": 1024,
+                                  "Original Hash Buckets": 1024,
+                                  "Hash Batches": 1,
+                                  "Original Hash Batches": 1,
+                                  "Peak Memory Usage": 31,
+                                  "Shared Hit Blocks": 1295,
+                                  "Shared Read Blocks": 0,
+                                  "Shared Dirtied Blocks": 0,
+                                  "Shared Written Blocks": 0,
+                                  "Local Hit Blocks": 0,
+                                  "Local Read Blocks": 0,
+                                  "Local Dirtied Blocks": 0,
+                                  "Local Written Blocks": 0,
+                                  "Temp Read Blocks": 0,
+                                  "Temp Written Blocks": 0,
+                                  "I/O Read Time": 0.000,
+                                  "I/O Write Time": 0.000,
+                                  "Plans": [
+                                    {
+                                      "Node Type": "CTE Scan",
+                                      "Parent Relationship": "Outer",
+                                      "CTE Name": "product_color_classifications",
+                                      "Alias": "pcc",
+                                      "Startup Cost": 0.00,
+                                      "Total Cost": 3.52,
+                                      "Plan Rows": 176,
+                                      "Plan Width": 36,
+                                      "Actual Startup Time": 2.801,
+                                      "Actual Total Time": 4.136,
+                                      "Actual Rows": 311,
+                                      "Actual Loops": 1,
+                                      "Output": ["pcc.available_colors", "pcc.product_id"],
+                                      "Shared Hit Blocks": 1295,
+                                      "Shared Read Blocks": 0,
+                                      "Shared Dirtied Blocks": 0,
+                                      "Shared Written Blocks": 0,
+                                      "Local Hit Blocks": 0,
+                                      "Local Read Blocks": 0,
+                                      "Local Dirtied Blocks": 0,
+                                      "Local Written Blocks": 0,
+                                      "Temp Read Blocks": 0,
+                                      "Temp Written Blocks": 0,
+                                      "I/O Read Time": 0.000,
+                                      "I/O Write Time": 0.000
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Hash",
+                      "Parent Relationship": "Inner",
+                      "Startup Cost": 3.52,
+                      "Total Cost": 3.52,
+                      "Plan Rows": 176,
+                      "Plan Width": 36,
+                      "Actual Startup Time": 2.018,
+                      "Actual Total Time": 2.018,
+                      "Actual Rows": 352,
+                      "Actual Loops": 1,
+                      "Output": ["vc.color", "vc.variant_id"],
+                      "Hash Buckets": 1024,
+                      "Original Hash Buckets": 1024,
+                      "Hash Batches": 1,
+                      "Original Hash Batches": 1,
+                      "Peak Memory Usage": 26,
+                      "Shared Hit Blocks": 1287,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "CTE Scan",
+                          "Parent Relationship": "Outer",
+                          "CTE Name": "variant_colors",
+                          "Alias": "vc",
+                          "Startup Cost": 0.00,
+                          "Total Cost": 3.52,
+                          "Plan Rows": 176,
+                          "Plan Width": 36,
+                          "Actual Startup Time": 0.358,
+                          "Actual Total Time": 1.945,
+                          "Actual Rows": 352,
+                          "Actual Loops": 1,
+                          "Output": ["vc.color", "vc.variant_id"],
+                          "Shared Hit Blocks": 1287,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Planning Time": 4.462,
+    "Triggers": [
+    ],
+    "Execution Time": 14.391
+  }
+]
+`
+
+const plan5_source = `
+[
+  {
+    "Plan": {
+      "Node Type": "Limit",
+      "Startup Cost": 17024.84,
+      "Total Cost": 17024.87,
+      "Plan Rows": 10,
+      "Plan Width": 133,
+      "Actual Startup Time": 725.773,
+      "Actual Total Time": 725.775,
+      "Actual Rows": 10,
+      "Actual Loops": 1,
+      "Output": ["c.state", "cat.categoryname", "(sum(o.netamount))", "(sum(o.totalamount))"],
+      "Shared Hit Blocks": 23,
+      "Shared Read Blocks": 1392,
+      "Shared Dirtied Blocks": 0,
+      "Shared Written Blocks": 0,
+      "Local Hit Blocks": 0,
+      "Local Read Blocks": 0,
+      "Local Dirtied Blocks": 0,
+      "Local Written Blocks": 0,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0,
+      "I/O Read Time": 0.000,
+      "I/O Write Time": 0.000,
+      "Plans": [
+        {
+          "Node Type": "Sort",
+          "Parent Relationship": "Outer",
+          "Startup Cost": 17024.84,
+          "Total Cost": 17026.88,
+          "Plan Rows": 816,
+          "Plan Width": 133,
+          "Actual Startup Time": 725.771,
+          "Actual Total Time": 725.772,
+          "Actual Rows": 11,
+          "Actual Loops": 1,
+          "Output": ["c.state", "cat.categoryname", "(sum(o.netamount))", "(sum(o.totalamount))"],
+          "Sort Key": ["c.state", "(sum(o.totalamount))"],
+          "Sort Method": "top-N heapsort",
+          "Sort Space Used": 25,
+          "Sort Space Type": "Memory",
+          "Shared Hit Blocks": 23,
+          "Shared Read Blocks": 1392,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "I/O Read Time": 0.000,
+          "I/O Write Time": 0.000,
+          "Plans": [
+            {
+              "Node Type": "Aggregate",
+              "Strategy": "Hashed",
+              "Parent Relationship": "Outer",
+              "Startup Cost": 16994.41,
+              "Total Cost": 17006.65,
+              "Plan Rows": 816,
+              "Plan Width": 133,
+              "Actual Startup Time": 723.877,
+              "Actual Total Time": 724.417,
+              "Actual Rows": 832,
+              "Actual Loops": 1,
+              "Output": ["c.state", "cat.categoryname", "sum(o.netamount)", "sum(o.totalamount)"],
+              "Group Key": ["c.state", "cat.categoryname"],
+              "Shared Hit Blocks": 13,
+              "Shared Read Blocks": 1392,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "I/O Read Time": 0.000,
+              "I/O Write Time": 0.000,
+              "Plans": [
+                {
+                  "Node Type": "Hash Join",
+                  "Parent Relationship": "Outer",
+                  "Join Type": "Inner",
+                  "Startup Cost": 4966.48,
+                  "Total Cost": 13742.65,
+                  "Plan Rows": 325176,
+                  "Plan Width": 133,
+                  "Actual Startup Time": 118.314,
+                  "Actual Total Time": 354.285,
+                  "Actual Rows": 383270,
+                  "Actual Loops": 1,
+                  "Output": ["c.state", "o.netamount", "o.totalamount", "cat.categoryname"],
+                  "Hash Cond": "(o.orderid = ch.orderid)",
+                  "Shared Hit Blocks": 13,
+                  "Shared Read Blocks": 1392,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "I/O Read Time": 0.000,
+                  "I/O Write Time": 0.000,
+                  "Plans": [
+                    {
+                      "Node Type": "Hash Join",
+                      "Parent Relationship": "Outer",
+                      "Join Type": "Inner",
+                      "Startup Cost": 834.86,
+                      "Total Cost": 4539.11,
+                      "Plan Rows": 60350,
+                      "Plan Width": 138,
+                      "Actual Startup Time": 22.651,
+                      "Actual Total Time": 133.484,
+                      "Actual Rows": 60350,
+                      "Actual Loops": 1,
+                      "Output": ["o.netamount", "o.totalamount", "o.orderid", "ol.orderid", "cat.categoryname"],
+                      "Hash Cond": "(ol.orderid = o.orderid)",
+                      "Shared Hit Blocks": 9,
+                      "Shared Read Blocks": 581,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "Hash Join",
+                          "Parent Relationship": "Outer",
+                          "Join Type": "Inner",
+                          "Startup Cost": 464.86,
+                          "Total Cost": 2962.11,
+                          "Plan Rows": 60350,
+                          "Plan Width": 122,
+                          "Actual Startup Time": 12.467,
+                          "Actual Total Time": 85.647,
+                          "Actual Rows": 60350,
+                          "Actual Loops": 1,
+                          "Output": ["ol.orderid", "cat.categoryname"],
+                          "Hash Cond": "(ol.prod_id = p.prod_id)",
+                          "Shared Hit Blocks": 4,
+                          "Shared Read Blocks": 483,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000,
+                          "Plans": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Parent Relationship": "Outer",
+                              "Relation Name": "orderlines",
+                              "Schema": "public",
+                              "Alias": "ol",
+                              "Startup Cost": 0.00,
+                              "Total Cost": 988.50,
+                              "Plan Rows": 60350,
+                              "Plan Width": 8,
+                              "Actual Startup Time": 0.005,
+                              "Actual Total Time": 14.054,
+                              "Actual Rows": 60350,
+                              "Actual Loops": 1,
+                              "Output": ["ol.orderlineid", "ol.orderid", "ol.prod_id", "ol.quantity", "ol.orderdate"],
+                              "Shared Hit Blocks": 2,
+                              "Shared Read Blocks": 383,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000
+                            },
+                            {
+                              "Node Type": "Hash",
+                              "Parent Relationship": "Inner",
+                              "Startup Cost": 339.86,
+                              "Total Cost": 339.86,
+                              "Plan Rows": 10000,
+                              "Plan Width": 122,
+                              "Actual Startup Time": 12.446,
+                              "Actual Total Time": 12.446,
+                              "Actual Rows": 10000,
+                              "Actual Loops": 1,
+                              "Output": ["p.prod_id", "cat.categoryname"],
+                              "Hash Buckets": 1024,
+                              "Hash Batches": 1,
+                              "Original Hash Batches": 1,
+                              "Peak Memory Usage": 425,
+                              "Shared Hit Blocks": 2,
+                              "Shared Read Blocks": 100,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000,
+                              "Plans": [
+                                {
+                                  "Node Type": "Hash Join",
+                                  "Parent Relationship": "Outer",
+                                  "Join Type": "Inner",
+                                  "Startup Cost": 1.36,
+                                  "Total Cost": 339.86,
+                                  "Plan Rows": 10000,
+                                  "Plan Width": 122,
+                                  "Actual Startup Time": 0.283,
+                                  "Actual Total Time": 9.015,
+                                  "Actual Rows": 10000,
+                                  "Actual Loops": 1,
+                                  "Output": ["p.prod_id", "cat.categoryname"],
+                                  "Hash Cond": "(p.category = cat.category)",
+                                  "Shared Hit Blocks": 2,
+                                  "Shared Read Blocks": 100,
+                                  "Shared Dirtied Blocks": 0,
+                                  "Shared Written Blocks": 0,
+                                  "Local Hit Blocks": 0,
+                                  "Local Read Blocks": 0,
+                                  "Local Dirtied Blocks": 0,
+                                  "Local Written Blocks": 0,
+                                  "Temp Read Blocks": 0,
+                                  "Temp Written Blocks": 0,
+                                  "I/O Read Time": 0.000,
+                                  "I/O Write Time": 0.000,
+                                  "Plans": [
+                                    {
+                                      "Node Type": "Seq Scan",
+                                      "Parent Relationship": "Outer",
+                                      "Relation Name": "products",
+                                      "Schema": "public",
+                                      "Alias": "p",
+                                      "Startup Cost": 0.00,
+                                      "Total Cost": 201.00,
+                                      "Plan Rows": 10000,
+                                      "Plan Width": 8,
+                                      "Actual Startup Time": 0.003,
+                                      "Actual Total Time": 4.330,
+                                      "Actual Rows": 10000,
+                                      "Actual Loops": 1,
+                                      "Output": ["p.prod_id", "p.category", "p.title", "p.actor", "p.price", "p.special", "p.common_prod_id"],
+                                      "Shared Hit Blocks": 2,
+                                      "Shared Read Blocks": 99,
+                                      "Shared Dirtied Blocks": 0,
+                                      "Shared Written Blocks": 0,
+                                      "Local Hit Blocks": 0,
+                                      "Local Read Blocks": 0,
+                                      "Local Dirtied Blocks": 0,
+                                      "Local Written Blocks": 0,
+                                      "Temp Read Blocks": 0,
+                                      "Temp Written Blocks": 0,
+                                      "I/O Read Time": 0.000,
+                                      "I/O Write Time": 0.000
+                                    },
+                                    {
+                                      "Node Type": "Hash",
+                                      "Parent Relationship": "Inner",
+                                      "Startup Cost": 1.16,
+                                      "Total Cost": 1.16,
+                                      "Plan Rows": 16,
+                                      "Plan Width": 122,
+                                      "Actual Startup Time": 0.265,
+                                      "Actual Total Time": 0.265,
+                                      "Actual Rows": 16,
+                                      "Actual Loops": 1,
+                                      "Output": ["cat.categoryname", "cat.category"],
+                                      "Hash Buckets": 1024,
+                                      "Hash Batches": 1,
+                                      "Original Hash Batches": 1,
+                                      "Peak Memory Usage": 1,
+                                      "Shared Hit Blocks": 0,
+                                      "Shared Read Blocks": 1,
+                                      "Shared Dirtied Blocks": 0,
+                                      "Shared Written Blocks": 0,
+                                      "Local Hit Blocks": 0,
+                                      "Local Read Blocks": 0,
+                                      "Local Dirtied Blocks": 0,
+                                      "Local Written Blocks": 0,
+                                      "Temp Read Blocks": 0,
+                                      "Temp Written Blocks": 0,
+                                      "I/O Read Time": 0.000,
+                                      "I/O Write Time": 0.000,
+                                      "Plans": [
+                                        {
+                                          "Node Type": "Seq Scan",
+                                          "Parent Relationship": "Outer",
+                                          "Relation Name": "categories",
+                                          "Schema": "public",
+                                          "Alias": "cat",
+                                          "Startup Cost": 0.00,
+                                          "Total Cost": 1.16,
+                                          "Plan Rows": 16,
+                                          "Plan Width": 122,
+                                          "Actual Startup Time": 0.250,
+                                          "Actual Total Time": 0.252,
+                                          "Actual Rows": 16,
+                                          "Actual Loops": 1,
+                                          "Output": ["cat.categoryname", "cat.category"],
+                                          "Shared Hit Blocks": 0,
+                                          "Shared Read Blocks": 1,
+                                          "Shared Dirtied Blocks": 0,
+                                          "Shared Written Blocks": 0,
+                                          "Local Hit Blocks": 0,
+                                          "Local Read Blocks": 0,
+                                          "Local Dirtied Blocks": 0,
+                                          "Local Written Blocks": 0,
+                                          "Temp Read Blocks": 0,
+                                          "Temp Written Blocks": 0,
+                                          "I/O Read Time": 0.000,
+                                          "I/O Write Time": 0.000
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Hash",
+                          "Parent Relationship": "Inner",
+                          "Startup Cost": 220.00,
+                          "Total Cost": 220.00,
+                          "Plan Rows": 12000,
+                          "Plan Width": 16,
+                          "Actual Startup Time": 10.159,
+                          "Actual Total Time": 10.159,
+                          "Actual Rows": 12000,
+                          "Actual Loops": 1,
+                          "Output": ["o.netamount", "o.totalamount", "o.orderid"],
+                          "Hash Buckets": 2048,
+                          "Hash Batches": 1,
+                          "Original Hash Batches": 1,
+                          "Peak Memory Usage": 609,
+                          "Shared Hit Blocks": 2,
+                          "Shared Read Blocks": 98,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000,
+                          "Plans": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Parent Relationship": "Outer",
+                              "Relation Name": "orders",
+                              "Schema": "public",
+                              "Alias": "o",
+                              "Startup Cost": 0.00,
+                              "Total Cost": 220.00,
+                              "Plan Rows": 12000,
+                              "Plan Width": 16,
+                              "Actual Startup Time": 0.008,
+                              "Actual Total Time": 5.548,
+                              "Actual Rows": 12000,
+                              "Actual Loops": 1,
+                              "Output": ["o.netamount", "o.totalamount", "o.orderid"],
+                              "Shared Hit Blocks": 2,
+                              "Shared Read Blocks": 98,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Hash",
+                      "Parent Relationship": "Inner",
+                      "Startup Cost": 3377.25,
+                      "Total Cost": 3377.25,
+                      "Plan Rows": 60350,
+                      "Plan Width": 7,
+                      "Actual Startup Time": 95.610,
+                      "Actual Total Time": 95.610,
+                      "Actual Rows": 60350,
+                      "Actual Loops": 1,
+                      "Output": ["c.state", "ch.orderid"],
+                      "Hash Buckets": 8192,
+                      "Hash Batches": 1,
+                      "Original Hash Batches": 1,
+                      "Peak Memory Usage": 2239,
+                      "Shared Hit Blocks": 4,
+                      "Shared Read Blocks": 811,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "I/O Read Time": 0.000,
+                      "I/O Write Time": 0.000,
+                      "Plans": [
+                        {
+                          "Node Type": "Hash Join",
+                          "Parent Relationship": "Outer",
+                          "Join Type": "Inner",
+                          "Startup Cost": 938.00,
+                          "Total Cost": 3377.25,
+                          "Plan Rows": 60350,
+                          "Plan Width": 7,
+                          "Actual Startup Time": 24.115,
+                          "Actual Total Time": 74.639,
+                          "Actual Rows": 60350,
+                          "Actual Loops": 1,
+                          "Output": ["c.state", "ch.orderid"],
+                          "Hash Cond": "(ch.customerid = c.customerid)",
+                          "Shared Hit Blocks": 4,
+                          "Shared Read Blocks": 811,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "I/O Read Time": 0.000,
+                          "I/O Write Time": 0.000,
+                          "Plans": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Parent Relationship": "Outer",
+                              "Relation Name": "cust_hist",
+                              "Schema": "public",
+                              "Alias": "ch",
+                              "Startup Cost": 0.00,
+                              "Total Cost": 930.50,
+                              "Plan Rows": 60350,
+                              "Plan Width": 8,
+                              "Actual Startup Time": 0.294,
+                              "Actual Total Time": 11.812,
+                              "Actual Rows": 60350,
+                              "Actual Loops": 1,
+                              "Output": ["ch.customerid", "ch.orderid", "ch.prod_id"],
+                              "Shared Hit Blocks": 2,
+                              "Shared Read Blocks": 325,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000
+                            },
+                            {
+                              "Node Type": "Hash",
+                              "Parent Relationship": "Inner",
+                              "Startup Cost": 688.00,
+                              "Total Cost": 688.00,
+                              "Plan Rows": 20000,
+                              "Plan Width": 7,
+                              "Actual Startup Time": 23.786,
+                              "Actual Total Time": 23.786,
+                              "Actual Rows": 20000,
+                              "Actual Loops": 1,
+                              "Output": ["c.state", "c.customerid"],
+                              "Hash Buckets": 2048,
+                              "Hash Batches": 1,
+                              "Original Hash Batches": 1,
+                              "Peak Memory Usage": 743,
+                              "Shared Hit Blocks": 2,
+                              "Shared Read Blocks": 486,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "I/O Read Time": 0.000,
+                              "I/O Write Time": 0.000,
+                              "Plans": [
+                                {
+                                  "Node Type": "Seq Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Relation Name": "customers",
+                                  "Schema": "public",
+                                  "Alias": "c",
+                                  "Startup Cost": 0.00,
+                                  "Total Cost": 688.00,
+                                  "Plan Rows": 20000,
+                                  "Plan Width": 7,
+                                  "Actual Startup Time": 0.005,
+                                  "Actual Total Time": 16.771,
+                                  "Actual Rows": 20000,
+                                  "Actual Loops": 1,
+                                  "Output": ["c.state", "c.customerid"],
+                                  "Shared Hit Blocks": 2,
+                                  "Shared Read Blocks": 486,
+                                  "Shared Dirtied Blocks": 0,
+                                  "Shared Written Blocks": 0,
+                                  "Local Hit Blocks": 0,
+                                  "Local Read Blocks": 0,
+                                  "Local Dirtied Blocks": 0,
+                                  "Local Written Blocks": 0,
+                                  "Temp Read Blocks": 0,
+                                  "Temp Written Blocks": 0,
+                                  "I/O Read Time": 0.000,
+                                  "I/O Write Time": 0.000
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Planning Time": 26.171,
+    "Triggers": [
+    ],
+    "Execution Time": 726.800
+  }
+]
+`
+
+const plan5_query = `/* An aggregate with four joins */
+SELECT c.state,
+  cat.categoryname,
+  sum(o.netamount),
+  sum(o.totalamount)
+FROM customers c
+  INNER JOIN cust_hist ch ON c.customerid = ch.customerid
+  INNER JOIN orders o ON ch.orderid = o.orderid
+  INNER JOIN orderlines ol ON ol.orderid = o.orderid
+  INNER JOIN products p ON ol.prod_id = p.prod_id
+  INNER JOIN categories cat ON p.category = cat.category
+GROUP BY c.state, cat.categoryname
+ORDER BY c.state, sum(o.totalamount) DESC LIMIT 10 OFFSET 1;
+`
+
+const plan6_source = `"Limit  (cost=1.27..3878.21 rows=5 width=172) (actual time=0.245..2.544 rows=5 loops=1)"
+"  ->  Nested Loop  (cost=1.27..48075.41 rows=62 width=172) (actual time=0.244..2.539 rows=5 loops=1)"
+"        ->  Nested Loop  (cost=0.84..2420.02 rows=65 width=85) (actual time=0.137..0.151 rows=5 loops=1)"
+"              ->  Nested Loop  (cost=0.42..2356.20 rows=5 width=85) (actual time=0.118..0.119 rows=1 loops=1)"
+"                    ->  Seq Scan on top_challenge_list  (cost=0.00..30.26 rows=58 width=57) (actual time=0.036..0.043 rows=4 loops=1)"
+"                          Filter: (is_active AND ((template_challenge)::text = 'top_turnover'::text))"
+"                          Rows Removed by Filter: 26"
+"                    ->  Index Scan using ref_people_xperf1 on ref_people  (cost=0.42..40.09 rows=1 width=28) (actual time=0.017..0.017 rows=0 loops=4)"
+"                          Index Cond: (id_int = top_challenge_list.id_int_manager)"
+"                          Filter: (is_active AND (id_statut <> 2) AND (COALESCE(id_qualification, 1) >= 1) AND (id_type = 5))"
+"                          Rows Removed by Filter: 4"
+"              ->  Index Scan using ref_genealogy_xperf5 on ref_genealogy  (cost=0.42..12.56 rows=20 width=8) (actual time=0.017..0.026 rows=5 loops=1)"
+"                    Index Cond: (id_int = ref_people.id_int)"
+"                    Filter: is_active"
+"        ->  Index Scan using ref_people_xperf1 on ref_people filleuls  (cost=0.42..0.82 rows=1 width=47) (actual time=0.012..0.030 rows=1 loops=5)"
+"              Index Cond: (id_int = ref_genealogy.id_int_level)"
+"              Filter: (is_active AND (id_type = ANY ('{5,14}'::integer[])))"
+"              Rows Removed by Filter: 7"
+"        SubPlan 1"
+"          ->  Aggregate  (cost=361.46..361.47 rows=1 width=8) (actual time=0.233..0.233 rows=1 loops=5)"
+"                ->  Index Scan using ref_transaction_xperf4 on ref_transaction  (cost=0.42..361.46 rows=1 width=8) (actual time=0.155..0.229 rows=0 loops=5)"
+"                      Index Cond: (id_int_agent_out = filleuls.id_int)"
+"                      Filter: (is_active AND (date_acte IS NOT NULL) AND (date_acte >= top_challenge_list.date_deb_challenge) AND (date_acte <= top_challenge_list.date_fin_challenge) AND (id_type_transaction = 1))"
+"                      Rows Removed by Filter: 100"
+"        SubPlan 2"
+"          ->  Aggregate  (cost=373.99..374.00 rows=1 width=8) (actual time=0.177..0.178 rows=1 loops=5)"
+"                ->  Index Scan using ref_transaction_xperf3 on ref_transaction ref_transaction_1  (cost=0.42..373.99 rows=1 width=8) (actual time=0.117..0.174 rows=0 loops=5)"
+"                      Index Cond: (id_int_agent_in = filleuls.id_int)"
+"                      Filter: (is_active AND (date_acte IS NOT NULL) AND (date_acte >= top_challenge_list.date_deb_challenge) AND (date_acte <= top_challenge_list.date_fin_challenge) AND (id_type_transaction = 1))"
+"                      Rows Removed by Filter: 102"
+"Planning Time: 2.916 ms"
+"Execution Time: 2.900 ms"`
+
+const plan7_source = String.raw`
+                                                                         QUERY PLAN
+═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ Merge on public.t1  (cost=1824058.07..1336099696.57 rows=0 width=0) (actual time=16254.981..16254.984 rows=0 loops=1)
+   Tuples: deleted=2499999
+   Buffers: shared hit=5002762 read=51294 dirtied=13514 written=8006, local hit=7541658 read=25779 dirtied=46608 written=67441, temp read=98262 written=150446
+   WAL: records=2500630 fpi=8047 bytes=200763653
+   CTE t2bb
+     ->  Update on pg_temp.t2  (cost=0.00..54898.62 rows=2912462 width=14) (actual time=244.180..2939.572 rows=2499999 loops=1)
+           Output: t2.i, t2.x, t2.filler
+           Buffers: local hit=7541658 read=25779 dirtied=46608 written=67441
+           ->  Seq Scan on pg_temp.t2  (cost=0.00..54898.62 rows=2912462 width=14) (actual time=226.341..690.083 rows=2499999 loops=1)
+                 Output: NULL::double precision, t2.ctid
+                 Buffers: local read=25774 dirtied=25774 written=25771
+   CTE t2b
+     ->  Sort  (cost=650151.19..657432.35 rows=2912462 width=52) (actual time=5387.848..5800.321 rows=2499999 loops=1)
+           Output: t2bb.i, t2bb.x, t2bb.filler, (random())
+           Sort Key: (random())
+           Sort Method: external merge  Disk: 141936kB
+           Buffers: shared hit=3, local hit=7541658 read=25779 dirtied=46608 written=67441, temp read=35480 written=49892
+           ->  CTE Scan on t2bb  (cost=0.00..65530.39 rows=2912462 width=52) (actual time=244.188..3856.231 rows=2499999 loops=1)
+                 Output: t2bb.i, t2bb.x, t2bb.filler, random()
+                 Buffers: local hit=7541658 read=25779 dirtied=46608 written=67441, temp written=14343
+   ->  Merge Left Join  (cost=1111727.10..1335387365.61 rows=88949720377 width=42) (actual time=10989.361..12903.243 rows=2499999 loops=1)
+         Output: t1.ctid, t2b.i, t2b.filler
+         Merge Cond: (t2b.i = t1.i)
+         Buffers: shared hit=15647 read=38411 dirtied=631, local hit=7541658 read=25779 dirtied=46608 written=67441, temp read=98262 written=150446
+         WAL: records=631 fpi=631 bytes=5182403
+         ->  Sort  (cost=530235.49..537516.64 rows=2912462 width=36) (actual time=7556.652..7928.837 rows=2499999 loops=1)
+               Output: t2b.i, t2b.filler
+               Sort Key: t2b.i
+               Sort Method: external merge  Disk: 115072kB
+               Buffers: shared hit=3, local hit=7541658 read=25779 dirtied=46608 written=67441, temp read=64238 written=96414
+               ->  CTE Scan on t2b  (cost=0.00..58249.24 rows=2912462 width=36) (actual time=5387.869..6356.641 rows=2499999 loops=1)
+                     Output: t2b.i, t2b.filler
+                     Buffers: shared hit=3, local hit=7541658 read=25779 dirtied=46608 written=67441, temp read=35480 written=67592
+         ->  Materialize  (cost=1012385.82..1042926.89 rows=6108215 width=10) (actual time=3432.664..4124.070 rows=2500000 loops=1)
+               Output: t1.ctid, t1.i
+               Buffers: shared hit=15644 read=38411 dirtied=631, temp read=34024 written=54032
+               WAL: records=631 fpi=631 bytes=5182403
+               ->  Sort  (cost=1012385.82..1027656.36 rows=6108215 width=10) (actual time=3432.659..3773.369 rows=2500000 loops=1)
+                     Output: t1.ctid, t1.i
+                     Sort Key: t1.i
+                     Sort Method: external merge  Disk: 215352kB
+                     Buffers: shared hit=15644 read=38411 dirtied=631, temp read=34024 written=54032
+                     WAL: records=631 fpi=631 bytes=5182403
+                     ->  Seq Scan on public.t1  (cost=0.00..115137.15 rows=6108215 width=10) (actual time=0.031..1073.371 rows=10000000 loops=1)
+                           Output: t1.ctid, t1.i
+                           Buffers: shared hit=15644 read=38411 dirtied=631
+                           WAL: records=631 fpi=631 bytes=5182403
+ Planning:
+   Buffers: shared hit=21 read=7
+ Planning Time: 0.237 ms
+ JIT:
+   Functions: 20
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+   Timing: Generation 0.948 ms, Inlining 76.071 ms, Optimization 97.998 ms, Emission 70.028 ms, Total 245.045 ms
+ Execution Time: 16365.829 ms
+(55 lignes)
+`
+
+const plan7_query = String.raw`
+-- create a plan with all written/buffers/shared/local/temp at once
+
+\timing off
+
+\set NB 10000000
+\set MINIMUM :NB/4
+
+
+SET synchronous_commit TO off;
+
+\set ON_ERROR_STOP 1
+
+\set ECHO queries
+
+DROP TABLE  IF EXISTS t1, t2 ;
+
+CREATE TABLE t1 (i int GENERATED BY DEFAULT AS IDENTITY, x float DEFAULT random(), filler text DEFAULT NULL) ;
+
+CREATE TEMP TABLE t2 (LIKE t1);
+VACUUM (ANALYZE,VERBOSE) t1,t2;
+
+\d+ t1
+\d+ t2
+
+INSERT INTO t1 SELECT FROM generate_series (1,:NB) i ;
+
+INSERT INTO t2 SELECT i,x,md5(i::text) FROM t1 WHERE i < :MINIMUM ;
+
+\dt+ t?
+
+SET work_mem TO '4MB' ;
+
+\echo "Update T1 from a modified version of T2"
+
+EXPLAIN (ANALYZE,BUFFERS,VERBOSE,SETTINGS,WAL)
+WITH t2bb AS ( UPDATE t2 SET x=null RETURNING * ),
+t2b AS ( SELECT * FROM t2bb ORDER BY random())
+MERGE INTO t1
+USING t2b
+ON (t1.i=t2b.i)
+WHEN NOT MATCHED AND t2b.i >= :MINIMUM THEN
+  INSERT VALUES (t2b.i, null, t2b.filler)
+WHEN MATCHED AND t2b.i < :MINIMUM THEN
+  DELETE
+WHEN MATCHED THEN
+  UPDATE SET filler=t2b.filler, x=null ;
+`
+
+const plan9_source = `Append (actual time=102.409..302.675 rows=3 loops=1)
+  CTE init
+    ->  Append (actual time=102.397..302.649 rows=2 loops=1)
+          ->  Function Scan on pg_sleep pg_sleep_for (actual time=102.396..102.398 rows=1 loops=1)
+          ->  Function Scan on pg_sleep pg_sleep_for_1 (actual time=200.243..200.245 rows=1 loops=1)
+  ->  Limit (actual time=102.407..102.409 rows=1 loops=1)
+        ->  CTE Scan on init init_1 (actual time=102.402..102.402 rows=1 loops=1)
+  ->  CTE Scan on init (actual time=0.001..200.256 rows=2 loops=1)
+Planning Time: 47.003 ms
+Execution Time: 303.905 ms
+`
+
+const plan9_query = `WITH init AS (
+ SELECT * FROM pg_sleep_for('100ms')
+ UNION ALL
+ SELECT * FROM pg_sleep_for('200ms')
+)
+(SELECT * FROM init LIMIT 1)
+UNION ALL
+(SELECT * FROM init);
+`
+
+const plan8_source = String.raw`{
   "Plan": {
     "Node Type": "Hash Join",
     "Parallel Aware": false,
@@ -2828,3 +5532,416 @@
     ]
   }
 }
+`
+
+const plan_asmany_source =` Merge on public.tb  (cost=262602.88..306621.45 rows=0 width=0) (actual time=7798.118..7798.122 rows=0 loops=1)
+   Tuples: inserted=9995 updated=9679 deleted=326
+   Buffers: shared hit=7731564 read=22226 dirtied=27295 written=38115, temp read=9593 written=27592
+   I/O Timings: shared read=22.960 write=186.426, temp read=17.017 write=119.861
+   WAL: records=5049414 fpi=5192 bytes=416135793
+   CTE tbl
+     ->  Insert on pg_temp.tblog  (cost=8704.82..8705.65 rows=0 width=0) (actual time=509.761..509.761 rows=0 loops=1)
+           Buffers: shared hit=3 read=5448 written=5276, local hit=494411 dirtied=2644 written=4269, temp read=1559 written=1568
+           I/O Timings: shared read=10.578 write=13.760, local write=54.430, temp read=2.942 write=6.888
+           ->  Sort  (cost=8704.82..8705.65 rows=333 width=12) (actual time=286.491..347.529 rows=489127 loops=1)
+                 Output: tb_1.i, tb_1.x
+                 Sort Key: tb_1.x
+                 Sort Method: external merge  Disk: 12472kB
+                 Buffers: shared hit=3 read=5448 written=5276, temp read=1559 written=1568
+                 I/O Timings: shared read=10.578 write=13.760, temp read=2.942 write=6.888
+                 ->  Bitmap Heap Scan on public.tb tb_1  (cost=180.48..8690.86 rows=333 width=12) (actual time=30.582..122.685 rows=489127 loops=1)
+                       Output: tb_1.i, tb_1.x
+                       Recheck Cond: ((tb_1.i >= 4000000) AND (tb_1.i <= 5000000))
+                       Filter: ((mod(tb_1.i, 99) > 0) AND (mod(tb_1.i, 98) > 0) AND (mod(tb_1.i, 98) > 0) AND ((tb_1.i + 1) > 0))
+                       Rows Removed by Filter: 10068
+                       Heap Blocks: exact=3181
+                       Buffers: shared hit=3 read=5448 written=5276
+                       I/O Timings: shared read=10.578 write=13.760
+                       ->  Bitmap Index Scan on tb_pkey  (cost=0.00..180.40 rows=8997 width=0) (actual time=30.251..30.251 rows=499195 loops=1)
+                             Index Cond: ((tb_1.i >= 4000000) AND (tb_1.i <= 5000000))
+                             Buffers: shared hit=2 read=2268 written=2181
+                             I/O Timings: shared read=4.315 write=5.384
+   CTE tabb
+     ->  Update on public.ta  (cost=96.13..93079.47 rows=1667044 width=18) (actual time=11.270..6418.935 rows=2499947 loops=1)
+           Output: ta_1.i, ta_1.x, ta_1.filler
+           Update on public.ta1 ta_1
+           Update on public.ta2 ta_2
+           Buffers: shared hit=7542762 read=22126 dirtied=26988 written=37604
+           I/O Timings: shared read=22.722 write=184.053
+           WAL: records=4999894 fpi=5162 bytes=412139886
+           InitPlan 3
+             ->  Result  (cost=96.12..96.13 rows=1 width=4) (actual time=0.052..0.053 rows=1 loops=1)
+                   Output: ((InitPlan 2).col1 / 2)
+                   Buffers: shared hit=2 read=2
+                   I/O Timings: shared read=0.007
+                   InitPlan 2
+                     ->  Limit  (cost=0.43..96.12 rows=1 width=4) (actual time=0.048..0.048 rows=1 loops=1)
+                           Output: tb_2.i
+                           Buffers: shared hit=2 read=2
+                           I/O Timings: shared read=0.007
+                           ->  Index Only Scan Backward using tb_pkey on public.tb tb_2  (cost=0.43..95690.29 rows=1000 width=4) (actual time=0.045..0.045 rows=1 loops=1)
+                                 Output: tb_2.i
+                                 Filter: (((tb_2.i + 1) > 0) AND ((tb_2.i + 2) > 0) AND (mod(tb_2.i, 99) = 0))
+                                 Rows Removed by Filter: 38
+                                 Heap Fetches: 39
+                                 Buffers: shared hit=2 read=2
+                                 I/O Timings: shared read=0.007
+           ->  Append  (cost=0.00..92983.35 rows=1667044 width=18) (actual time=0.078..650.328 rows=2499947 loops=1)
+                 Buffers: shared hit=2 read=22126 written=8891
+                 I/O Timings: shared read=22.722 write=25.883
+                 ->  Seq Scan on public.ta1 ta_1  (cost=0.00..84624.00 rows=1666667 width=18) (actual time=0.016..486.444 rows=2499947 loops=1)
+                       Output: '2'::double precision, ta_1.tableoid, ta_1.ctid
+                       Filter: (ta_1.i < (InitPlan 3).col1)
+                       Rows Removed by Filter: 2500053
+                       Buffers: shared read=22124 written=8891
+                       I/O Timings: shared read=22.715 write=25.883
+                 ->  Seq Scan on public.ta2 ta_2  (cost=0.00..24.12 rows=377 width=18) (never executed)
+                       Output: '2'::double precision, ta_2.tableoid, ta_2.ctid
+                       Filter: (ta_2.i < (InitPlan 3).col1)
+   CTE tab
+     ->  Limit  (cost=160767.33..160817.33 rows=20000 width=44) (actual time=7700.673..7704.219 rows=20000 loops=1)
+           Output: tabb.i, tabb.x, tabb.filler
+           Buffers: shared hit=7542762 read=22126 dirtied=26988 written=37604, temp read=9593 written=27592
+           I/O Timings: shared read=22.722 write=184.053, temp read=17.017 write=119.861
+           WAL: records=4999894 fpi=5162 bytes=412139886
+           ->  Sort  (cost=160767.33..164934.94 rows=1667044 width=44) (actual time=7563.572..7565.984 rows=20000 loops=1)
+                 Output: tabb.i, tabb.x, tabb.filler
+                 Sort Key: tabb.x
+                 Sort Method: external merge  Disk: 73440kB
+                 Buffers: shared hit=7542762 read=22126 dirtied=26988 written=37604, temp read=9593 written=27592
+                 I/O Timings: shared read=22.722 write=184.053, temp read=17.017 write=119.861
+                 WAL: records=4999894 fpi=5162 bytes=412139886
+                 ->  CTE Scan on tabb  (cost=0.00..33340.88 rows=1667044 width=44) (actual time=11.274..7104.296 rows=2499947 loops=1)
+                       Output: tabb.i, tabb.x, tabb.filler
+                       Buffers: shared hit=7542762 read=22126 dirtied=26988 written=37604, temp written=9155
+                       I/O Timings: shared read=22.722 write=184.053, temp write=58.774
+                       WAL: records=4999894 fpi=5162 bytes=412139886
+   ->  Nested Loop Left Join  (cost=0.43..44019.00 rows=20000 width=102) (actual time=7700.749..7733.331 rows=20000 loops=1)
+         Output: tb.ctid, tab.i, tab.filler, tab.*
+         Inner Unique: true
+         Buffers: shared hit=7612704 read=22189 dirtied=26988 written=37663, temp read=9593 written=27592
+         I/O Timings: shared read=22.871 write=184.243, temp read=17.017 write=119.861
+         WAL: records=4999894 fpi=5162 bytes=412139886
+         ->  CTE Scan on tab  (cost=0.00..400.00 rows=20000 width=96) (actual time=7700.708..7709.042 rows=20000 loops=1)
+               Output: tab.i, tab.filler, tab.*
+               Buffers: shared hit=7542762 read=22126 dirtied=26988 written=37604, temp read=9593 written=27592
+               I/O Timings: shared read=22.722 write=184.053, temp read=17.017 write=119.861
+               WAL: records=4999894 fpi=5162 bytes=412139886
+         ->  Index Scan using tb_pkey on public.tb  (cost=0.43..2.18 rows=1 width=10) (actual time=0.001..0.001 rows=1 loops=20000)
+               Output: tb.ctid, tb.i
+               Index Cond: (tb.i = tab.i)
+               Buffers: shared hit=69942 read=63 written=59
+               I/O Timings: shared read=0.149 write=0.190
+ Settings: work_mem = '3MB', random_page_cost = '1.5', parallel_tuple_cost = '0', jit_above_cost = '0', jit_inline_above_cost = '0', jit_optimize_above_cost = '0'
+ Planning:
+   Buffers: shared hit=26 read=1
+   I/O Timings: shared read=0.003
+   Memory: used=165kB  allocated=264kB
+ Planning Time: 0.289 ms
+ Trigger RI_ConstraintTrigger_a_18153 for constraint tc1_fkey on tb: time=4399.335 calls=326
+ Trigger RI_ConstraintTrigger_a_18161 for constraint tc2_fkey on tc1: time=6000.010 calls=326
+ JIT:
+   Functions: 31
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+   Timing: Generation 1.340 ms (Deform 0.303 ms), Inlining 9.145 ms, Optimization 82.044 ms, Emission 57.043 ms, Total 149.572 ms
+ Serialization: time=0.000 ms  output=0kB  format=text
+ Execution Time: 18733.542 ms
+(112 lignes)
+`
+
+// Query with as many features as possible
+// Complete script: src/services/__tests__/20-as_many_features_as_possible.sql
+const plan_asmany_query = `EXPLAIN (ANALYZE,BUFFERS,VERBOSE,SETTINGS,WAL,SERIALIZE,MEMORY,FORMAT TEXT)
+WITH
+tBl  AS ( INSERT INTO tBlog SELECT i,x FROM tB
+          WHERE i BETWEEN 4000000 AND 5000000
+          AND mod(i,99)>0 AND mod(i,98)>0 AND mod(i,98)>0 and i+1>0 /* force bitmap index */
+          ORDER BY x),
+tAbb AS ( UPDATE tA SET x=2 WHERE i < (
+            SELECT max(i)/2 FROM tB  WHERE mod(i,99)=0  AND i+1>0 AND i+2>0  /* for bad stats */
+            )
+          RETURNING * ),
+tAb  AS MATERIALIZED ( SELECT * FROM tAbb ORDER BY x LIMIT 20000)
+MERGE INTO tB
+USING tAb ON (tB.i=tAb.i)
+WHEN NOT MATCHED THEN
+   INSERT VALUES (tAb.i, 0.0, '000')
+WHEN MATCHED AND tB.x > 0.97 THEN
+   DELETE  /*  will raise the ON DELETE trigger (very costly) */
+WHEN MATCHED THEN
+   UPDATE SET filler=tAb.filler
+;
+`
+
+const plan_parallel_source = `[
+  {
+    "Plan": {
+      "Node Type": "Aggregate",
+      "Strategy": "Plain",
+      "Partial Mode": "Finalize",
+      "Parallel Aware": false,
+      "Startup Cost": 144975.01,
+      "Total Cost": 144975.02,
+      "Plan Rows": 1,
+      "Plan Width": 32,
+      "Actual Startup Time": 484.97,
+      "Actual Total Time": 484.97,
+      "Actual Rows": 1,
+      "Actual Loops": 1,
+      "Output": ["sum(l_quantity)"],
+      "Plans": [
+        {
+          "Node Type": "Gather",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Startup Cost": 144974.57,
+          "Total Cost": 144974.98,
+          "Plan Rows": 4,
+          "Plan Width": 32,
+          "Actual Startup Time": 484.868,
+          "Actual Total Time": 486.428,
+          "Actual Rows": 3,
+          "Actual Loops": 1,
+          "Output": ["(PARTIAL sum(l_quantity))"],
+          "Workers Planned": 4,
+          "Workers Launched": 2,
+          "Single Copy": false,
+          "Plans": [
+            {
+              "Node Type": "Aggregate",
+              "Strategy": "Plain",
+              "Partial Mode": "Partial",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Startup Cost": 143974.57,
+              "Total Cost": 143974.58,
+              "Plan Rows": 1,
+              "Plan Width": 32,
+              "Actual Startup Time": 482.39,
+              "Actual Total Time": 482.39,
+              "Actual Rows": 1,
+              "Actual Loops": 3,
+              "Output": ["PARTIAL sum(l_quantity)"],
+              "Workers": [
+                {
+                  "Worker Number": 0,
+                  "Actual Startup Time": 481.485,
+                  "Actual Total Time": 481.485,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1
+                },
+                {
+                  "Worker Number": 1,
+                  "Actual Startup Time": 481.56,
+                  "Actual Total Time": 481.56,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1
+                }
+              ],
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": true,
+                  "Relation Name": "lineitem",
+                  "Schema": "public",
+                  "Alias": "lineitem",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 140298.89,
+                  "Plan Rows": 1470273,
+                  "Plan Width": 5,
+                  "Actual Startup Time": 0.652,
+                  "Actual Total Time": 344.447,
+                  "Actual Rows": 1962085,
+                  "Actual Loops": 3,
+                  "Output": [
+                    "l_orderkey",
+                    "l_partkey",
+                    "l_suppkey",
+                    "l_linenumber",
+                    "l_quantity",
+                    "l_extendedprice",
+                    "l_discount",
+                    "l_tax",
+                    "l_returnflag",
+                    "l_linestatus",
+                    "l_shipdate",
+                    "l_commitdate",
+                    "l_receiptdate",
+                    "l_shipinstruct",
+                    "l_shipmode",
+                    "l_comment"
+                  ],
+                  "Filter": "(lineitem.l_shipdate <= '1998-08-18 00:00:00'::timestamp without time zone)",
+                  "Rows Removed by Filter": 38320,
+                  "Workers": [
+                    {
+                      "Worker Number": 0,
+                      "Actual Startup Time": 0.414,
+                      "Actual Total Time": 344.435,
+                      "Actual Rows": 1962858,
+                      "Actual Loops": 1
+                    },
+                    {
+                      "Worker Number": 1,
+                      "Actual Startup Time": 0.441,
+                      "Actual Total Time": 344.431,
+                      "Actual Rows": 1971199,
+                      "Actual Loops": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Planning Time": 0.591,
+    "Triggers": [],
+    "Execution Time": 486.495
+  }
+]`
+
+const plan_parallel_2_query = `select
+        l_shipmode,
+        sum(case
+                when o_orderpriority = '1-URGENT'
+                        or o_orderpriority = '2-HIGH'
+                        then 1
+                else 0
+        end) as high_line_count,
+        sum(case
+                when o_orderpriority <> '1-URGENT'
+                        and o_orderpriority <> '2-HIGH'
+                        then 1
+                else 0
+        end) as low_line_count
+from
+        orders,
+        lineitem
+where
+        o_orderkey = l_orderkey
+        and l_shipmode in ('MAIL', 'AIR')
+        and l_commitdate < l_receiptdate
+        and l_shipdate < l_commitdate
+        and l_receiptdate >= date '1996-01-01'
+        and l_receiptdate < date '1996-01-01' + interval '1' year
+group by
+        l_shipmode
+order by
+        l_shipmode
+LIMIT 1;
+`
+
+const plan_parallel_2_source = ` Limit  (cost=1964755.66..1964961.44 rows=1 width=27) (actual time=7579.592..7922.997 rows=1 loops=1)
+   ->  Finalize GroupAggregate  (cost=1964755.66..1966196.11 rows=7 width=27) (actual time=7579.590..7579.591 rows=1 loops=1)
+         Group Key: lineitem.l_shipmode
+         ->  Gather Merge  (cost=1964755.66..1966195.83 rows=28 width=27) (actual time=7559.593..7922.319 rows=6 loops=1)
+               Workers Planned: 4
+               Workers Launched: 4
+               ->  Partial GroupAggregate  (cost=1963755.61..1965192.44 rows=7 width=27) (actual time=7548.103..7564.592 rows=2 loops=5)
+                     Group Key: lineitem.l_shipmode
+                     ->  Sort  (cost=1963755.61..1963935.20 rows=71838 width=27) (actual time=7530.280..7539.688 rows=62519 loops=5)
+                           Sort Key: lineitem.l_shipmode
+                           Sort Method: external merge  Disk: 2304kB
+                           Worker 0:  Sort Method: external merge  Disk: 2064kB
+                           Worker 1:  Sort Method: external merge  Disk: 2384kB
+                           Worker 2:  Sort Method: external merge  Disk: 2264kB
+                           Worker 3:  Sort Method: external merge  Disk: 2336kB
+                           ->  Parallel Hash Join  (cost=382571.01..1957960.99 rows=71838 width=27) (actual time=7036.917..7499.692 rows=62519 loops=5)
+                                 Hash Cond: (lineitem.l_orderkey = orders.o_orderkey)
+                                 ->  Parallel Seq Scan on lineitem  (cost=0.00..1552386.40 rows=71838 width=19) (actual time=0.583..4901.063 rows=62519 loops=5)
+                                       Filter: ((l_shipmode = ANY ('{MAIL,AIR}'::bpchar[])) AND (l_commitdate < l_receiptdate) AND (l_shipdate < l_commitdate) AND (l_receiptdate >= '1996-01-01'::date) AND (l_receiptdate < '1997-01-01 00:00:00'::timestamp without time zone))
+                                       Rows Removed by Filter: 11934691
+                                 ->  Parallel Hash  (cost=313722.45..313722.45 rows=3750045 width=20) (actual time=2011.518..2011.518 rows=3000000 loops=5)
+                                       Buckets: 65536  Batches: 256  Memory Usage: 3840kB
+                                       ->  Parallel Seq Scan on orders  (cost=0.00..313722.45 rows=3750045 width=20) (actual time=0.029..995.948 rows=3000000 loops=5)
+ Planning Time: 0.977 ms
+ Execution Time: 7923.770 ms`
+
+const plan_trigger_source = `                                                                                            QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on emailmessages  (cost=224.85..38989.92 rows=5000 width=34) (actual time=217158.570..217158.570 rows=0 loops=1)
+   Buffers: shared hit=2579331 read=506594 dirtied=503671
+   ->  Nested Loop  (cost=224.85..38989.92 rows=5000 width=34) (actual time=7.105..4576.019 rows=5000 loops=1)
+         Buffers: shared hit=20223 read=395
+         ->  HashAggregate  (cost=224.42..274.42 rows=5000 width=32) (actual time=7.072..23.891 rows=5000 loops=1)
+               Group Key: "ANY_subquery".emailmessageid
+               Buffers: shared hit=583
+               ->  Subquery Scan on "ANY_subquery"  (cost=0.43..211.92 rows=5000 width=32) (actual time=0.064..3.892 rows=5000 loops=1)
+                     Buffers: shared hit=583
+                     ->  Limit  (cost=0.43..161.92 rows=5000 width=4) (actual time=0.053..2.808 rows=5000 loops=1)
+                           Buffers: shared hit=583
+                           ->  Index Only Scan using emailmessages_pkey on emailmessages emailmessages_1  (cost=0.43..89834.20 rows=2781465 width=4) (actual time=0.051..2.260 rows=5000 loops=1)
+                                 Heap Fetches: 609
+                                 Buffers: shared hit=583
+         ->  Index Scan using emailmessages_pkey on emailmessages  (cost=0.43..7.73 rows=1 width=10) (actual time=0.903..0.905 rows=1 loops=5000)
+               Index Cond: (emailmessageid = "ANY_subquery".emailmessageid)
+               Buffers: shared hit=19640 read=395
+ Planning time: 2.482 ms
+ Trigger for constraint headeremessageref: time=4038.247 calls=5000
+ Trigger for constraint formdataemessageref: time=81.415 calls=5000
+ Trigger for constraint attachemessageref: time=158945.774 calls=5000
+ Trigger for constraint outgoingemessageref: time=332.316 calls=5000
+ Trigger for constraint incomingemessageref: time=125.492 calls=5000
+ Trigger for constraint eventemessageref: time=251.365 calls=5000
+ Trigger for constraint filteredemessageref: time=125.894 calls=5000
+ Execution time: 381072.164 ms
+(26 rows)`
+
+const plan_trigger_query = `DELETE FROM emailmessages where emailmessageid in ( select emailmessageid from emailmessages limit 5000 );`
+
+const plan_4partitions_source = `
+ Append  (cost=0.43..170502.33 rows=4018259 width=97) (actual time=0.007..464.318 rows=4000001 loops=1)
+   Buffers: shared hit=39 read=69641
+   I/O Timings: shared read=66.219
+   ->  Index Scan using pgbench_accounts_2_pkey on pgbench_accounts_2 pgbench_accounts_1  (cost=0.43..8.45 rows=1 width=97) (actual time=0.006..0.007 rows=1 loops=1)
+         Index Cond: ((aid >= 5000000) AND (aid <= 9000000))
+         Buffers: shared hit=4
+   ->  Seq Scan on pgbench_accounts_3 pgbench_accounts_2  (cost=0.00..78484.00 rows=2500000 width=97) (actual time=0.032..163.701 rows=2500000 loops=1)
+         Filter: ((aid >= 5000000) AND (aid <= 9000000))
+         Buffers: shared hit=32 read=40952
+         I/O Timings: shared read=32.345
+   ->  Index Scan using pgbench_accounts_4_pkey on pgbench_accounts_4 pgbench_accounts_3  (cost=0.43..71918.59 rows=1518258 width=97) (actual time=0.020..148.504 rows=1500000 loops=1)
+         Index Cond: ((aid >= 5000000) AND (aid <= 9000000))
+         Buffers: shared hit=3 read=28689
+         I/O Timings: shared read=33.874
+ Settings: jit = 'off'
+ Planning:
+   Buffers: shared hit=20
+ Planning Time: 0.271 ms
+ Execution Time: 548.488 ms
+`
+
+const plan_4partitions_query = `
+/* Query on a pgbench database with 4 partitions,
+   only 3 are used */
+EXPLAIN (ANALYZE,BUFFERS,SETTINGS)
+SELECT * from pgbench_accounts where aid  BETWEEN  5000000 AND 9000000 ;
+`
+
+interface Sample extends Array<string> {
+  0: string
+  1: string
+  2: string
+}
+
+const samples = <Sample[]>[
+  ["Simple join (TEXT format)", plan1_source, plan1_query],
+  ["Simple join (JSON format)", plan1_source_json, plan1_query],
+  ["Three joins, missing an index", plan2_source, plan2_query],
+  ["Aggregate with four joins", plan5_source, plan5_query],
+  ["With subplan", plan6_source, ""],
+  ["With Buffers", plan7_source, plan7_query],
+  ["A single CTE", plan9_source, plan9_query],
+  ["Many CTEs", plan_many_ctes, ""],
+  ["Very large plan", plan8_source, ""],
+  ["DELETE with triggers", plan_trigger_source, plan_trigger_query],
+  ["With many options", plan_asmany_source, plan_asmany_query],
+  ["Parallel (verbose)", plan_parallel_source, ""],
+  ["Parallel (4 workers)", plan_parallel_2_source, plan_parallel_2_query],
+  ["Partitions", plan_4partitions_source, plan_4partitions_query],
+]
+
+export default samples
