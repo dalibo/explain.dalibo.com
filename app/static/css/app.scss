@@ -2,7 +2,8 @@ $primary: #774b85 !default;
 $dark: darken($primary, 15%) !default;
 $link-color: #007bff;
 $body-color: #495057;
-@import 'bootstrap';
+
+@import "bootstrap";
 
 [v-cloak] {
   display: none;

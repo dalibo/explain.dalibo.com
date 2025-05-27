@@ -1,6 +1,6 @@
 import { Dropdown, Alert, Modal } from "bootstrap";
 
-import "../css/custom.scss";
+import "../css/app.scss";
 import { createApp } from "vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
