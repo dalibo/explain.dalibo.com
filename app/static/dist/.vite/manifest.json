@@ -15,7 +15,7 @@
     "name": "vue"
   },
   "app/static/js/common.js": {
-    "file": "assets/about-BdlHKEOl.js",
+    "file": "assets/about-Cr6XhB7Z.js",
     "name": "about",
     "src": "app/static/js/common.js",
     "isEntry": true,
@@ -23,11 +23,11 @@
       "_vue-DqnmULX3.js"
     ],
     "css": [
-      "assets/about-DvoP75sl.css"
+      "assets/about-BGvm_U3U.css"
     ]
   },
   "app/static/js/index.js": {
-    "file": "assets/index-H99ZOPuf.js",
+    "file": "assets/index-DwWf1rbD.js",
     "name": "index",
     "src": "app/static/js/index.js",
     "isEntry": true,
@@ -38,7 +38,7 @@
     ]
   },
   "app/static/js/plan.js": {
-    "file": "assets/plan-DU_OUJjq.js",
+    "file": "assets/plan-Ctejq-lp.js",
     "name": "plan",
     "src": "app/static/js/plan.js",
     "isEntry": true,

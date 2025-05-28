@@ -1,5 +1,5 @@
-$primary: #774b85 !default;
-$dark: darken($primary, 15%) !default;
+$primary: #774b85;
+$dark: darken($primary, 15%);
 $link-color: #007bff;
 $body-color: #495057;
 
@@ -18,8 +18,8 @@ $body-color: #495057;
 }
 
 .tippy-box {
-  background-color: $dark !important;
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity, 1)) !important;
 }
 .tippy-arrow {
-  color: $dark !important;
+  color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity, 1)) !important;
 }
