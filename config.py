@@ -9,6 +9,7 @@ def str_to_bool(value: str | None) -> bool:
 
 WTF_CSRF_ENABLED = False
 SECRET_KEY = os.environ.get("SECRET_KEY", "aSup3rS33kret")
+APP_NAME = os.environ.get("APP_NAME", "explain.dalibo.com")
 DB_NAME = os.environ.get("DB_NAME", "postgres")
 DB_USER = os.environ.get("DB_USER", "postgres")
 DB_PASS = os.environ.get("DB_PASS", "postgres")
