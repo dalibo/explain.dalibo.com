@@ -1,0 +1,44 @@
+/*
+ * Custom CSS rules or variable overrides
+ * Changes to this file are not tracked by git.
+ */
+
+:root {
+  --bs-dark-rgb: 12, 89, 165;
+  --explain-blue: #318ce7;
+  --explain-blue-rgb: 49, 140, 321;
+  --explain-blue-1: #1c78d4;
+  --explain-blue-2: #0965c2;
+}
+
+.nav-pills {
+  --bs-nav-pills-link-active-bg: var(--explain-blue);
+}
+.nav-link:focus-visible {
+  box-shadow: 0 0 0 .25rem #318ce740;
+}
+
+.btn-primary {
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--explain-blue);
+  --bs-btn-border-color: var(--explain-blue);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--explain-blue-1);
+  --bs-btn-hover-border-color: var(--explain-blue-1);
+  --bs-btn-focus-shadow-rgb: var(--explain-blue-rgb);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: var(--explain-blue-2);
+  --bs-btn-active-border-color: var(--explain-blue-2);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--explain-blue);
+  --bs-btn-border-color: var(--explain-blue);
+  --bs-btn-hover-bg: var(--explain-blue);
+  --bs-btn-hover-border-color: var(--explain-blue);
+  --bs-btn-focus-shadow-rgb: var(--explain-blue-rgb);
+  --bs-btn-active-bg: var(--explain-blue);
+  --bs-btn-active-border-color: var(--explain-blue);
+  --bs-btn-disabled-color: var(--explain-blue);
+  --bs-btn-disabled-border-color: var(--explain-blue);
+}
