@@ -27,6 +27,7 @@ const app = createApp({
     const titleInput = ref("");
     const planInput = ref("");
     const queryInput = ref("");
+    const passwordInput = ref("");
     const draggingPlan = ref(false);
     const draggingQuery = ref(false);
     const plans = ref([]);
@@ -62,6 +63,7 @@ const app = createApp({
           title: titleInput.value,
           plan: planInput.value,
           query: queryInput.value,
+          password: passwordInput.value,
           createdOn: new Date(),
         };
       }
@@ -141,6 +143,7 @@ const app = createApp({
           title: plan.title,
           plan: plan.plan,
           query: plan.query,
+          password: plan.password,
         })
         .then((response) => {
           localStorage.removeItem(plan.id);
@@ -191,6 +194,7 @@ const app = createApp({
       titleInput,
       planInput,
       queryInput,
+      passwordInput,
       draggingPlan,
       draggingQuery,
       plans,
