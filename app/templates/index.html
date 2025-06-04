@@ -37,6 +37,16 @@
           <label for="queryInput" class="form-label">Query <span class="small text-muted">(optional)</span></label>
           <textarea name="sql" class="form-control" :class="[draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query or drop a file"></textarea>
         </div>
+        <div class="mb-3">
+          <label for="passwordInput" class="form-label">Password <span class="small text-muted">(optional)</span>
+            <span class="badge text-bg-success ms-2"><small>New</small></span>
+          </label>
+          <div class="row">
+            <div class="col-6">
+              <input name="password" class="form-control" id="passwordInput" v-model="passwordInput"  maxlength="100">
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col d-flex">
             <button type="submit" class="btn btn-primary">Submit</button>

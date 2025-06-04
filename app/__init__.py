@@ -6,7 +6,8 @@ from flask import Flask, jsonify, redirect, render_template, session, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField
+from werkzeug.security import check_password_hash, generate_password_hash
+from wtforms import PasswordField, StringField, TextAreaField
 from wtforms.validators import DataRequired
 
 app = Flask(__name__, instance_relative_config=True)
@@ -27,6 +28,7 @@ class Plan(db.Model):
     sql = db.Column(db.String)
     is_public = db.Column(db.Boolean, default=False)
     delete_key = db.Column(db.String)
+    password_hash = db.Column(db.String, default=False)
 
     __table_args__ = {"postgresql_partition_by": "HASH (id)"}
 
@@ -55,6 +57,11 @@ class PlanForm(FlaskForm):
     title = StringField("Title")
     plan = TextAreaField("Plan", validators=[DataRequired()])
     query = TextAreaField("Query")
+    password = StringField("Password")
+
+
+class PasswordForm(FlaskForm):
+    password = PasswordField("Password")
 
 
 @app.route("/new", methods=["POST"])
@@ -73,14 +80,21 @@ def save(json=False):
     """
     form = PlanForm()
     if form.validate_on_submit():
-        sql = "SELECT register_plan(:title, :plan, :query, :is_public)"
+        plan = form.plan.data
+        password_hash = None
+        if password := form.password.data:
+            password_hash = generate_password_hash(password)
+        sql = """
+            SELECT register_plan(:title, :plan, :query, :is_public, :password_hash)
+        """
         query = db.session.execute(
             sql,
             {
                 "title": form.title.data,
-                "plan": form.plan.data,
+                "plan": plan,
                 "query": form.query.data,
                 "is_public": False,
+                "password_hash": password_hash,
             },
         )
         db.session.commit()
@@ -97,10 +111,24 @@ def plan():
     return redirect(url_for("plan_error"))
 
 
-@app.route("/plan/<id>")
+@app.route("/plan/<id>", methods=["GET"])
 def plan_from_db(id):
     plan = Plan.query.get_or_404(id, description="This plan doesn't exist.")
+    if plan.password_hash is not None:
+        return render_template("locked.html")
     return render_template("plan.html", plan=plan)
+
+
+@app.route("/plan/<id>", methods=["POST"])
+def plan_from_db_with_password(id):
+    plan = Plan.query.get_or_404(id, description="This plan doesn't exist.")
+    form = PasswordForm()
+    form.validate_on_submit()
+    if plan.password_hash is None or check_password_hash(
+        plan.password_hash, form.password.data
+    ):
+        return render_template("plan.html", plan=plan)
+    return render_template("locked.html", invalid_password=True)
 
 
 @app.route("/plan/<id>/<key>")

@@ -1,0 +1,58 @@
+{% set asset='common' %}
+
+{% extends "layout.html" %}
+
+{% block title %}
+{{ plan.title or '' + ' |' if plan else ' | ' }}
+{% endblock %}
+
+{% block body %}
+<div id="app" class="d-flex flex-column h-100">
+<header class="header bg-dark container-fluid">
+  <nav class="navbar navbar-expand-md navbar-dark justify-content-between">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link p-0" href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='img/logo_pev2.svg') }}" alt="Logo PEV2" style="height:35px;">
+          explain.dalibo.com
+        </a>
+      </li>
+      <li class="nav-item ms-3">
+        <a class="btn btn-outline-primary text-white" href="{{ url_for('index') }}">
+          + New Plan
+        </a>
+      </li>
+    </ul>
+</header>
+<div class="d-flex flex-column flex-grow-1 overflow-auto">
+  <div class="flex-grow-1 overflow-auto d-flex">
+    <div v-else class="w-100 h-100 d-flex">
+      <div class="align-self-center mx-auto">
+        <div class="mb-3">
+          This plan is protected by a password.
+        </div>
+        <form method="POST">
+          <div class="mb-3">
+            <input name="password" type="password" class="form-control" maxlength="100" placeholder="Password" autocomplete="current-password"/>
+          </div>
+          {% if invalid_password %}
+          <div class="mb-3 text-danger">
+            Password is incorrect
+          </div>
+          {% endif %}
+          <div class="row">
+            <div class="col d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary">Unlock</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block head %}
+<meta name="robots" content="noindex" />
+{% endblock %}
