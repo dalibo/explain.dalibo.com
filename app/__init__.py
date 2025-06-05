@@ -6,7 +6,7 @@ from flask import Flask, jsonify, redirect, render_template, session, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField
+from wtforms import HiddenField, StringField, TextAreaField
 from wtforms.validators import DataRequired
 
 app = Flask(__name__, instance_relative_config=True)
@@ -27,6 +27,7 @@ class Plan(db.Model):
     sql = db.Column(db.String)
     is_public = db.Column(db.Boolean, default=False)
     delete_key = db.Column(db.String)
+    iv = db.Column(db.String, comment="Encryption initialization vector")
 
     __table_args__ = {"postgresql_partition_by": "HASH (id)"}
 
@@ -36,6 +37,7 @@ class Plan(db.Model):
             "title": self.title,
             "plan": self.plan,
             "sql": self.sql,
+            "iv": self.iv,
         }
 
 
@@ -55,6 +57,7 @@ class PlanForm(FlaskForm):
     title = StringField("Title")
     plan = TextAreaField("Plan", validators=[DataRequired()])
     query = TextAreaField("Query")
+    iv = HiddenField("IV")
 
 
 @app.route("/new", methods=["POST"])
@@ -73,7 +76,7 @@ def save(json=False):
     """
     form = PlanForm()
     if form.validate_on_submit():
-        sql = "SELECT register_plan(:title, :plan, :query, :is_public)"
+        sql = "SELECT register_plan(:title, :plan, :query, :is_public, :iv)"
         query = db.session.execute(
             sql,
             {
@@ -81,6 +84,7 @@ def save(json=False):
                 "plan": form.plan.data,
                 "query": form.query.data,
                 "is_public": False,
+                "iv": form.iv.data,
             },
         )
         db.session.commit()

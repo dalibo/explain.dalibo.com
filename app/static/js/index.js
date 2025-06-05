@@ -27,6 +27,7 @@ const app = createApp({
     const titleInput = ref("");
     const planInput = ref("");
     const queryInput = ref("");
+    const passwordInput = ref("");
     const draggingPlan = ref(false);
     const draggingQuery = ref(false);
     const plans = ref([]);
@@ -45,7 +46,7 @@ const app = createApp({
       }
     }
 
-    function submitPlan() {
+    async function submitPlan() {
       // User don't want to be asked again
       const dontAskAgain = document.getElementById("dontAskAgain").checked;
       if (dontAskAgain) {
@@ -58,14 +59,51 @@ const app = createApp({
         titleInput.value =
           titleInput.value ||
           "Plan created on " + moment().format("MMMM Do YYYY, h:mm a");
+        let plan_data = planInput.value;
+        let query_data = queryInput.value;
+        let iv_data = null;
+        if (passwordInput.value) {
+          const iv = window.crypto.getRandomValues(new Uint8Array(12));
+          iv_data = btoa(String.fromCharCode(...iv));
+          const key = await derivePasswordKey(passwordInput.value, iv);
+          plan_data = await encrypt(plan_data, iv, key);
+          query_data = await encrypt(query_data, iv, key);
+        }
         inputPlan = {
           title: titleInput.value,
-          plan: planInput.value,
-          query: queryInput.value,
-          createdOn: new Date(),
+          plan: plan_data,
+          query: query_data,
+          iv: iv_data,
         };
       }
       share(inputPlan);
+    }
+
+    async function derivePasswordKey(password, iv) {
+      const pwKey = await window.crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(password),
+        "PBKDF2",
+        false,
+        ["deriveKey"]
+      );
+
+      return await window.crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt: iv, iterations: 100000, hash: "SHA-256" },
+        pwKey,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["encrypt"]
+      );
+    }
+
+    async function encrypt(data, iv, key) {
+      const ciphertext = await window.crypto.subtle.encrypt(
+        { name: "AES-GCM", iv: iv },
+        key,
+        new TextEncoder().encode(data)
+      );
+      return btoa(String.fromCharCode(...new Uint8Array(ciphertext)));
     }
 
     function loadSample(sample) {
@@ -136,30 +174,24 @@ const app = createApp({
 
     function share(plan) {
       const form = document.getElementById("submitForm");
-      axios
-        .post(form.action, {
-          title: plan.title,
-          plan: plan.plan,
-          query: plan.query,
-        })
-        .then((response) => {
-          localStorage.removeItem(plan.id);
-          const data = response.data;
-          const id = "plan_" + data.id;
-          localStorage.setItem(
-            id,
-            JSON.stringify({
-              id: id,
-              shareId: data.id,
-              title: plan.title,
-              createdOn: plan.createdOn,
-              deleteKey: data.deleteKey,
-            })
-          );
+      axios.post(form.action, plan).then((response) => {
+        localStorage.removeItem(plan.id);
+        const data = response.data;
+        const id = "plan_" + data.id;
+        localStorage.setItem(
+          id,
+          JSON.stringify({
+            id: id,
+            shareId: data.id,
+            title: plan.title,
+            createdOn: new Date(),
+            deleteKey: data.deleteKey,
+          })
+        );
 
-          // redirect to page with plan from server
-          window.location.href = "/plan/" + data.id;
-        });
+        // redirect to page with plan from server
+        window.location.href = "/plan/" + data.id;
+      });
     }
 
     function formattedDate(date) {
@@ -191,6 +223,7 @@ const app = createApp({
       titleInput,
       planInput,
       queryInput,
+      passwordInput,
       draggingPlan,
       draggingQuery,
       plans,

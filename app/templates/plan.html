@@ -47,12 +47,36 @@ var planData = {{ plan.as_dict() | tojson }};
 </header>
 <div class="d-flex flex-column flex-grow-1 overflow-auto">
   <div class="flex-grow-1 overflow-auto d-flex">
-    <pev2 :plan-source="plan.plan" :plan-query="plan.sql || ''" v-if="plan"></pev2>
-    <div v-else class="w-100 h-100 d-flex">
+    <template v-if="plan.iv">
+      <div class="w-100 h-100 d-flex">
       <div class="align-self-center mx-auto">
-        Loading
+        <div class="mb-3">
+          This plan is protected by a password.
+        </div>
+        <form @submit="unlockPlan">
+          <div class="mb-3">
+            <input name="password" type="password" v-model="passwordInput" class="form-control" maxlength="100" placeholder="Password" autofocus/>
+          </div>
+          <div class="mb-3 text-danger" v-if="decryptError">
+            Password is incorrect (unable to decrypt)
+          </div>
+          <div class="row">
+            <div class="col d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary">Unlock</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
+    </template>
+    <template v-else>
+      <pev2 :plan-source="plan.plan" :plan-query="plan.sql || ''" v-if="plan"></pev2>
+      <div v-else class="w-100 h-100 d-flex">
+        <div class="align-self-center mx-auto">
+          Loading
+        </div>
+      </div>
+    </template>
   </div>
 </div>
 </div>
