@@ -12,10 +12,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-vue": "^6.0.1",
     "prettier": "^2.7.1",
     "rollup-plugin-empty-dir": "^1.0.5",
-    "vite": "^6.2.0"
+    "sass-embedded": "1.78",
+    "vite": "^7.1.9"
   },
   "dependencies": {
     "axios": "^1.8.3",
