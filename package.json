@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "axios": "^1.8.3",
-    "bootstrap": "^5.3.7",
+    "bootstrap": "^5.3.8",
     "moment": "^2.29.4",
-    "pev2": "^1.16.0",
+    "pev2": "^1.17.0",
     "popper.js": "^1.15.0",
     "vue-timeago3": "^2.3.0"
   }
