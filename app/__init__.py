@@ -2,7 +2,7 @@ import datetime
 import json
 import os
 
-from flask import Flask, jsonify, redirect, render_template, session, url_for
+from flask import Flask, abort, jsonify, redirect, render_template, session, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -111,9 +111,16 @@ def plan():
     return redirect(url_for("plan_error"))
 
 
+def get_active_plan_or_404(id):
+    plan = Plan.query.get_or_404(id, description="This plan doesn't exist.")
+    if plan.plan is None and plan.sql is None:
+        abort(404, description="This plan has been deleted.")
+    return plan
+
+
 @app.route("/plan/<id>", methods=["GET"])
 def plan_from_db(id):
-    plan = Plan.query.get_or_404(id, description="This plan doesn't exist.")
+    plan = get_active_plan_or_404(id)
     if plan.password_hash is not None:
         return render_template("locked.html")
     return render_template("plan.html", plan=plan)
@@ -121,7 +128,7 @@ def plan_from_db(id):
 
 @app.route("/plan/<id>", methods=["POST"])
 def plan_from_db_with_password(id):
-    plan = Plan.query.get_or_404(id, description="This plan doesn't exist.")
+    plan = get_active_plan_or_404(id)
     form = PasswordForm()
     form.validate_on_submit()
     if plan.password_hash is None or check_password_hash(
@@ -135,8 +142,11 @@ def plan_from_db_with_password(id):
 def delete(id, key):
     plan = Plan.query.get_or_404(id, description="This plan doesn't exist.")
     if plan.delete_key == key:
+        plan.title = None
+        plan.plan = None
+        plan.sql = None
+        plan.is_public = False
         session["deleted"] = id
-        db.session.delete(plan)
         db.session.commit()
     return ("", 204)
 
