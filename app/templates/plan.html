@@ -6,13 +6,11 @@
 {{ plan.title or '' + ' |' if plan else ' | ' }}
 {% endblock %}
 
+{% block nav %}
+{% endblock %}
+
 {% block body %}
-{% if plan %}
-<script>
-var planData = {{ plan.as_dict() | tojson }};
-</script>
-{% endif %}
-<div id="app" class="d-flex flex-column h-100">
+<div class="d-flex flex-column h-100">
 <header class="header bg-dark container-fluid">
   <nav class="navbar navbar-expand-md navbar-dark justify-content-between">
     <ul class="navbar-nav">
