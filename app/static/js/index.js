@@ -6,6 +6,7 @@ import timeago from "vue-timeago3";
 import _ from "lodash";
 import "vite/modulepreload-polyfill";
 import { Modal } from "bootstrap";
+import ThemeSwitcher from "./themeSwitcher.vue";
 import { onMounted, ref, watch } from "vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -214,4 +215,5 @@ const app = createApp({
 });
 app.use(timeago);
 app.component("font-awesome-icon", FontAwesomeIcon);
+app.component("theme-switcher", ThemeSwitcher);
 app.mount("#app");

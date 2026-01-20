@@ -3,6 +3,7 @@ import { createApp } from "vue";
 import { Plan } from "pev2";
 import { ref } from "vue";
 import Created from "./created.vue";
+import ThemeSwitcher from "./themeSwitcher.vue";
 import VueTippy from "vue-tippy";
 
 import "pev2/dist/pev2.css";
@@ -21,6 +22,7 @@ const app = createApp({
   components: {
     pev2: Plan,
     created: Created,
+    themeSwitcher: ThemeSwitcher,
   },
 });
 app.use(VueTippy, { defaultProps: { theme: "light" } });
