@@ -3,49 +3,59 @@
     "file": "assets/lodash-CMEUj9tG.js",
     "name": "lodash"
   },
-  "_pev2-CU_HavEz.js": {
-    "file": "assets/pev2-CU_HavEz.js",
+  "_pev2-DehNO_aX.js": {
+    "file": "assets/pev2-DehNO_aX.js",
     "name": "pev2",
     "imports": [
-      "_vue-5jDimcVh.js"
+      "_vue-CPYrH9CX.js"
     ]
   },
-  "_vue-5jDimcVh.js": {
-    "file": "assets/vue-5jDimcVh.js",
+  "_themeSwitcher-D0Vjumho.js": {
+    "file": "assets/themeSwitcher-D0Vjumho.js",
+    "name": "themeSwitcher",
+    "imports": [
+      "_vue-CPYrH9CX.js",
+      "app/static/js/common.js"
+    ]
+  },
+  "_vue-CPYrH9CX.js": {
+    "file": "assets/vue-CPYrH9CX.js",
     "name": "vue"
   },
   "app/static/js/common.js": {
-    "file": "assets/about-4LvgiEbS.js",
+    "file": "assets/about-4AxB30-u.js",
     "name": "about",
     "src": "app/static/js/common.js",
     "isEntry": true,
     "imports": [
-      "_vue-5jDimcVh.js"
+      "_vue-CPYrH9CX.js"
     ],
     "css": [
       "assets/about-BEfUjwiK.css"
     ]
   },
   "app/static/js/index.js": {
-    "file": "assets/index-jKgvIbMM.js",
+    "file": "assets/index-caxD0f6R.js",
     "name": "index",
     "src": "app/static/js/index.js",
     "isEntry": true,
     "imports": [
       "app/static/js/common.js",
-      "_vue-5jDimcVh.js",
-      "_lodash-CMEUj9tG.js"
+      "_vue-CPYrH9CX.js",
+      "_lodash-CMEUj9tG.js",
+      "_themeSwitcher-D0Vjumho.js"
     ]
   },
   "app/static/js/plan.js": {
-    "file": "assets/plan-DImHmaZn.js",
+    "file": "assets/plan-CqliKu1A.js",
     "name": "plan",
     "src": "app/static/js/plan.js",
     "isEntry": true,
     "imports": [
       "app/static/js/common.js",
-      "_vue-5jDimcVh.js",
-      "_pev2-CU_HavEz.js"
+      "_vue-CPYrH9CX.js",
+      "_pev2-DehNO_aX.js",
+      "_themeSwitcher-D0Vjumho.js"
     ],
     "css": [
       "assets/plan-6aR89bOQ.css"

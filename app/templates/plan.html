@@ -29,15 +29,20 @@
     <span class="navbar-text" v-cloak>
       {% raw %}{{ plan.title || '' }}{% endraw %}
     </span>
-    {% if plan %}
-    <span class="navbar-text p-0 text-end d-flex flex-column">
-      <a href="{{ url_for('plan_from_db', id=plan.id) }}">
-        <font-awesome-icon icon="link"></font-awesome-icon>
-        plan/{{ plan.id }}
-      </a>
-      <created date="{{ plan.created }}"></created>
-    </span>
-    {% endif %}
+    <ul class="navbar-nav">
+      {% if plan %}
+      <li class="nav-item">
+        <span class="navbar-text p-0 text-end d-flex flex-column">
+          <a href="{{ url_for('plan_from_db', id=plan.id) }}">
+            <font-awesome-icon icon="link"></font-awesome-icon>
+            plan/{{ plan.id }}
+          </a>
+          <created date="{{ plan.created }}"></created>
+        </span>
+      </li>
+      {% endif %}
+      <theme-switcher />
+    </ul>
   </nav>
   {% if not plan %}
   <v-tour name="tour" :steps="tourSteps" :callbacks="tourCallbacks" :options="tourOptions"></v-tour>
