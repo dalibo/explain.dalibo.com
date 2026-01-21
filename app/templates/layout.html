@@ -40,6 +40,12 @@
     </style>
     {% block head %}
     {% endblock %}
+    <script type="text/javascript">
+      const theme = localStorage.getItem("theme");
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-bs-theme', theme)
+      }
+    </script>
   </head>
   <body class="d-flex flex-column h-100" id="app">
     {% block nav %}
