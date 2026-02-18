@@ -19,10 +19,9 @@ library.add(faMoon, faSun);
 
 import { useColorMode } from "@vueuse/core";
 
-const { store: theme } = useColorMode({
+const theme = useColorMode({
   attribute: "data-bs-theme",
   storageKey: "theme",
-  initialValue: "auto",
 });
 
 function toggleTheme() {
