@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+from typing import ClassVar
 
 from flask import Flask, abort, jsonify, redirect, render_template, session, url_for
 from flask_migrate import Migrate
@@ -30,7 +31,7 @@ class Plan(db.Model):
     delete_key = db.Column(db.String)
     password_hash = db.Column(db.String, default=False)
 
-    __table_args__ = {"postgresql_partition_by": "HASH (id)"}
+    __table_args__: ClassVar[dict(str, str)] = {"postgresql_partition_by": "HASH (id)"}
 
     def as_dict(self):
         return {
