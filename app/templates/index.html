@@ -109,8 +109,8 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
-              <small class="text-muted">
+            <div class="col-12 col-lg-6">
+              <small class="text-muted text-nowrap">
                 created
                 <span
                   :title="formattedDate(plan.createdOn)">
@@ -118,10 +118,10 @@
                 </span>
               </small>
             </div>
-            <div class="col-6 text-end">
+            <div class="col-12 col-lg-6 text-end">
               <small>
                 <span v-if="plan.shareId">
-                  <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)" class="link-gray">
+                  <a :href="'{{ url_for('plan') }}' + getPlanUrl(plan)" class="link-gray text-nowrap">
                     <font-awesome-icon icon="link"></font-awesome-icon>
                     plan/{{'{{plan.shareId}}'}}
                   </a>
