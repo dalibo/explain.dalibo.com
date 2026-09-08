@@ -31,7 +31,7 @@ class Plan(db.Model):
     delete_key = db.Column(db.String)
     password_hash = db.Column(db.String, default=False)
 
-    __table_args__: ClassVar[dict(str, str)] = {"postgresql_partition_by": "HASH (id)"}
+    __table_args__: ClassVar[dict[str, str]] = {"postgresql_partition_by": "HASH (id)"}
 
     def as_dict(self):
         return {
