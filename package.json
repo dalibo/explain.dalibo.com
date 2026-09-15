@@ -12,17 +12,17 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitejs/plugin-vue": "^6.0.9",
     "prettier": "^2.7.1",
     "rollup-plugin-empty-dir": "^1.0.5",
     "sass-embedded": "1.78",
-    "vite": "^7.1.9"
+    "vite": "^8.3.0"
   },
   "dependencies": {
     "axios": "^1.8.3",
     "bootstrap": "^5.3.8",
     "moment": "^2.29.4",
-    "pev2": "^1.22.0",
+    "pev2": "^1.24.0",
     "popper.js": "^1.15.0",
     "vue-timeago3": "^2.3.0"
   }

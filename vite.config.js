@@ -25,11 +25,12 @@ export default defineConfig({
       },
       output: {
         dir: "app/static/dist",
-        manualChunks: {
-          // Split external library from transpiled code.
-          lodash: ["lodash"],
-          vue: ["vue"],
-          pev2: ["pev2"],
+        codeSplitting: {
+          groups: [
+            { name: "lodash", test: /node_modules\/lodash/ },
+            { name: "vue", test: /node_modules\/(vue|vue-router)/ },
+            { name: "pev2", test: /node_modules\/pev2/ },
+          ]
         },
       },
     },
