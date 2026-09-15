@@ -30,11 +30,15 @@
         </div>
         <div class="mb-3">
           <label for="planInput" class="form-label">Plan <span class="small text-muted">(text or JSON)</span></label>
-          <textarea name="plan" class="form-control" :class="[draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="8" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan or drop a file" required></textarea>
+          <textarea name="plan" class="form-control" :class="[draggingPlan ? 'dropzone-over' : '']" id="planInput" rows="6" v-model="planInput" @dragenter="draggingPlan = true" @dragleave="draggingPlan = false" @drop.prevent="handleDrop" placeholder="Paste execution plan or drop a file" required></textarea>
         </div>
         <div class="mb-3">
           <label for="queryInput" class="form-label">Query <span class="small text-muted">(optional)</span></label>
-          <textarea name="sql" class="form-control" :class="[draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="8" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query or drop a file"></textarea>
+          <textarea name="sql" class="form-control" :class="[draggingQuery ? 'dropzone-over' : '']" id="queryInput" rows="6" v-model="queryInput" @dragenter="draggingQuery = true" @dragleave="draggingQuery = false" @drop.prevent="handleDrop" placeholder="Paste corresponding SQL query or drop a file"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="commentInput" class="form-label">Comments <span class="small text-muted">(optional)</span></label>
+          <textarea name="sql" class="form-control" id="commentInput" rows="3" v-model="commentInput" placeholder="Add notes about this plan"></textarea>
         </div>
         <div class="mb-3">
           <label for="passwordInput" class="form-label">Password <span class="small text-muted">(optional)</span>

@@ -27,6 +27,7 @@ class Plan(db.Model):
     created = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
     plan = db.Column(db.String)
     sql = db.Column(db.String)
+    comment = db.Column(db.String)
     is_public = db.Column(db.Boolean, default=False)
     delete_key = db.Column(db.String)
     password_hash = db.Column(db.String, default=False)
@@ -39,6 +40,7 @@ class Plan(db.Model):
             "title": self.title,
             "plan": self.plan,
             "sql": self.sql,
+            "comment": self.comment,
         }
 
 
@@ -58,6 +60,7 @@ class PlanForm(FlaskForm):
     title = StringField("Title")
     plan = TextAreaField("Plan", validators=[DataRequired()])
     query = TextAreaField("Query")
+    comment = TextAreaField("Comment")
     password = StringField("Password")
 
 
@@ -86,7 +89,14 @@ def save(json=False):
         if password := form.password.data:
             password_hash = generate_password_hash(password)
         sql = """
-            SELECT register_plan(:title, :plan, :query, :is_public, :password_hash)
+            SELECT register_plan(
+              :title,
+              :plan,
+              :query,
+              :comment,
+              :is_public,
+              :password_hash
+            )
         """
         query = db.session.execute(
             sql,
@@ -94,6 +104,7 @@ def save(json=False):
                 "title": form.title.data,
                 "plan": plan,
                 "query": form.query.data,
+                "comment": form.comment.data,
                 "is_public": False,
                 "password_hash": password_hash,
             },
@@ -146,6 +157,7 @@ def delete(id, key):
         plan.title = None
         plan.plan = None
         plan.sql = None
+        plan.comment = None
         plan.is_public = False
         session["deleted"] = id
         db.session.commit()
