@@ -28,6 +28,7 @@ const app = createApp({
     const titleInput = ref("");
     const planInput = ref("");
     const queryInput = ref("");
+    const commentInput = ref("");
     const passwordInput = ref("");
     const draggingPlan = ref(false);
     const draggingQuery = ref(false);
@@ -64,6 +65,7 @@ const app = createApp({
           title: titleInput.value,
           plan: planInput.value,
           query: queryInput.value,
+          comment: commentInput.value,
           password: passwordInput.value,
           createdOn: new Date(),
         };
@@ -144,6 +146,7 @@ const app = createApp({
           title: plan.title,
           plan: plan.plan,
           query: plan.query,
+          comment: plan.comment,
           password: plan.password,
         })
         .then((response) => {
@@ -195,6 +198,7 @@ const app = createApp({
       titleInput,
       planInput,
       queryInput,
+      commentInput,
       passwordInput,
       draggingPlan,
       draggingQuery,
